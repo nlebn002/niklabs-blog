@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Blog/">
+    <Project Path="src/Modules/Blog/Niklabs.Blog.Api/Niklabs.Blog.Api.csproj" />
+    <Project Path="src/Modules/Blog/Niklabs.Blog.Application/Niklabs.Blog.Application.csproj" />
+    <Project Path="src/Modules/Blog/Niklabs.Blog.Domain/Niklabs.Blog.Domain.csproj" />
+    <Project Path="src/Modules/Blog/Niklabs.Blog.Infrastructure/Niklabs.Blog.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Orchestration/">
+    <Project Path="src/Orchestration/Niklabs.Blog.AppHost/Niklabs.Blog.AppHost.csproj" />
+    <Project Path="src/Orchestration/Niklabs.Blog.ServiceDefaults/Niklabs.Blog.ServiceDefaults.csproj" />
+  </Folder>
+</Solution>

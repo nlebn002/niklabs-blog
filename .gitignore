@@ -1,0 +1,13 @@
+bin/
+obj/
+.vs/
+.vscode/
+.idea/
+.dotnet/
+node_modules/
+dist/
+coverage/
+uploads/
+.env
+.DS_Store
+.ai
