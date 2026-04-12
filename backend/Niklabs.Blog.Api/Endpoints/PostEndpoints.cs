@@ -4,6 +4,7 @@ using Niklabs.Blog.Application.Handlers.DeletePost;
 using Niklabs.Blog.Application.Handlers.GetPostById;
 using Niklabs.Blog.Application.Handlers.GetPosts;
 using Niklabs.Blog.Application.Handlers.UpdatePost;
+using Niklabs.Blog.Application.Dtos;
 
 namespace Niklabs.Blog.Api.Endpoints;
 
@@ -17,13 +18,16 @@ public static class PostEndpoints
         {
             var items = await handler.ExecuteAsync(new GetPostsQuery(isPublished), cancellationToken);
             return Results.Ok(items);
-        });
+        })
+        .Produces<IReadOnlyList<PostDto>>(StatusCodes.Status200OK);
 
         posts.MapGet("/{id:guid}", async (Guid id, GetPostByIdHandler handler, CancellationToken cancellationToken) =>
         {
             var post = await handler.ExecuteAsync(new GetPostByIdQuery(id), cancellationToken);
             return post is null ? Results.NotFound() : Results.Ok(post);
-        });
+        })
+        .Produces<PostDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
 
         posts.MapPost("/", async (
             UpsertPostRequest request,
@@ -40,7 +44,8 @@ public static class PostEndpoints
                 cancellationToken);
 
             return Results.Created($"/api/posts/{result.Post!.Id}", result.Post);
-        });
+        })
+        .Produces<PostDto>(StatusCodes.Status201Created);
 
         posts.MapPut("/{id:guid}", async (
             Guid id,
@@ -64,7 +69,9 @@ public static class PostEndpoints
             }
 
             return Results.Ok(result.Post);
-        });
+        })
+        .Produces<PostDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
 
         posts.MapDelete("/{id:guid}", async (
             Guid id,
@@ -73,7 +80,9 @@ public static class PostEndpoints
         {
             var deleted = await handler.ExecuteAsync(new DeletePostCommand(id), cancellationToken);
             return deleted ? Results.NoContent() : Results.NotFound();
-        });
+        })
+        .Produces(StatusCodes.Status204NoContent)
+        .Produces(StatusCodes.Status404NotFound);
     }
 }
 

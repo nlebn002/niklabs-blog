@@ -7,14 +7,10 @@ services:
       - postgres
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ConnectionStrings__blogdb: Host=postgres;Port=${POSTGRES_PORT};Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      ConnectionStrings__postgres: ${ConnectionStrings__postgres}
       Admin__ApiKey: ${ADMIN_API_KEY}
-      Storage__UploadsPath: /app/uploads
-      Storage__PublicBasePath: /uploads
     ports:
-      - "8080:8080"
-    volumes:
-      - blog-uploads:/app/uploads
+      - "5000:80"
 
   web:
     build:
@@ -26,6 +22,3 @@ services:
       - api
     ports:
       - "3000:80"
-
-volumes:
-  blog-uploads:

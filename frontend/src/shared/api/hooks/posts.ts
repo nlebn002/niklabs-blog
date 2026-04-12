@@ -1,0 +1,113 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  deleteApiPostsId,
+  getApiPosts,
+  getApiPostsId,
+  postApiPosts,
+  putApiPostsId
+} from "../generated/blog-api";
+import type { PostDto, UpsertPostRequest } from "../generated";
+
+const postKeys = {
+  all: ["posts"] as const,
+  admin: ["posts", "admin"] as const,
+  published: ["posts", "published"] as const,
+  detail: (postId: string) => ["posts", "detail", postId] as const
+};
+
+export function usePublishedPosts() {
+  return useQuery({
+    queryKey: postKeys.published,
+    queryFn: async () => {
+      const response = await getApiPosts({ isPublished: true });
+      return response.data;
+    }
+  });
+}
+
+export function useAdminPosts() {
+  return useQuery({
+    queryKey: postKeys.admin,
+    queryFn: async () => {
+      const response = await getApiPosts();
+      return response.data;
+    }
+  });
+}
+
+export function usePost(postId: string) {
+  return useQuery({
+    queryKey: postKeys.detail(postId),
+    enabled: Boolean(postId),
+    queryFn: async () => {
+      const response = await getApiPostsId(postId);
+
+      if (response.status === 404) {
+        throw new Error("Post not found.");
+      }
+
+      return response.data;
+    }
+  });
+}
+
+export function useCreatePost() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: UpsertPostRequest) => {
+      const response = await postApiPosts(payload);
+      return response.data;
+    },
+    onSuccess: async (post) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: postKeys.all }),
+        queryClient.invalidateQueries({ queryKey: postKeys.detail(post.id) })
+      ]);
+    }
+  });
+}
+
+export function useUpdatePost(postId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: UpsertPostRequest) => {
+      const response = await putApiPostsId(postId, payload);
+
+      if (response.status === 404) {
+        throw new Error("Post not found.");
+      }
+
+      return response.data;
+    },
+    onSuccess: async (post) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: postKeys.all }),
+        queryClient.invalidateQueries({ queryKey: postKeys.detail(post.id) })
+      ]);
+    }
+  });
+}
+
+export function useDeletePost() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (postId: string) => {
+      const response = await deleteApiPostsId(postId);
+
+      if (response.status === 404) {
+        throw new Error("Post not found.");
+      }
+
+      return postId;
+    },
+    onSuccess: async (postId) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: postKeys.all }),
+        queryClient.removeQueries({ queryKey: postKeys.detail(postId) })
+      ]);
+    }
+  });
+}
