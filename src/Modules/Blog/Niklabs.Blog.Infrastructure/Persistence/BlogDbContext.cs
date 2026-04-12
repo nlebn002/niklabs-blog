@@ -6,13 +6,12 @@ namespace Niklabs.Blog.Infrastructure.Persistence;
 
 public sealed class BlogDbContext(DbContextOptions<BlogDbContext> options) : DbContext(options), IBlogDbContext
 {
-    public DbSet<BlogPost> Posts => Set<BlogPost>();
+    public DbSet<Post> Posts => Set<Post>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<BlogPost>(entity =>
+        modelBuilder.Entity<Post>(entity =>
         {
-            entity.ToTable("posts");
             entity.HasKey(x => x.Id);
 
             entity.Property(x => x.Title).HasMaxLength(180).IsRequired();

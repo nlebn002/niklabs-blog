@@ -1,8 +1,8 @@
 namespace Niklabs.Blog.Domain.Posts;
 
-public sealed class BlogPost
+public sealed class Post
 {
-    private BlogPost()
+    private Post()
     {
     }
 
@@ -17,7 +17,7 @@ public sealed class BlogPost
     public DateTimeOffset CreatedAtUtc { get; private set; }
     public DateTimeOffset UpdatedAtUtc { get; private set; }
 
-    public static BlogPost Create(
+    public static Post Create(
         string title,
         string slug,
         string excerpt,
@@ -26,7 +26,7 @@ public sealed class BlogPost
         bool isPublished,
         DateTimeOffset nowUtc)
     {
-        var post = new BlogPost
+        var post = new Post
         {
             Id = Guid.NewGuid(),
             CreatedAtUtc = nowUtc,

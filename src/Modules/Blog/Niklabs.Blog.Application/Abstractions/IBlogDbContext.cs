@@ -5,7 +5,7 @@ namespace Niklabs.Blog.Application.Abstractions;
 
 public interface IBlogDbContext
 {
-    DbSet<BlogPost> Posts { get; }
+    DbSet<Post> Posts { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

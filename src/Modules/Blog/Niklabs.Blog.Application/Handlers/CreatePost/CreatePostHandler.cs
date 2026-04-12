@@ -21,7 +21,7 @@ public sealed class CreatePostHandler(IBlogDbContext dbContext)
             return (false, "Slug already exists.", null);
         }
 
-        var post = BlogPost.Create(
+        var post = Post.Create(
             command.Title,
             slug,
             command.Excerpt,

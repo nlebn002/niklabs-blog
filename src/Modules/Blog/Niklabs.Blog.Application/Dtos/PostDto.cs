@@ -16,7 +16,7 @@ public sealed record PostDto(
 
 internal static class PostDtoMappings
 {
-    public static PostDto ToDto(this BlogPost post) =>
+    public static PostDto ToDto(this Post post) =>
         new(
             post.Id,
             post.Title,

@@ -2,8 +2,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var password = builder.AddParameter("postgres-password", secret: true);
 var postgres = builder.AddPostgres("postgres", password)
-    .WithDataVolume()
-    .WithPgAdmin();
+    .WithDataVolume();
 
 var blogDb = postgres.AddDatabase("blogdb");
 
