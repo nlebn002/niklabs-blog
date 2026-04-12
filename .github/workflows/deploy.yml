@@ -1,0 +1,123 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      release_name: ${{ steps.release_name.outputs.value }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Publish API
+        run: dotnet publish backend/Niklabs.Blog.Api/Niklabs.Blog.Api.csproj -c Release -o publish/api
+
+      - name: Set release name
+        id: release_name
+        shell: bash
+        run: echo "value=release-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Package frontend artifact
+        shell: bash
+        run: tar -C frontend/dist -czf frontend-dist.tar.gz .
+
+      - name: Package API artifact
+        shell: bash
+        run: tar -C publish/api -czf api-publish.tar.gz .
+
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend-dist.tar.gz
+          if-no-files-found: error
+
+      - name: Upload API artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-publish
+          path: api-publish.tar.gz
+          if-no-files-found: error
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: production
+    steps:
+      - name: Download frontend artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+
+      - name: Download API artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: api-publish
+
+      - name: Configure SSH
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Upload release archives
+        shell: bash
+        run: |
+          scp -P "${{ secrets.SSH_PORT }}" frontend-dist.tar.gz "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/frontend-dist.tar.gz"
+          scp -P "${{ secrets.SSH_PORT }}" api-publish.tar.gz "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/api-publish.tar.gz"
+
+      - name: Deploy on server
+        shell: bash
+        run: |
+          ssh -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" <<'EOF'
+          set -euo pipefail
+
+          FRONTEND_PATH="${{ secrets.FRONTEND_DEPLOY_PATH }}"
+          API_PATH="${{ secrets.API_DEPLOY_PATH }}"
+          SERVICE_NAME="${{ secrets.API_SYSTEMD_SERVICE }}"
+          RELEASE_ROOT="/tmp/${{ needs.build.outputs.release_name }}"
+
+          mkdir -p "$RELEASE_ROOT/frontend" "$RELEASE_ROOT/api"
+          tar -xzf /tmp/frontend-dist.tar.gz -C "$RELEASE_ROOT/frontend"
+          tar -xzf /tmp/api-publish.tar.gz -C "$RELEASE_ROOT/api"
+
+          sudo mkdir -p "$FRONTEND_PATH" "$API_PATH"
+          sudo rsync -a --delete "$RELEASE_ROOT/frontend/" "$FRONTEND_PATH/"
+          sudo rsync -a --delete "$RELEASE_ROOT/api/" "$API_PATH/"
+
+          sudo systemctl restart "$SERVICE_NAME"
+          sudo systemctl is-active --quiet "$SERVICE_NAME"
+
+          rm -rf "$RELEASE_ROOT"
+          rm -f /tmp/frontend-dist.tar.gz /tmp/api-publish.tar.gz
+          EOF

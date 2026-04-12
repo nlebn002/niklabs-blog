@@ -3,22 +3,25 @@ services:
     build:
       context: .
       dockerfile: deploy/api.Dockerfile
-    depends_on:
-      - postgres
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__postgres: ${ConnectionStrings__postgres}
-      Admin__ApiKey: ${ADMIN_API_KEY}
-    ports:
-      - "5000:80"
+    expose:
+      - "80"
+    networks:
+      - niklabs-public
 
   web:
     build:
       context: .
       dockerfile: deploy/frontend.Dockerfile
-      args:
-        VITE_API_BASE_URL: ${API_BASE_URL}
     depends_on:
       - api
-    ports:
-      - "3000:80"
+    expose:
+      - "80"
+    networks:
+      - niklabs-public
+
+networks:
+  niklabs-public:
+    external: true
