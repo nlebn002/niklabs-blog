@@ -1,13 +1,18 @@
+using DotNetEnv;
+
+Env.Load("../../../.env");
 var builder = DistributedApplication.CreateBuilder(args);
 
-var password = builder.AddParameter("postgres-password", secret: true);
-var postgres = builder.AddPostgres("postgres", password)
-    .WithDataVolume();
 
-var blogDb = postgres.AddDatabase("blogdb");
+// read .env vars
+var pgUser = builder.Configuration["POSTGRES_USER"];
+var pgPass = builder.Configuration["POSTGRES_PASSWORD"];
+var pgDb = builder.Configuration["POSTGRES_DB"];
+var pgPort = builder.Configuration["POSTGRES_PORT"] ?? "5432";
 
-builder.AddProject<Projects.Niklabs_Blog_Api>("api")
-    .WithReference(blogDb)
-    .WaitFor(blogDb);
+var connectionString = $"Host=localhost;Port={pgPort};Database={pgDb};Username={pgUser};Password={pgPass}";
+var postgres = builder.AddConnectionString("postgres", connectionString);
+
+builder.AddProject<Projects.Niklabs_Blog_Api>("api");
 
 builder.Build().Run();

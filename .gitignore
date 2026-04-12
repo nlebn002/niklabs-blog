@@ -11,3 +11,7 @@ uploads/
 .env
 .DS_Store
 .ai
+
+# ignore all env files but keep example
+.env*
+!.env.example
