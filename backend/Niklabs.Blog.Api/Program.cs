@@ -1,3 +1,4 @@
+using Niklabs.Blog.Api.Endpoints;
 using Niklabs.Blog.Application.DependencyInjection;
 using Niklabs.Blog.Infrastructure.DependencyInjection;
 using Scalar.AspNetCore;
@@ -19,5 +20,6 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-app.MapGet("/", () => Results.Redirect("/scalar/v1"));
+PostEndpoints.Map(app);
+
 app.Run();
