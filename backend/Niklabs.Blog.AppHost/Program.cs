@@ -1,6 +1,6 @@
 using DotNetEnv;
 
-Env.Load("../../../.env");
+Env.Load("../../.env");
 var builder = DistributedApplication.CreateBuilder(args);
 
 
@@ -11,8 +11,15 @@ var pgDb = builder.Configuration["POSTGRES_DB"];
 var pgPort = builder.Configuration["POSTGRES_PORT"] ?? "5432";
 
 var connectionString = $"Host=localhost;Port={pgPort};Database={pgDb};Username={pgUser};Password={pgPass}";
+
+//InDocker compose 
+//services:
+//  api:
+//    environment:
+//      ConnectionStrings__postgres: Host=postgres;Port=5432;Database=mydb;Username=admin;Password=admin
 var postgres = builder.AddConnectionString("postgres", connectionString);
 
-builder.AddProject<Projects.Niklabs_Blog_Api>("api");
+builder.AddProject<Projects.Niklabs_Blog_Api>("api")
+    .WithReference(postgres);
 
 builder.Build().Run();

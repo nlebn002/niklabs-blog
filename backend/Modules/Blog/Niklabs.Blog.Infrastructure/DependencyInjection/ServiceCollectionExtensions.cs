@@ -12,9 +12,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddBlogInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("blogdb")
-            ?? configuration.GetConnectionString("BlogDb")
-            ?? throw new InvalidOperationException("Connection string 'blogdb' is required.");
+        var connectionString = configuration.GetConnectionString("postgres")
+            ?? throw new InvalidOperationException("Connection string 'postgres' is required.");
 
         var storageSection = configuration.GetSection(StorageOptions.SectionName);
         var storageOptions = new StorageOptions

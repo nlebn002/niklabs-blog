@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Niklabs.Blog.Application\Niklabs.Blog.Application.csproj" />
-    <ProjectReference Include="..\Niklabs.Blog.Infrastructure\Niklabs.Blog.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\..\Orchestration\Niklabs.Blog.ServiceDefaults\Niklabs.Blog.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Modules\Blog\Niklabs.Blog.Application\Niklabs.Blog.Application.csproj" />
+    <ProjectReference Include="..\Modules\Blog\Niklabs.Blog.Infrastructure\Niklabs.Blog.Infrastructure.csproj" />
+    <ProjectReference Include="..\Niklabs.Blog.ServiceDefaults\Niklabs.Blog.ServiceDefaults.csproj" />
   </ItemGroup>
 </Project>

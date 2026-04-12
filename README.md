@@ -12,12 +12,12 @@ This repository contains a deployable MVP for `niklabs.cloud` built with:
 
 ## Solution structure
 
-- `src/Orchestration/Niklabs.Blog.AppHost` Aspire orchestrator for local development
-- `src/Orchestration/Niklabs.Blog.ServiceDefaults` shared service defaults and telemetry setup
-- `src/Modules/Blog/Niklabs.Blog.Api` blog module API entrypoint
-- `src/Modules/Blog/Niklabs.Blog.Application` blog module application layer
-- `src/Modules/Blog/Niklabs.Blog.Domain` blog module domain model
-- `src/Modules/Blog/Niklabs.Blog.Infrastructure` blog module persistence and storage
+- `backend/Niklabs.Blog.AppHost` Aspire orchestrator for local development
+- `backend/Niklabs.Blog.ServiceDefaults` shared service defaults and telemetry setup
+- `backend/Niklabs.Blog.Api` blog module API entrypoint
+- `backend/Modules/Blog/Niklabs.Blog.Application` blog module application layer
+- `backend/Modules/Blog/Niklabs.Blog.Domain` blog module domain model
+- `backend/Modules/Blog/Niklabs.Blog.Infrastructure` blog module persistence and storage
 - `frontend` React + Tailwind SPA
 - `deploy` Dockerfiles and deployment assets
 - `.github/workflows` CI pipeline
@@ -35,7 +35,7 @@ This repository contains a deployable MVP for `niklabs.cloud` built with:
 
 1. Start PostgreSQL with Docker Compose.
 2. Set `ConnectionStrings__blogdb` and `Admin__ApiKey`.
-3. Run `dotnet run --project src/Modules/Blog/Niklabs.Blog.Api`.
+3. Run `dotnet run --project backend/Niklabs.Blog.Api`.
 
 ### Full stack with containers
 
@@ -45,4 +45,4 @@ This repository contains a deployable MVP for `niklabs.cloud` built with:
 
 ### Aspire
 
-Run `dotnet run --project src/Orchestration/Niklabs.Blog.AppHost` for local orchestration.
+Run `dotnet run --project backend/Niklabs.Blog.AppHost` for local orchestration.

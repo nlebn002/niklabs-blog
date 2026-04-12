@@ -10,6 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Modules\Blog\Niklabs.Blog.Api\Niklabs.Blog.Api.csproj" />
+    <ProjectReference Include="..\Niklabs.Blog.Api\Niklabs.Blog.Api.csproj" />
   </ItemGroup>
 </Project>

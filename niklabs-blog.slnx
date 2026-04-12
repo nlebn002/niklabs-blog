@@ -1,14 +1,13 @@
 <Solution>
-  <Folder Name="/src/" />
-  <Folder Name="/src/Modules/" />
-  <Folder Name="/src/Modules/Blog/">
-    <Project Path="src/Modules/Blog/Niklabs.Blog.Api/Niklabs.Blog.Api.csproj" />
-    <Project Path="src/Modules/Blog/Niklabs.Blog.Application/Niklabs.Blog.Application.csproj" />
-    <Project Path="src/Modules/Blog/Niklabs.Blog.Domain/Niklabs.Blog.Domain.csproj" />
-    <Project Path="src/Modules/Blog/Niklabs.Blog.Infrastructure/Niklabs.Blog.Infrastructure.csproj" />
+  <Folder Name="/backend/">
+    <Project Path="backend/Niklabs.Blog.Api/Niklabs.Blog.Api.csproj" />
+    <Project Path="backend/Niklabs.Blog.AppHost/Niklabs.Blog.AppHost.csproj" />
+    <Project Path="backend/Niklabs.Blog.ServiceDefaults/Niklabs.Blog.ServiceDefaults.csproj" />
   </Folder>
-  <Folder Name="/src/Orchestration/">
-    <Project Path="src/Orchestration/Niklabs.Blog.AppHost/Niklabs.Blog.AppHost.csproj" />
-    <Project Path="src/Orchestration/Niklabs.Blog.ServiceDefaults/Niklabs.Blog.ServiceDefaults.csproj" />
+  <Folder Name="/backend/Modules/" />
+  <Folder Name="/backend/Modules/Blog/">
+    <Project Path="backend/Modules/Blog/Niklabs.Blog.Application/Niklabs.Blog.Application.csproj" />
+    <Project Path="backend/Modules/Blog/Niklabs.Blog.Domain/Niklabs.Blog.Domain.csproj" />
+    <Project Path="backend/Modules/Blog/Niklabs.Blog.Infrastructure/Niklabs.Blog.Infrastructure.csproj" />
   </Folder>
 </Solution>
