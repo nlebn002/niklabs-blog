@@ -1,8 +1,7 @@
-namespace Niklabs.Blog.Api.Endpoints;
+namespace Niklabs.Blog.Application.Handlers;
 
-public sealed record UpsertPostRequest(
+public sealed record UpsertPostCommand(
     string Title,
-    string? Slug,
     string Excerpt,
     string ContentMarkdown,
     string? CoverImageUrl,

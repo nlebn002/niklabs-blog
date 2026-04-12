@@ -23,3 +23,4 @@ builder.AddProject<Projects.Niklabs_Blog_Api>("api")
     .WithReference(postgres);
 
 builder.Build().Run();
+

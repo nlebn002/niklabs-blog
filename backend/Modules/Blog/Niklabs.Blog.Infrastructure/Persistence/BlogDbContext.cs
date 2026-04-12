@@ -13,14 +13,10 @@ public sealed class BlogDbContext(DbContextOptions<BlogDbContext> options) : DbC
         modelBuilder.Entity<Post>(entity =>
         {
             entity.HasKey(x => x.Id);
-
             entity.Property(x => x.Title).HasMaxLength(180).IsRequired();
-            entity.Property(x => x.Slug).HasMaxLength(180).IsRequired();
             entity.Property(x => x.Excerpt).HasMaxLength(500).IsRequired();
             entity.Property(x => x.ContentMarkdown).IsRequired();
             entity.Property(x => x.CoverImageUrl).HasMaxLength(500);
-
-            entity.HasIndex(x => x.Slug).IsUnique();
         });
     }
 }

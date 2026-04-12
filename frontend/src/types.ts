@@ -1,7 +1,6 @@
 export type Post = {
   id: string;
   title: string;
-  slug: string;
   excerpt: string;
   contentMarkdown: string;
   coverImageUrl?: string | null;
@@ -13,7 +12,6 @@ export type Post = {
 
 export type UpsertPostRequest = {
   title: string;
-  slug?: string;
   excerpt: string;
   contentMarkdown: string;
   coverImageUrl?: string;

@@ -24,10 +24,9 @@ This repository contains a deployable MVP for `niklabs.cloud` built with:
 
 ## MVP behavior
 
-- Public visitors can list published posts and view a post by slug
+- Public visitors can list published posts and view a post by ID
 - Admins can create, update, delete, publish, and unpublish posts
-- Admins can upload images and reference them from post content
-- Admin access is protected with `X-Admin-Key`
+- Admin endpoints are currently open during development
 
 ## Run locally
 

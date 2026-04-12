@@ -1,12 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Niklabs.Blog.Application.Abstractions;
 using Niklabs.Blog.Application.Dtos;
-using Niklabs.Blog.Application.Handlers.Shared;
-using Niklabs.Blog.Application.Posts;
 
 namespace Niklabs.Blog.Application.Handlers.UpdatePost;
 
-public sealed class UpdatePostHandler(IBlogDbContext dbContext)
+public sealed class UpdatePostHandler(IBlogDbContext dbContext, TimeProvider timeProvider)
 {
     public async Task<(bool Found, bool Success, string? Error, PostDto? Post)> ExecuteAsync(
         UpdatePostCommand command,
@@ -18,24 +16,13 @@ public sealed class UpdatePostHandler(IBlogDbContext dbContext)
             return (false, false, null, null);
         }
 
-        var slug = SlugHelper.Generate(command.Title, command.Slug);
-        var slugExists = await dbContext.Posts.AnyAsync(
-            x => x.Slug == slug && x.Id != command.PostId,
-            cancellationToken);
-
-        if (slugExists)
-        {
-            return (true, false, "Slug already exists.", null);
-        }
-
         post.Update(
             command.Title,
-            slug,
             command.Excerpt,
             command.ContentMarkdown,
             command.CoverImageUrl,
             command.IsPublished,
-            DateTimeOffset.UtcNow);
+            timeProvider.GetUtcNow());
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
@@ -46,7 +33,6 @@ public sealed class UpdatePostHandler(IBlogDbContext dbContext)
 public sealed record UpdatePostCommand(
     Guid PostId,
     string Title,
-    string? Slug,
     string Excerpt,
     string ContentMarkdown,
     string? CoverImageUrl,

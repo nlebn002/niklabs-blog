@@ -5,7 +5,6 @@ namespace Niklabs.Blog.Application.Dtos;
 public sealed record PostDto(
     Guid Id,
     string Title,
-    string Slug,
     string Excerpt,
     string ContentMarkdown,
     string? CoverImageUrl,
@@ -20,7 +19,6 @@ internal static class PostDtoMappings
         new(
             post.Id,
             post.Title,
-            post.Slug,
             post.Excerpt,
             post.ContentMarkdown,
             post.CoverImageUrl,

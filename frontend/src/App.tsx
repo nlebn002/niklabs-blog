@@ -1,16 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
-import {
-  deletePost,
-  getAdminPosts,
-  getPublishedPosts,
-  savePost,
-  uploadImage
-} from "./api";
+import { deletePost, getAdminPosts, getPublishedPosts, savePost } from "./api";
 import type { Post, UpsertPostRequest } from "./types";
 
 const emptyForm: UpsertPostRequest = {
   title: "",
-  slug: "",
   excerpt: "",
   contentMarkdown: "",
   coverImageUrl: "",
@@ -22,7 +15,6 @@ export default function App() {
   const [adminPosts, setAdminPosts] = useState<Post[]>([]);
   const [selectedPostId, setSelectedPostId] = useState<string | undefined>();
   const [form, setForm] = useState<UpsertPostRequest>(emptyForm);
-  const [adminKey, setAdminKey] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -35,13 +27,9 @@ export default function App() {
     }
   }
 
-  async function loadAdminPosts(key: string) {
-    if (!key) {
-      return;
-    }
-
+  async function loadAdminPosts() {
     try {
-      setAdminPosts(await getAdminPosts(key));
+      setAdminPosts(await getAdminPosts());
       setMessage("Admin posts loaded.");
       setError("");
     } catch (err) {
@@ -63,7 +51,6 @@ export default function App() {
 
     setForm({
       title: selectedPost.title,
-      slug: selectedPost.slug,
       excerpt: selectedPost.excerpt,
       contentMarkdown: selectedPost.contentMarkdown,
       coverImageUrl: selectedPost.coverImageUrl ?? "",
@@ -78,11 +65,11 @@ export default function App() {
     setMessage("");
 
     try {
-      await savePost(adminKey, form, selectedPostId);
+      await savePost(form, selectedPostId);
       setMessage(selectedPostId ? "Post updated." : "Post created.");
       setSelectedPostId(undefined);
       setForm(emptyForm);
-      await Promise.all([loadPublicPosts(), loadAdminPosts(adminKey)]);
+      await Promise.all([loadPublicPosts(), loadAdminPosts()]);
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -96,33 +83,13 @@ export default function App() {
     setMessage("");
 
     try {
-      await deletePost(adminKey, postId);
+      await deletePost(postId);
       setMessage("Post deleted.");
       if (selectedPostId === postId) {
         setSelectedPostId(undefined);
         setForm(emptyForm);
       }
-      await Promise.all([loadPublicPosts(), loadAdminPosts(adminKey)]);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function onImageSelected(file: File | null) {
-    if (!file) {
-      return;
-    }
-
-    setBusy(true);
-    setError("");
-    setMessage("");
-
-    try {
-      const imageUrl = await uploadImage(adminKey, file);
-      setForm((current) => ({ ...current, coverImageUrl: imageUrl }));
-      setMessage("Image uploaded.");
+      await Promise.all([loadPublicPosts(), loadAdminPosts()]);
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -145,20 +112,14 @@ export default function App() {
           </div>
 
           <div className="rounded-[1.5rem] bg-ink p-6 text-slate-100">
-            <h2 className="text-xl font-semibold">Admin access</h2>
+            <h2 className="text-xl font-semibold">Admin panel</h2>
             <p className="mt-2 text-sm text-slate-300">
-              Use the same API key configured in the backend to manage posts and upload images.
+              Manage posts directly while the backend stays simplified.
             </p>
-            <input
-              className="mt-4 w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm outline-none ring-0"
-              placeholder="X-Admin-Key"
-              value={adminKey}
-              onChange={(event) => setAdminKey(event.target.value)}
-            />
             <button
-              className="mt-3 rounded-full bg-clay px-5 py-3 font-semibold text-white transition hover:brightness-95"
-              onClick={() => void loadAdminPosts(adminKey)}
-              disabled={!adminKey || busy}
+              className="mt-4 rounded-full bg-clay px-5 py-3 font-semibold text-white transition hover:brightness-95"
+              onClick={() => void loadAdminPosts()}
+              disabled={busy}
             >
               Load admin posts
             </button>
@@ -226,12 +187,6 @@ export default function App() {
                   value={form.title}
                   onChange={(event) => setForm({ ...form, title: event.target.value })}
                 />
-                <input
-                  className="w-full rounded-xl border border-fog px-4 py-3"
-                  placeholder="Slug (optional)"
-                  value={form.slug}
-                  onChange={(event) => setForm({ ...form, slug: event.target.value })}
-                />
                 <textarea
                   className="min-h-24 w-full rounded-xl border border-fog px-4 py-3"
                   placeholder="Excerpt"
@@ -250,12 +205,6 @@ export default function App() {
                   value={form.coverImageUrl}
                   onChange={(event) => setForm({ ...form, coverImageUrl: event.target.value })}
                 />
-                <input
-                  className="block w-full text-sm"
-                  type="file"
-                  accept="image/*"
-                  onChange={(event) => void onImageSelected(event.target.files?.[0] ?? null)}
-                />
                 <label className="flex items-center gap-3 text-sm font-medium text-slate-700">
                   <input
                     type="checkbox"
@@ -266,7 +215,7 @@ export default function App() {
                 </label>
                 <button
                   className="rounded-full bg-ink px-5 py-3 font-semibold text-white"
-                  disabled={busy || !adminKey}
+                  disabled={busy}
                   type="submit"
                 >
                   {busy ? "Saving..." : selectedPostId ? "Update post" : "Create post"}
@@ -283,7 +232,7 @@ export default function App() {
                     <div>
                       <p className="font-semibold">{post.title}</p>
                       <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
-                        {post.isPublished ? "Published" : "Draft"} • {post.slug}
+                        {post.isPublished ? "Published" : "Draft"}
                       </p>
                     </div>
                     <div className="flex gap-2">

@@ -13,7 +13,7 @@ public sealed class DeletePostHandler(IBlogDbContext dbContext)
             return false;
         }
 
-        dbContext.Posts.Remove(post);
+        post.Delete();
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return true;
