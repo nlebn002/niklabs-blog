@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type { PostDto } from "../../shared/api/generated";
+import type { PostDto } from "../../shared/api/generated/blog/models";
 import { formatPostDate } from "../../entities/post/lib/post-date";
 import { PostStatusBadge } from "../../entities/post/ui/post-status-badge";
 import { buttonStyles } from "../../shared/ui/button";

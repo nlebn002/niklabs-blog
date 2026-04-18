@@ -5,8 +5,8 @@ import {
   getApiPostsId,
   postApiPosts,
   putApiPostsId
-} from "../generated/blog-api";
-import type { PostDto, UpsertPostRequest } from "../generated";
+} from "../generated/blog/apis";
+import type { PostDto, UpsertPostRequest } from "../generated/blog/models";
 
 const postKeys = {
   all: ["posts"] as const,
@@ -78,6 +78,10 @@ export function useCreatePost() {
         throw new Error("You cannot create posts.");
       }
 
+      if (response.status !== 201) {
+        throw new Error("Failed to create post.");
+      }
+
       return response.data;
     },
     onSuccess: async (post) => {
@@ -96,6 +100,10 @@ export function useUpdatePost(postId: string) {
     mutationFn: async (payload: UpsertPostRequest) => {
       const response = await putApiPostsId(postId, payload);
 
+      if (response.status === 200) {
+        return response.data;
+      }
+
       if (response.status === 404) {
         throw new Error("Post not found.");
       }
@@ -104,7 +112,7 @@ export function useUpdatePost(postId: string) {
         throw new Error("You cannot update this post.");
       }
 
-      return response.data;
+      throw new Error("Failed to update post.");
     },
     onSuccess: async (post) => {
       await Promise.all([

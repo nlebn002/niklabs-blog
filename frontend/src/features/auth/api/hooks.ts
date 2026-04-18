@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getApiAuthMe, postApiAuthLogin, postApiAuthLogout } from "../../../shared/api/generated/blog-api";
-import type { CurrentUserDto, LoginRequest } from "../../../shared/api/generated";
+import { getApiAuthMe, postApiAuthLogin, postApiAuthLogout } from "../../../shared/api/generated/auth/apis";
+import type { LoginRequest } from "../../../shared/api/generated/auth/models";
 
 export const authKeys = {
   currentUser: ["auth", "current-user"] as const
@@ -35,7 +35,7 @@ export function useLogin() {
 
       return response.data;
     },
-    onSuccess: async (user: CurrentUserDto) => {
+    onSuccess: async (user) => {
       queryClient.setQueryData(authKeys.currentUser, user);
       await queryClient.invalidateQueries({ queryKey: authKeys.currentUser });
     }

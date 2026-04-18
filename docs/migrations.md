@@ -26,34 +26,6 @@ dotnet ef migrations add MigrationName --project backend/Modules/Blog/Niklabs.Bl
 dotnet ef migrations add MigrationName --project backend/Modules/Auth/Niklabs.Auth.Infrastructure/Niklabs.Auth.Infrastructure.csproj --startup-project backend/Niklabs.Blog.Api/Niklabs.Api.csproj --context Niklabs.Auth.Infrastructure.Persistence.AuthDbContext --output-dir Migrations
 ```
 
-## Update Database
-
-### Blog
-
-```bash
-dotnet ef database update --project backend/Modules/Blog/Niklabs.Blog.Infrastructure/Niklabs.Blog.Infrastructure.csproj --startup-project backend/Niklabs.Blog.Api/Niklabs.Api.csproj --context Niklabs.Blog.Infrastructure.Persistence.BlogDbContext
-```
-
-### Auth
-
-```bash
-dotnet ef database update --project backend/Modules/Auth/Niklabs.Auth.Infrastructure/Niklabs.Auth.Infrastructure.csproj --startup-project backend/Niklabs.Blog.Api/Niklabs.Api.csproj --context Niklabs.Auth.Infrastructure.Persistence.AuthDbContext
-```
-
-## Remove Last Migration
-
-### Blog
-
-```bash
-dotnet ef migrations remove --project backend/Modules/Blog/Niklabs.Blog.Infrastructure/Niklabs.Blog.Infrastructure.csproj --startup-project backend/Niklabs.Blog.Api/Niklabs.Api.csproj --context Niklabs.Blog.Infrastructure.Persistence.BlogDbContext
-```
-
-### Auth
-
-```bash
-dotnet ef migrations remove --project backend/Modules/Auth/Niklabs.Auth.Infrastructure/Niklabs.Auth.Infrastructure.csproj --startup-project backend/Niklabs.Blog.Api/Niklabs.Api.csproj --context Niklabs.Auth.Infrastructure.Persistence.AuthDbContext
-```
-
 ## Generate SQL Scripts
 
 `0` means "from the beginning". Write generated scripts into `scripts/migrations`.
@@ -80,6 +52,34 @@ dotnet ef migrations script FromMigration ToMigration --idempotent --project bac
 
 ```bash
 dotnet ef migrations script FromMigration ToMigration --idempotent --project backend/Modules/Auth/Niklabs.Auth.Infrastructure/Niklabs.Auth.Infrastructure.csproj --startup-project backend/Niklabs.Blog.Api/Niklabs.Api.csproj --context Niklabs.Auth.Infrastructure.Persistence.AuthDbContext -o scripts/migrations/auth-migrations-range.sql
+```
+
+## Update Database
+
+### Blog
+
+```bash
+dotnet ef database update --project backend/Modules/Blog/Niklabs.Blog.Infrastructure/Niklabs.Blog.Infrastructure.csproj --startup-project backend/Niklabs.Blog.Api/Niklabs.Api.csproj --context Niklabs.Blog.Infrastructure.Persistence.BlogDbContext
+```
+
+### Auth
+
+```bash
+dotnet ef database update --project backend/Modules/Auth/Niklabs.Auth.Infrastructure/Niklabs.Auth.Infrastructure.csproj --startup-project backend/Niklabs.Blog.Api/Niklabs.Api.csproj --context Niklabs.Auth.Infrastructure.Persistence.AuthDbContext
+```
+
+## Remove Last Migration
+
+### Blog
+
+```bash
+dotnet ef migrations remove --project backend/Modules/Blog/Niklabs.Blog.Infrastructure/Niklabs.Blog.Infrastructure.csproj --startup-project backend/Niklabs.Blog.Api/Niklabs.Api.csproj --context Niklabs.Blog.Infrastructure.Persistence.BlogDbContext
+```
+
+### Auth
+
+```bash
+dotnet ef migrations remove --project backend/Modules/Auth/Niklabs.Auth.Infrastructure/Niklabs.Auth.Infrastructure.csproj --startup-project backend/Niklabs.Blog.Api/Niklabs.Api.csproj --context Niklabs.Auth.Infrastructure.Persistence.AuthDbContext
 ```
 
 ## Notes

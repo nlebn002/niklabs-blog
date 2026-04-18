@@ -6,7 +6,7 @@ public static class PostEndpoints
 {
     public static void Map(IEndpointRouteBuilder endpoints)
     {
-        var posts = endpoints.MapGroup("/api/posts").WithTags("Posts");
+        var posts = endpoints.MapGroup("/api/posts").WithTags("Blog");
 
         posts.MapGetPostsEndpoint();
         posts.MapGetPostByIdEndpoint();

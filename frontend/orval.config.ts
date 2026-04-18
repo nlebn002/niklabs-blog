@@ -1,14 +1,44 @@
+/// <reference types="node" />
+
 import { defineConfig } from "orval";
 
+const openApiSpecPath = process.env.OPENAPI_SPEC_PATH ?? "./.orval/openapi-v1.json";
+
 export default defineConfig({
-  blogApi: {
+  auth: {
     input: {
-      target: process.env.ORVAL_OPENAPI_URL ?? "http://localhost:5000/openapi/v1.json"
+      target: openApiSpecPath,
+      filters: {
+        tags: ["Auth"]
+      }
     },
     output: {
-      mode: "split",
-      target: "./src/shared/api/generated/blog-api.ts",
-      schemas: "./src/shared/api/generated",
+      mode: "single",
+      target: "./src/shared/api/generated/auth/apis/index.ts",
+      schemas: "./src/shared/api/generated/auth/models",
+      clean: true,
+      client: "fetch",
+      httpClient: "fetch",
+      override: {
+        mutator: {
+          path: "./src/shared/api/client/custom-fetch.ts",
+          name: "customFetch"
+        }
+      }
+    }
+  },
+  blog: {
+    input: {
+      target: openApiSpecPath,
+      filters: {
+        tags: ["Blog", "Posts"]
+      }
+    },
+    output: {
+      mode: "single",
+      target: "./src/shared/api/generated/blog/apis/index.ts",
+      schemas: "./src/shared/api/generated/blog/models",
+      clean: true,
       client: "fetch",
       httpClient: "fetch",
       override: {

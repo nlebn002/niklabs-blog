@@ -1,5 +1,0 @@
-export interface LoginRequest {
-  userNameOrEmail: string;
-  password: string;
-  rememberMe: boolean;
-}

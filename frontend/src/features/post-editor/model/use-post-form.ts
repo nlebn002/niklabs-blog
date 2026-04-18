@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import type { UpsertPostRequest } from "../../../shared/api/generated";
+import type { UpsertPostRequest } from "../../../shared/api/generated/blog/models";
 
 const postFormSchema = z.object({
   title: z.string().trim().min(1, "Title is required."),

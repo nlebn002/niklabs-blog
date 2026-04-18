@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "generate:api": "orval --config orval.config.ts",
-    "generate:api:watch": "orval --config orval.config.ts --watch"
+    "generate:api": "node --env-file=.env ./scripts/generate-api.mjs",
+    "generate:api:watch": "node --env-file=.env ./scripts/generate-api.mjs --watch"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -22,6 +22,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/node": "^25.6.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^5.0.0",

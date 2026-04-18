@@ -1,4 +1,4 @@
-import type { PostDto } from "../../shared/api/generated";
+import type { PostDto } from "../../shared/api/generated/blog/models";
 import { PostCard } from "../../entities/post/ui/post-card";
 
 type PostsListProps = {

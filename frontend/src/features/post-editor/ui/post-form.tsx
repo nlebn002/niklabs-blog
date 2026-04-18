@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import type { UpsertPostRequest } from "../../../shared/api/generated";
+import type { UpsertPostRequest } from "../../../shared/api/generated/blog/models";
 import { Button } from "../../../shared/ui/button";
 import { Input } from "../../../shared/ui/input";
 import { Textarea } from "../../../shared/ui/textarea";

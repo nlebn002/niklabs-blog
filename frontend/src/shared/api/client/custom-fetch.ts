@@ -1,12 +1,9 @@
-import { env } from "../../config/env";
 import { toErrorMessage } from "../../lib/errors";
 
 let csrfToken: string | null = null;
 
 function toRequestUrl(path: string) {
-  return env.apiBaseUrl.startsWith("http")
-    ? new URL(path, env.apiBaseUrl).toString()
-    : `${env.apiBaseUrl.replace(/\/$/, "")}${path}`;
+  return path;
 }
 
 async function ensureCsrfToken() {
