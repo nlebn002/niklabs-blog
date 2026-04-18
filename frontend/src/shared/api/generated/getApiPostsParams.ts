@@ -7,4 +7,5 @@
 
 export type GetApiPostsParams = {
 isPublished?: boolean;
+onlyEditable?: boolean;
 };

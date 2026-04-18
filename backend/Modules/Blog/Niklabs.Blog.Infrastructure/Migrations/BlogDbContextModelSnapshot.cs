@@ -28,6 +28,9 @@ namespace Niklabs.Blog.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("AuthorUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("ContentMarkdown")
                         .IsRequired()
                         .HasColumnType("text");
@@ -62,6 +65,8 @@ namespace Niklabs.Blog.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorUserId");
 
                     b.ToTable("Posts");
                 });

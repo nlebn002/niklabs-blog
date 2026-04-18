@@ -3,20 +3,30 @@ using Niklabs.Blog.Application.Abstractions;
 
 namespace Niklabs.Blog.Application.Handlers.DeletePost;
 
-public sealed class DeletePostHandler(IBlogDbContext dbContext)
+public sealed class DeletePostHandler(
+    IBlogDbContext dbContext,
+    ICurrentUser currentUser,
+    IPostAuthorizationService authorizationService)
 {
-    public async Task<bool> ExecuteAsync(DeletePostCommand command, CancellationToken cancellationToken)
+    public async Task<(bool Found, bool Deleted, string? Error)> ExecuteAsync(DeletePostCommand command, CancellationToken cancellationToken)
     {
-        var post = await dbContext.Posts.FirstOrDefaultAsync(x => x.Id == command.PostId, cancellationToken);
+        var post = await dbContext.Posts
+            .FirstOrDefaultAsync(x => x.Id == command.PostId && !x.IsDeleted, cancellationToken);
+
         if (post is null)
         {
-            return false;
+            return (false, false, null);
+        }
+
+        if (!authorizationService.CanDelete(currentUser, post))
+        {
+            return (true, false, "Forbidden");
         }
 
         post.Delete();
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return true;
+        return (true, true, null);
     }
 }
 

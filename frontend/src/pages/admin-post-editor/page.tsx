@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { LogoutButton } from "../../features/auth/ui/logout-button";
 import { PostForm } from "../../features/post-editor/ui/post-form";
-import { useCreatePost, usePost, useUpdatePost } from "../../shared/api/hooks/posts";
+import { useAdminPost, useCreatePost, useUpdatePost } from "../../shared/api/hooks/posts";
 import { Alert } from "../../shared/ui/alert";
 import { Panel } from "../../shared/ui/panel";
 
@@ -9,7 +10,7 @@ export function AdminPostsEditorPage() {
   const { postId } = useParams();
   const isEditMode = Boolean(postId);
 
-  const postQuery = usePost(postId ?? "");
+  const postQuery = useAdminPost(postId ?? "");
   const createMutation = useCreatePost();
   const updateMutation = useUpdatePost(postId ?? "");
 
@@ -19,9 +20,12 @@ export function AdminPostsEditorPage() {
   return (
     <div className="min-h-screen bg-site text-ink">
       <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-6 px-6 py-8 lg:px-10">
-        <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to="/admin/posts">
-          Back to admin posts
-        </Link>
+        <div className="flex items-center justify-between gap-4">
+          <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to="/admin/posts">
+            Back to admin posts
+          </Link>
+          <LogoutButton />
+        </div>
 
         <Panel className="gap-4">
           <div>

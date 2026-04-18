@@ -29,15 +29,31 @@ export function useAdminPosts() {
   return useQuery({
     queryKey: postKeys.admin,
     queryFn: async () => {
-      const response = await getApiPosts();
+      const response = await getApiPosts({ onlyEditable: true });
       return response.data;
     }
   });
 }
 
-export function usePost(postId: string) {
+export function usePublicPost(postId: string) {
   return useQuery({
     queryKey: postKeys.detail(postId),
+    enabled: Boolean(postId),
+    queryFn: async () => {
+      const response = await getApiPostsId(postId);
+
+      if (response.status === 404) {
+        throw new Error("Post not found.");
+      }
+
+      return response.data;
+    }
+  });
+}
+
+export function useAdminPost(postId: string) {
+  return useQuery({
+    queryKey: [...postKeys.detail(postId), "admin"] as const,
     enabled: Boolean(postId),
     queryFn: async () => {
       const response = await getApiPostsId(postId);
@@ -57,6 +73,11 @@ export function useCreatePost() {
   return useMutation({
     mutationFn: async (payload: UpsertPostRequest) => {
       const response = await postApiPosts(payload);
+
+      if (response.status === 403) {
+        throw new Error("You cannot create posts.");
+      }
+
       return response.data;
     },
     onSuccess: async (post) => {
@@ -79,6 +100,10 @@ export function useUpdatePost(postId: string) {
         throw new Error("Post not found.");
       }
 
+      if (response.status === 403) {
+        throw new Error("You cannot update this post.");
+      }
+
       return response.data;
     },
     onSuccess: async (post) => {
@@ -99,6 +124,10 @@ export function useDeletePost() {
 
       if (response.status === 404) {
         throw new Error("Post not found.");
+      }
+
+      if (response.status === 403) {
+        throw new Error("You cannot delete this post.");
       }
 
       return postId;

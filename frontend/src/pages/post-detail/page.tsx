@@ -1,12 +1,12 @@
 import { Link, useParams } from "react-router-dom";
-import { usePost } from "../../shared/api/hooks/posts";
+import { usePublicPost } from "../../shared/api/hooks/posts";
 import { Alert } from "../../shared/ui/alert";
 import { Panel } from "../../shared/ui/panel";
 import { formatPostDate } from "../../entities/post/lib/post-date";
 
 export function PostDetailPage() {
   const { postId = "" } = useParams();
-  const postQuery = usePost(postId);
+  const postQuery = usePublicPost(postId);
 
   return (
     <div className="min-h-screen bg-site text-ink">

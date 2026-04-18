@@ -7,6 +7,7 @@ public sealed class Post
     }
 
     public Guid Id { get; private set; }
+    public Guid AuthorUserId { get; private set; }
     public string Title { get; private set; } = string.Empty;
     public string Excerpt { get; private set; } = string.Empty;
     public string ContentMarkdown { get; private set; } = string.Empty;
@@ -18,6 +19,7 @@ public sealed class Post
     public DateTimeOffset UpdatedAtUtc { get; private set; }
 
     public static Post Create(
+        Guid authorUserId,
         string title,
         string excerpt,
         string contentMarkdown,
@@ -28,6 +30,7 @@ public sealed class Post
         var post = new Post
         {
             Id = Guid.NewGuid(),
+            AuthorUserId = authorUserId,
             CreatedAtUtc = nowUtc,
             UpdatedAtUtc = nowUtc
         };

@@ -4,13 +4,22 @@ using Niklabs.Blog.Domain.Posts;
 
 namespace Niklabs.Blog.Application.Handlers.CreatePost;
 
-public sealed class CreatePostHandler(IBlogDbContext dbContext)
+public sealed class CreatePostHandler(
+    IBlogDbContext dbContext,
+    ICurrentUser currentUser,
+    IPostAuthorizationService authorizationService)
 {
     public async Task<(bool Success, string? Error, PostDto? Post)> ExecuteAsync(
-        UpsertPostCommand command,
+        CreatePostCommand command,
         CancellationToken cancellationToken)
     {
+        if (!authorizationService.CanCreate(currentUser) || !currentUser.UserId.HasValue)
+        {
+            return (false, "Forbidden", null);
+        }
+
         var post = Post.Create(
+            currentUser.UserId.Value,
             command.Title,
             command.Excerpt,
             command.ContentMarkdown,
@@ -24,3 +33,10 @@ public sealed class CreatePostHandler(IBlogDbContext dbContext)
         return (true, null, post.ToDto());
     }
 }
+
+public sealed record CreatePostCommand(
+    string Title,
+    string Excerpt,
+    string ContentMarkdown,
+    string? CoverImageUrl,
+    bool IsPublished);

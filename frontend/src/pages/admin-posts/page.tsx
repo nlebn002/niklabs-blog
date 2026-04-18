@@ -5,6 +5,7 @@ import { buttonStyles } from "../../shared/ui/button";
 import { Panel } from "../../shared/ui/panel";
 import { AdminPostsTable } from "../../widgets/admin-posts-table/ui";
 import { SiteHeader } from "../../widgets/site-header/ui";
+import { LogoutButton } from "../../features/auth/ui/logout-button";
 
 export function AdminPostsPage() {
   const postsQuery = useAdminPosts();
@@ -32,6 +33,7 @@ export function AdminPostsPage() {
             </div>
 
             <div className="flex gap-3">
+              <LogoutButton />
               <Link className={buttonStyles("ghost")} to="/">
                 Public view
               </Link>
