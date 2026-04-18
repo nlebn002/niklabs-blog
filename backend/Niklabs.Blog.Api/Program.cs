@@ -1,10 +1,10 @@
 using Niklabs.Blog.Api.Auth;
 using Niklabs.Blog.Api.Endpoints.Auth;
 using Niklabs.Blog.Api.Endpoints.Posts;
-using Niklabs.Blog.Auth.Application.Handlers.GetCurrentUser;
-using Niklabs.Blog.Auth.Application.Handlers.Login;
-using Niklabs.Blog.Auth.Application.Handlers.Logout;
-using Niklabs.Blog.Auth.Infrastructure.DependencyInjection;
+using Niklabs.Auth.Application.Handlers.GetCurrentUser;
+using Niklabs.Auth.Application.Handlers.Login;
+using Niklabs.Auth.Application.Handlers.Logout;
+using Niklabs.Auth.Infrastructure.DependencyInjection;
 using Niklabs.Blog.Application.Abstractions;
 using Niklabs.Blog.Application.DependencyInjection;
 using Niklabs.Blog.Infrastructure.DependencyInjection;

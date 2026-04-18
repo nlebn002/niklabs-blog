@@ -6,10 +6,14 @@ namespace Niklabs.Blog.Infrastructure.Persistence;
 
 public sealed class BlogDbContext(DbContextOptions<BlogDbContext> options) : DbContext(options), IBlogDbContext
 {
+    public const string SchemaName = "post";
+
     public DbSet<Post> Posts => Set<Post>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema(SchemaName);
+
         modelBuilder.Entity<Post>(entity =>
         {
             entity.HasKey(x => x.Id);

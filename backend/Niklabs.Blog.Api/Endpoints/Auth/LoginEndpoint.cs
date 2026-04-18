@@ -1,4 +1,4 @@
-using Niklabs.Blog.Auth.Application.Handlers.Login;
+using Niklabs.Auth.Application.Handlers.Login;
 
 namespace Niklabs.Blog.Api.Endpoints.Auth;
 

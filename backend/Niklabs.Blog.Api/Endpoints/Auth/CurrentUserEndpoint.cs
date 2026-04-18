@@ -1,4 +1,4 @@
-using Niklabs.Blog.Auth.Application.Handlers.GetCurrentUser;
+using Niklabs.Auth.Application.Handlers.GetCurrentUser;
 
 namespace Niklabs.Blog.Api.Endpoints.Auth;
 

@@ -1,14 +1,14 @@
 <Solution>
   <Folder Name="/backend/">
-    <Project Path="backend/Niklabs.Blog.Api/Niklabs.Blog.Api.csproj" />
-    <Project Path="backend/Niklabs.Blog.AppHost/Niklabs.Blog.AppHost.csproj" />
+    <Project Path="backend/Niklabs.Blog.Api/Niklabs.Api.csproj" />
+    <Project Path="backend/Niklabs.Blog.AppHost/Niklabs.AppHost.csproj" />
     <Project Path="backend/Niklabs.Blog.ServiceDefaults/Niklabs.Blog.ServiceDefaults.csproj" />
   </Folder>
   <Folder Name="/backend/Modules/" />
   <Folder Name="/backend/Modules/Auth/">
-    <Project Path="backend/Modules/Auth/Niklabs.Blog.Auth.Application/Niklabs.Blog.Auth.Application.csproj" />
-    <Project Path="backend/Modules/Auth/Niklabs.Blog.Auth.Domain/Niklabs.Blog.Auth.Domain.csproj" />
-    <Project Path="backend/Modules/Auth/Niklabs.Blog.Auth.Infrastructure/Niklabs.Blog.Auth.Infrastructure.csproj" />
+    <Project Path="backend/Modules/Auth/Niklabs.Auth.Application/Niklabs.Auth.Application.csproj" />
+    <Project Path="backend/Modules/Auth/Niklabs.Auth.Domain/Niklabs.Auth.Domain.csproj" />
+    <Project Path="backend/Modules/Auth/Niklabs.Auth.Infrastructure/Niklabs.Auth.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/backend/Modules/Blog/">
     <Project Path="backend/Modules/Blog/Niklabs.Blog.Application/Niklabs.Blog.Application.csproj" />

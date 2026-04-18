@@ -13,7 +13,9 @@ public sealed class BlogDbContextFactory : IDesignTimeDbContextFactory<BlogDbCon
             ?? "Host=localhost;Port=5432;Database=mydb;Username=admin;Password=admin";
 
         var options = new DbContextOptionsBuilder<BlogDbContext>()
-            .UseNpgsql(connectionString)
+            .UseNpgsql(
+                connectionString,
+                npgsql => npgsql.MigrationsHistoryTable("__EFMigrationsHistory", BlogDbContext.SchemaName))
             .Options;
 
         return new BlogDbContext(options);

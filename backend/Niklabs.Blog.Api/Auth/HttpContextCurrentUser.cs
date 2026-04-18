@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using Niklabs.Blog.Application.Abstractions;
-using Niklabs.Blog.Auth.Domain;
+using Niklabs.Auth.Domain;
 
 namespace Niklabs.Blog.Api.Auth;
 

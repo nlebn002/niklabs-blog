@@ -1,5 +1,5 @@
 using Niklabs.Blog.Api.Auth;
-using Niklabs.Blog.Auth.Application.Handlers.Logout;
+using Niklabs.Auth.Application.Handlers.Logout;
 
 namespace Niklabs.Blog.Api.Endpoints.Auth;
 
