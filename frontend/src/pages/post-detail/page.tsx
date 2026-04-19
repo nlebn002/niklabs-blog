@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
-import { usePublicPost } from "../../shared/api/hooks/posts";
-import { Alert } from "../../shared/ui/alert";
-import { Panel } from "../../shared/ui/panel";
-import { formatPostDate } from "../../entities/post/lib/post-date";
+import { Alert } from "../../components/ui/alert";
+import { Panel } from "../../components/ui/panel";
+import { usePublicPost } from "../../services/api/posts";
+import { formatPostDate } from "../../utils/post-date";
 
 export function PostDetailPage() {
   const { postId = "" } = useParams();

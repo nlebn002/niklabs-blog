@@ -14,14 +14,14 @@ export default defineConfig({
     },
     output: {
       mode: "single",
-      target: "./src/shared/api/generated/auth/apis/index.ts",
-      schemas: "./src/shared/api/generated/auth/models",
+      target: "./src/generated-openapi/auth/apis/index.ts",
+      schemas: "./src/generated-openapi/auth/models",
       clean: true,
       client: "fetch",
       httpClient: "fetch",
       override: {
         mutator: {
-          path: "./src/shared/api/client/custom-fetch.ts",
+          path: "./src/services/api/client/custom-fetch.ts",
           name: "customFetch"
         }
       }
@@ -36,14 +36,14 @@ export default defineConfig({
     },
     output: {
       mode: "single",
-      target: "./src/shared/api/generated/blog/apis/index.ts",
-      schemas: "./src/shared/api/generated/blog/models",
+      target: "./src/generated-openapi/blog/apis/index.ts",
+      schemas: "./src/generated-openapi/blog/models",
       clean: true,
       client: "fetch",
       httpClient: "fetch",
       override: {
         mutator: {
-          path: "./src/shared/api/client/custom-fetch.ts",
+          path: "./src/services/api/client/custom-fetch.ts",
           name: "customFetch"
         }
       }

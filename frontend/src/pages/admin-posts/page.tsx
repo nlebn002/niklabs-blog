@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { useAdminPosts, useDeletePost } from "../../shared/api/hooks/posts";
-import { Alert } from "../../shared/ui/alert";
-import { buttonStyles } from "../../shared/ui/button";
-import { Panel } from "../../shared/ui/panel";
-import { AdminPostsTable } from "../../widgets/admin-posts-table/ui";
-import { SiteHeader } from "../../widgets/site-header/ui";
+import { AdminPostsTable } from "../../components/sections/admin-posts-table";
+import { SiteHeader } from "../../components/sections/site-header";
+import { Alert } from "../../components/ui/alert";
+import { buttonStyles } from "../../components/ui/button";
+import { Panel } from "../../components/ui/panel";
 import { LogoutButton } from "../../features/auth/ui/logout-button";
+import { useAdminPosts, useDeletePost } from "../../services/api/posts";
 
 export function AdminPostsPage() {
   const postsQuery = useAdminPosts();

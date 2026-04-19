@@ -1,9 +1,9 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { Alert } from "../../components/ui/alert";
+import { Panel } from "../../components/ui/panel";
 import { LogoutButton } from "../../features/auth/ui/logout-button";
 import { PostForm } from "../../features/post-editor/ui/post-form";
-import { useAdminPost, useCreatePost, useUpdatePost } from "../../shared/api/hooks/posts";
-import { Alert } from "../../shared/ui/alert";
-import { Panel } from "../../shared/ui/panel";
+import { useAdminPost, useCreatePost, useUpdatePost } from "../../services/api/posts";
 
 export function AdminPostsEditorPage() {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getApiAuthMe, postApiAuthLogin, postApiAuthLogout } from "../../../shared/api/generated/auth/apis";
-import type { LoginRequest } from "../../../shared/api/generated/auth/models";
+import { getApiAuthMe, postApiAuthLogin, postApiAuthLogout } from "../../../generated-openapi/auth/apis";
+import type { LoginRequest } from "../../../generated-openapi/auth/models";
 
 export const authKeys = {
   currentUser: ["auth", "current-user"] as const

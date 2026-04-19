@@ -1,8 +1,8 @@
-import { usePublishedPosts } from "../../shared/api/hooks/posts";
-import { Alert } from "../../shared/ui/alert";
-import { Panel } from "../../shared/ui/panel";
-import { PostsList } from "../../widgets/posts-list/ui";
-import { SiteHeader } from "../../widgets/site-header/ui";
+import { PostsList } from "../../components/sections/posts-list";
+import { SiteHeader } from "../../components/sections/site-header";
+import { Alert } from "../../components/ui/alert";
+import { Panel } from "../../components/ui/panel";
+import { usePublishedPosts } from "../../services/api/posts";
 
 export function HomePage() {
   const postsQuery = usePublishedPosts();

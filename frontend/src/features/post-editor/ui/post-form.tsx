@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import type { UpsertPostRequest } from "../../../shared/api/generated/blog/models";
-import { Button } from "../../../shared/ui/button";
-import { Input } from "../../../shared/ui/input";
-import { Textarea } from "../../../shared/ui/textarea";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
+import { Textarea } from "../../../components/ui/textarea";
+import type { UpsertPostRequest } from "../../../generated-openapi/blog/models";
 import { toUpsertPostRequest, usePostForm } from "../model/use-post-form";
 
 type PostFormProps = {

@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCurrentUser, useLogin } from "../../features/auth/api/hooks";
 import { LoginForm } from "../../features/auth/ui/login-form";
-import { Alert } from "../../shared/ui/alert";
-import { Panel } from "../../shared/ui/panel";
+import { Alert } from "../../components/ui/alert";
+import { Panel } from "../../components/ui/panel";
 
 type LocationState = {
   from?: {

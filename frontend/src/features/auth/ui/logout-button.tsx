@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { buttonStyles } from "../../../shared/ui/button";
+import { buttonStyles } from "../../../components/ui/button";
 import { useLogout } from "../api/hooks";
 
 export function LogoutButton() {
