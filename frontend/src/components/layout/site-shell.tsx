@@ -2,6 +2,7 @@ import { useEffect, useState, type PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useCurrentUser } from "@/features/auth/api/hooks";
+import { routes } from "@/router";
 import { cn } from "@/utils/cn";
 
 type ThemeMode = "light" | "dark";
@@ -54,7 +55,7 @@ export function SiteShell({ children, contentClassName }: SiteShellProps) {
     <div className="min-h-screen bg-site text-foreground">
       <header className="border-b border-border/60 bg-background/75 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-10">
-          <Link className="inline-flex items-center gap-3 text-sm font-black uppercase tracking-[0.32em]" to="/">
+          <Link className="inline-flex items-center gap-3 text-sm font-black uppercase tracking-[0.32em]" to={routes.home()}>
             <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card shadow-sm">
               <span className="text-base text-primary">N</span>
             </span>
@@ -67,7 +68,7 @@ export function SiteShell({ children, contentClassName }: SiteShellProps) {
                 "inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background",
                 currentUserQuery.data ? "bg-secondary text-secondary-foreground hover:bg-secondary/90" : "bg-primary text-primary-foreground hover:bg-primary/90"
               )}
-              to={currentUserQuery.data ? "/admin/posts" : "/admin/login"}
+              to={currentUserQuery.data ? routes.posts() : routes.login()}
             >
               {currentUserQuery.data ? "Admin" : "Login"}
             </Link>

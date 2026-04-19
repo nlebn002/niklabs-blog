@@ -4,6 +4,7 @@ import { Alert } from "../../components/ui/alert";
 import { Panel } from "../../components/ui/panel";
 import { LogoutButton } from "../../features/auth/ui/logout-button";
 import { PostForm } from "../../features/post-editor/ui/post-form";
+import { routes } from "../../router";
 import { useAdminPost, useCreatePost, useUpdatePost } from "../../services/api/posts";
 
 export function AdminPostsEditorPage() {
@@ -21,7 +22,7 @@ export function AdminPostsEditorPage() {
   return (
     <SiteShell contentClassName="max-w-4xl">
       <div className="flex items-center justify-between gap-4">
-        <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to="/admin/posts">
+        <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to={routes.posts()}>
           Back to admin posts
         </Link>
         <LogoutButton />
@@ -59,7 +60,7 @@ export function AdminPostsEditorPage() {
                 await createMutation.mutateAsync(values);
               }
 
-              navigate("/admin/posts");
+              navigate(routes.posts());
             }}
           />
         ) : null}

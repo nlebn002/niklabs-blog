@@ -6,6 +6,7 @@ import { Alert } from "../../components/ui/alert";
 import { buttonStyles } from "../../components/ui/button";
 import { Panel } from "../../components/ui/panel";
 import { LogoutButton } from "../../features/auth/ui/logout-button";
+import { routes } from "../../router";
 import { useAdminPosts, useDeletePost } from "../../services/api/posts";
 
 export function AdminPostsPage() {
@@ -19,7 +20,7 @@ export function AdminPostsPage() {
         title="Manage posts without mixing admin flows into the public homepage."
         description="Generated API contracts, route-based screens, and isolated post management actions."
         ctaLabel="Create post"
-        ctaTo="/admin/posts/new"
+        ctaTo={routes.postCreate()}
       />
 
       {postsQuery.error ? <Alert title="Could not load admin posts" message={postsQuery.error.message} /> : null}
@@ -34,10 +35,10 @@ export function AdminPostsPage() {
 
           <div className="flex gap-3">
             <LogoutButton />
-            <Link className={buttonStyles("ghost")} to="/">
+            <Link className={buttonStyles("ghost")} to={routes.home()}>
               Public view
             </Link>
-            <Link className={buttonStyles()} to="/admin/posts/new">
+            <Link className={buttonStyles()} to={routes.postCreate()}>
               New post
             </Link>
           </div>

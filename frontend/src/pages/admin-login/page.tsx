@@ -5,6 +5,7 @@ import { useCurrentUser, useLogin } from "../../features/auth/api/hooks";
 import { LoginForm } from "../../features/auth/ui/login-form";
 import { Alert } from "../../components/ui/alert";
 import { Panel } from "../../components/ui/panel";
+import { routes } from "../../router";
 
 type LocationState = {
   from?: {
@@ -20,15 +21,15 @@ export function AdminLoginPage() {
 
   useEffect(() => {
     if (currentUserQuery.data) {
-      navigate("/admin/posts", { replace: true });
+      navigate(routes.posts(), { replace: true });
     }
   }, [currentUserQuery.data, navigate]);
 
-  const destination = (location.state as LocationState | null)?.from?.pathname ?? "/admin/posts";
+  const destination = (location.state as LocationState | null)?.from?.pathname ?? routes.posts();
 
   return (
     <SiteShell contentClassName="max-w-xl justify-center">
-      <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to="/">
+      <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to={routes.home()}>
         Back to public site
       </Link>
 

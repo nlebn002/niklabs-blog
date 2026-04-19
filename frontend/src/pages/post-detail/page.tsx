@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { SiteShell } from "../../components/layout/site-shell";
 import { Alert } from "../../components/ui/alert";
 import { Panel } from "../../components/ui/panel";
+import { routes } from "../../router";
 import { usePublicPost } from "../../services/api/posts";
 import { formatPostDate } from "../../utils/post-date";
 
@@ -11,7 +12,7 @@ export function PostDetailPage() {
 
   return (
     <SiteShell contentClassName="max-w-4xl">
-      <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to="/">
+      <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to={routes.home()}>
         Back to posts
       </Link>
 

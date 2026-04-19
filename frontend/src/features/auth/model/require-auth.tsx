@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useCurrentUser } from "../api/hooks";
+import { routes } from "../../../router";
 
 export function RequireAuth() {
   const location = useLocation();
@@ -10,7 +11,7 @@ export function RequireAuth() {
   }
 
   if (!currentUserQuery.data) {
-    return <Navigate to="/admin/login" replace state={{ from: location }} />;
+    return <Navigate to={routes.login()} replace state={{ from: location }} />;
   }
 
   return <Outlet />;

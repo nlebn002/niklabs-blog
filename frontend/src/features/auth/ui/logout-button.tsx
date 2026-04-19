@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { buttonStyles } from "../../../components/ui/button";
 import { useLogout } from "../api/hooks";
+import { routes } from "../../../router";
 
 export function LogoutButton() {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ export function LogoutButton() {
       className={buttonStyles("ghost")}
       onClick={async () => {
         await logoutMutation.mutateAsync();
-        navigate("/admin/login");
+        navigate(routes.login());
       }}
       type="button"
     >

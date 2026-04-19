@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { PostDto } from "../../generated-openapi/models";
+import { routes } from "../../router";
 import { formatPostDate } from "../../utils/post-date";
 
 type PostCardProps = {
@@ -21,7 +22,7 @@ export function PostCard({ post }: PostCardProps) {
         </div>
         <div className="line-clamp-5 whitespace-pre-wrap text-sm leading-7 text-slate-700">{post.contentMarkdown}</div>
         <div>
-          <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-clay" to={`/posts/${post.id}`}>
+          <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-clay" to={routes.postDetail(post.id)}>
             Read post
           </Link>
         </div>

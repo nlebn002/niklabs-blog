@@ -3,6 +3,7 @@ import { PostStatusBadge } from "../post/post-status-badge";
 import { buttonStyles } from "../ui/button";
 import { DeletePostButton } from "../../features/post-delete/ui/delete-post-button";
 import type { PostDto } from "../../generated-openapi/models";
+import { routes } from "../../router";
 import { formatPostDate } from "../../utils/post-date";
 
 type AdminPostsTableProps = {
@@ -40,10 +41,10 @@ export function AdminPostsTable({ posts, isLoading, deletingPostId, onDelete }: 
           </div>
 
           <div className="flex gap-3">
-            <Link className={buttonStyles("ghost")} to={`/posts/${post.id}`}>
+            <Link className={buttonStyles("ghost")} to={routes.postDetail(post.id)}>
               Preview
             </Link>
-            <Link className={buttonStyles("secondary")} to={`/admin/posts/${post.id}/edit`}>
+            <Link className={buttonStyles("secondary")} to={routes.postEdit(post.id)}>
               Edit
             </Link>
             <DeletePostButton

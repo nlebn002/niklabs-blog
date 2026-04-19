@@ -6,18 +6,29 @@ import { AdminPostsPage } from "./pages/admin-posts/page";
 import { HomePage } from "./pages/home/page";
 import { PostDetailPage } from "./pages/post-detail/page";
 
+const postIdParam = ":postId";
+
+export const routes = {
+  home: () => "/",
+  login: () => "/login",
+  posts: () => "/posts",
+  postCreate: () => "/posts/new",
+  postDetail: (postId: string = postIdParam) => `/posts/${postId}`,
+  postEdit: (postId: string = postIdParam) => `/posts/${postId}/edit`
+} as const;
+
 export function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/posts/:postId" element={<PostDetailPage />} />
-      <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route path={routes.home()} element={<HomePage />} />
+      <Route path={routes.postDetail()} element={<PostDetailPage />} />
+      <Route path={routes.login()} element={<AdminLoginPage />} />
       <Route element={<RequireAuth />}>
-        <Route path="/admin/posts" element={<AdminPostsPage />} />
-        <Route path="/admin/posts/new" element={<AdminPostsEditorPage />} />
-        <Route path="/admin/posts/:postId/edit" element={<AdminPostsEditorPage />} />
+        <Route path={routes.posts()} element={<AdminPostsPage />} />
+        <Route path={routes.postCreate()} element={<AdminPostsEditorPage />} />
+        <Route path={routes.postEdit()} element={<AdminPostsEditorPage />} />
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to={routes.home()} replace />} />
     </Routes>
   );
 }
