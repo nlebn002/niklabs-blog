@@ -1,12 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  deleteApiPostsId,
-  getApiPosts,
-  getApiPostsId,
-  postApiPosts,
-  putApiPostsId
-} from "../../generated-openapi/blog/apis";
-import type { PostDto, UpsertPostRequest } from "../../generated-openapi/blog/models";
+import { deleteApiPostsId, getApiPosts, getApiPostsId, postApiPosts, putApiPostsId } from "../../generated-openapi/blog/blog.js";
+import { UpsertPostRequest } from "../../generated-openapi/models/index.js";
 
 const postKeys = {
   all: ["posts"] as const,

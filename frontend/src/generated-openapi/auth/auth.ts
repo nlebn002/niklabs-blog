@@ -8,9 +8,10 @@ import type {
   CsrfTokenResponse,
   ErrorResponse,
   LoginRequest
-} from '../models';
+} from '.././models';
 
-import { customFetch } from '../../../services/api/client/custom-fetch';
+import { customFetch } from '../../services/api/client/custom-fetch';
+
 export type postApiAuthLoginResponse200 = {
   data: void
   status: 200
@@ -49,7 +50,6 @@ export const postApiAuthLogin = async (loginRequest: LoginRequest, options?: Req
       loginRequest,)
   }
 );}
-
 
 
 export type postApiAuthLogoutResponse204 = {
@@ -91,7 +91,6 @@ export const postApiAuthLogout = async ( options?: RequestInit): Promise<postApi
 );}
 
 
-
 export type getApiAuthMeResponse200 = {
   data: void
   status: 200
@@ -131,7 +130,6 @@ export const getApiAuthMe = async ( options?: RequestInit): Promise<getApiAuthMe
 );}
 
 
-
 export type getApiAuthCsrfResponse200 = {
   data: CsrfTokenResponse
   status: 200
@@ -169,3 +167,5 @@ export const getApiAuthCsrf = async ( options?: RequestInit): Promise<getApiAuth
     
   }
 );}
+
+

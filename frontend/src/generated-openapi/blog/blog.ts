@@ -8,9 +8,10 @@ import type {
   GetApiPostsParams,
   PostDto,
   UpsertPostRequest
-} from '../models';
+} from '.././models';
 
-import { customFetch } from '../../../services/api/client/custom-fetch';
+import { customFetch } from '../../services/api/client/custom-fetch';
+
 export type getApiPostsResponse200 = {
   data: PostDto[]
   status: 200
@@ -48,7 +49,6 @@ export const getApiPosts = async (params?: GetApiPostsParams, options?: RequestI
     
   }
 );}
-
 
 
 export type postApiPostsResponse201 = {
@@ -101,7 +101,6 @@ export const postApiPosts = async (upsertPostRequest: UpsertPostRequest, options
 );}
 
 
-
 export type getApiPostsIdResponse200 = {
   data: PostDto
   status: 200
@@ -139,7 +138,6 @@ export const getApiPostsId = async (id: string, options?: RequestInit): Promise<
     
   }
 );}
-
 
 
 export type putApiPostsIdResponse200 = {
@@ -198,7 +196,6 @@ export const putApiPostsId = async (id: string,
 );}
 
 
-
 export type deleteApiPostsIdResponse204 = {
   data: void
   status: 204
@@ -251,3 +248,5 @@ export const deleteApiPostsId = async (id: string, options?: RequestInit): Promi
     
   }
 );}
+
+
