@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { RequireAuth } from "./features/auth/model/require-auth";
-import { AdminLoginPage } from "./pages/admin-login/page";
-import { AdminPostsEditorPage } from "./pages/admin-post-editor/page";
-import { AdminPostsPage } from "./pages/admin-posts/page";
+import { LoginPage } from "./pages/admin-login/page";
+import { PostsEditorPage } from "./pages/admin-post-editor/page";
+import { PostsPage } from "./pages/admin-posts/page";
 import { HomePage } from "./pages/home/page";
 import { PostDetailPage } from "./pages/post-detail/page";
 
@@ -22,11 +22,11 @@ export function AppRouter() {
     <Routes>
       <Route path={routes.home()} element={<HomePage />} />
       <Route path={routes.postDetail()} element={<PostDetailPage />} />
-      <Route path={routes.login()} element={<AdminLoginPage />} />
+      <Route path={routes.login()} element={<LoginPage />} />
       <Route element={<RequireAuth />}>
-        <Route path={routes.posts()} element={<AdminPostsPage />} />
-        <Route path={routes.postCreate()} element={<AdminPostsEditorPage />} />
-        <Route path={routes.postEdit()} element={<AdminPostsEditorPage />} />
+        <Route path={routes.posts()} element={<PostsPage />} />
+        <Route path={routes.postCreate()} element={<PostsEditorPage />} />
+        <Route path={routes.postEdit()} element={<PostsEditorPage />} />
       </Route>
       <Route path="*" element={<Navigate to={routes.home()} replace />} />
     </Routes>

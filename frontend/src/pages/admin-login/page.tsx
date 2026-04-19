@@ -13,7 +13,7 @@ type LocationState = {
   };
 };
 
-export function AdminLoginPage() {
+export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentUserQuery = useCurrentUser();

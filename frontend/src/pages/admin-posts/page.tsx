@@ -12,7 +12,7 @@ import { LogoutButton } from "../../features/auth/ui/logout-button";
 import { routes } from "../../router";
 import { useAdminPosts, useDeletePost } from "../../services/api/posts";
 
-export function AdminPostsPage() {
+export function PostsPage() {
   const [passwordChangeSuccess, setPasswordChangeSuccess] = useState<string | null>(null);
   const postsQuery = useAdminPosts();
   const deleteMutation = useDeletePost();

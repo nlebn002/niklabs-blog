@@ -7,7 +7,7 @@ import { PostForm } from "../../features/post-editor/ui/post-form";
 import { routes } from "../../router";
 import { useAdminPost, useCreatePost, useUpdatePost } from "../../services/api/posts";
 
-export function AdminPostsEditorPage() {
+export function PostsEditorPage() {
   const navigate = useNavigate();
   const { postId } = useParams();
   const isEditMode = Boolean(postId);
