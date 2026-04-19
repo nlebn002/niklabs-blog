@@ -1,6 +1,7 @@
 using Niklabs.Blog.Api.Auth;
 using Niklabs.Blog.Api.Endpoints.Auth;
 using Niklabs.Blog.Api.Endpoints.Posts;
+using Niklabs.Blog.Api.Startup;
 using Niklabs.Auth.Application.Handlers.GetCurrentUser;
 using Niklabs.Auth.Application.Handlers.Login;
 using Niklabs.Auth.Application.Handlers.Logout;
@@ -28,6 +29,7 @@ builder.Services.AddAuthInfrastructure(builder.Configuration);
 builder.Services.AddBlogApplication();
 builder.Services.AddBlogInfrastructure(builder.Configuration);
 builder.Services.AddScoped<AntiforgeryValidationFilter>();
+builder.Services.AddHostedService<DatabaseBootstrapHostedService>();
 
 var app = builder.Build();
 

@@ -33,8 +33,10 @@ This repository contains a deployable MVP for `niklabs.cloud` built with:
 ### Backend only
 
 1. Start PostgreSQL with Docker Compose.
-2. Set `ConnectionStrings__blogdb` and `Admin__ApiKey`.
+2. Set `ConnectionStrings__postgres`, `Auth__BootstrapAdminUsername`, `Auth__BootstrapAdminEmail`, and `Auth__BootstrapAdminPassword`.
 3. Run `dotnet run --project backend/Niklabs.Blog.Api`.
+
+On startup, if the target PostgreSQL database does not exist, the API creates it and applies all EF Core migrations. After that, whenever the auth store has no users, the API creates the bootstrap admin user from `Auth__BootstrapAdminUsername`, `Auth__BootstrapAdminEmail`, and `Auth__BootstrapAdminPassword`.
 
 ### Full stack with containers
 
