@@ -1,31 +1,106 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getApiAuthMe, postApiAuthChangePassword, postApiAuthLogin, postApiAuthLogout } from "../../../generated-openapi/auth/auth";
+import { useMutation } from "@tanstack/react-query";
+import { useSyncExternalStore } from "react";
+import { postApiAuthChangePassword, postApiAuthLogin, postApiAuthLogout } from "../../../generated-openapi/auth/auth";
 import { ChangePasswordRequest, LoginRequest } from "../../../generated-openapi/models";
 
-
-export const authKeys = {
-  currentUser: ["auth", "current-user"] as const
+export type CurrentUser = {
+  userId: string;
+  userName: string;
+  email?: string | null;
+  roles: string[];
 };
 
+const storageKey = "niklabs-current-user";
+const storageEventName = "niklabs-current-user-changed";
+let cachedRawValue: string | null | undefined;
+let cachedCurrentUser: CurrentUser | null = null;
+
+function readCurrentUser(): CurrentUser | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const rawValue = window.sessionStorage.getItem(storageKey);
+
+  if (rawValue === cachedRawValue) {
+    return cachedCurrentUser;
+  }
+
+  cachedRawValue = rawValue;
+
+  if (!rawValue) {
+    cachedCurrentUser = null;
+    return null;
+  }
+
+  try {
+    cachedCurrentUser = JSON.parse(rawValue) as CurrentUser;
+    return cachedCurrentUser;
+  } catch {
+    window.sessionStorage.removeItem(storageKey);
+    cachedRawValue = null;
+    cachedCurrentUser = null;
+    return null;
+  }
+}
+
+function notifyCurrentUserChanged() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.dispatchEvent(new Event(storageEventName));
+}
+
+function writeCurrentUser(user: CurrentUser | null) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  if (user) {
+    const rawValue = JSON.stringify(user);
+    window.sessionStorage.setItem(storageKey, rawValue);
+    cachedRawValue = rawValue;
+    cachedCurrentUser = user;
+  } else {
+    window.sessionStorage.removeItem(storageKey);
+    cachedRawValue = null;
+    cachedCurrentUser = null;
+  }
+
+  notifyCurrentUserChanged();
+}
+
+function subscribeToCurrentUser(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => undefined;
+  }
+
+  const handleStorage = (event: StorageEvent) => {
+    if (!event.key || event.key === storageKey) {
+      callback();
+    }
+  };
+
+  window.addEventListener(storageEventName, callback);
+  window.addEventListener("storage", handleStorage);
+
+  return () => {
+    window.removeEventListener(storageEventName, callback);
+    window.removeEventListener("storage", handleStorage);
+  };
+}
+
 export function useCurrentUser() {
-  return useQuery({
-    queryKey: authKeys.currentUser,
-    queryFn: async () => {
-      const response = await getApiAuthMe();
+  const data = useSyncExternalStore(subscribeToCurrentUser, readCurrentUser, () => null);
 
-      if (response.status === 401) {
-        return null;
-      }
-
-      return response.data;
-    },
-    retry: false
-  });
+  return {
+    data,
+    isLoading: false
+  };
 }
 
 export function useLogin() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async (payload: LoginRequest) => {
       const response = await postApiAuthLogin(payload);
@@ -34,25 +109,21 @@ export function useLogin() {
         throw new Error(response.data.message);
       }
 
-      return response.data;
+      return response.data as unknown as CurrentUser;
     },
     onSuccess: async (user) => {
-      queryClient.setQueryData(authKeys.currentUser, user);
-      await queryClient.invalidateQueries({ queryKey: authKeys.currentUser });
+      writeCurrentUser(user);
     }
   });
 }
 
 export function useLogout() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async () => {
       await postApiAuthLogout();
     },
     onSettled: async () => {
-      queryClient.setQueryData(authKeys.currentUser, null);
-      await queryClient.invalidateQueries({ queryKey: authKeys.currentUser });
+      writeCurrentUser(null);
     }
   });
 }

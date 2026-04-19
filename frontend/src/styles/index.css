@@ -1,35 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root,
-  [data-theme="amber"] {
-    --background: 36 60% 98%;
-    --foreground: 222 47% 11%;
+  [data-theme="default"] {
+    --background: 0 0% 99%;
+    --foreground: 222 32% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 222 32% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 32 89% 46%;
-    --primary-foreground: 42 100% 98%;
-    --secondary: 177 77% 27%;
-    --secondary-foreground: 180 100% 98%;
-    --muted: 38 33% 95%;
-    --muted-foreground: 215 16% 39%;
-    --accent: 36 100% 94%;
-    --accent-foreground: 222 47% 11%;
+    --popover-foreground: 222 32% 12%;
+    --primary: 146 53% 34%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 19% 19%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 22% 96%;
+    --muted-foreground: 215 13% 42%;
+    --accent: 145 45% 95%;
+    --accent-foreground: 222 32% 12%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 210 40% 98%;
-    --border: 34 38% 87%;
-    --input: 34 38% 87%;
-    --ring: 32 89% 46%;
-    --radius: 1.1rem;
+    --border: 214 18% 88%;
+    --input: 214 18% 88%;
+    --ring: 146 53% 34%;
+    --radius: 1rem;
+    --shadow-color: 220 18% 20%;
     color: hsl(var(--foreground));
-    background:
-      radial-gradient(circle at top, hsl(var(--primary) / 0.18), transparent 32%),
-      linear-gradient(180deg, hsl(var(--background)) 0%, hsl(40 72% 99%) 52%, hsl(42 100% 99%) 100%);
-    font-family: "Segoe UI", sans-serif;
+    font-family: "Manrope", sans-serif;
   }
 
   [data-theme="sage"] {
@@ -78,29 +78,30 @@
 
   .dark,
   [data-theme="dark"] {
-    --background: 222 47% 8%;
-    --foreground: 210 40% 96%;
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 96%;
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 96%;
-    --primary: 38 92% 50%;
-    --primary-foreground: 222 47% 9%;
-    --secondary: 175 54% 38%;
-    --secondary-foreground: 180 100% 96%;
-    --muted: 217 33% 18%;
-    --muted-foreground: 213 20% 74%;
-    --accent: 217 33% 18%;
-    --accent-foreground: 210 40% 96%;
+    --background: 214 34% 8%;
+    --foreground: 35 33% 95%;
+    --card: 215 28% 11%;
+    --card-foreground: 35 33% 95%;
+    --popover: 215 28% 11%;
+    --popover-foreground: 35 33% 95%;
+    --primary: 160 44% 52%;
+    --primary-foreground: 218 31% 10%;
+    --secondary: 206 21% 74%;
+    --secondary-foreground: 218 31% 10%;
+    --muted: 215 21% 16%;
+    --muted-foreground: 33 12% 74%;
+    --accent: 214 18% 18%;
+    --accent-foreground: 35 33% 95%;
     --destructive: 0 63% 47%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 38 92% 50%;
+    --border: 213 19% 21%;
+    --input: 213 19% 21%;
+    --ring: 160 44% 52%;
+    --shadow-color: 215 40% 3%;
     color: hsl(var(--foreground));
     background:
-      radial-gradient(circle at top, hsl(var(--primary) / 0.18), transparent 34%),
-      linear-gradient(180deg, hsl(var(--background)) 0%, hsl(223 45% 10%) 52%, hsl(224 48% 12%) 100%);
+      radial-gradient(circle at top left, hsl(var(--primary) / 0.12), transparent 24%),
+      linear-gradient(180deg, hsl(var(--background)) 0%, hsl(214 30% 9%) 45%, hsl(220 30% 11%) 100%);
   }
 
   * {
@@ -116,6 +117,8 @@
     min-height: 100vh;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    font-family: "Manrope", sans-serif;
+    text-rendering: optimizeLegibility;
   }
 
   #root {
@@ -127,10 +130,46 @@
   textarea {
     font: inherit;
   }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 .bg-site {
   background:
-    radial-gradient(circle at top, hsl(var(--primary) / 0.18), transparent 32%),
-    linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--background) / 0.96) 52%, hsl(var(--card)) 100%);
+    radial-gradient(circle at top, hsl(var(--primary) / 0.05), transparent 22%),
+    linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--background)) 100%);
+}
+
+@layer components {
+  .font-display {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "SOFT" 35, "WONK" 0;
+  }
+
+  .editorial-rule {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, hsl(var(--border)), transparent);
+  }
+
+  .article-prose {
+    font-size: 1.02rem;
+    line-height: 1.95;
+    color: hsl(var(--foreground) / 0.84);
+  }
+
+  .article-prose p {
+    margin: 0 0 1.35rem;
+  }
+
+  .article-prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  .article-prose strong {
+    color: hsl(var(--foreground));
+  }
 }

@@ -4,7 +4,7 @@ import { UpsertPostRequest } from "../../generated-openapi/models/index.js";
 
 const postKeys = {
   all: ["posts"] as const,
-  admin: ["posts", "admin"] as const,
+  editable: ["posts", "editable"] as const,
   published: ["posts", "published"] as const,
   detail: (postId: string) => ["posts", "detail", postId] as const
 };
@@ -19,9 +19,9 @@ export function usePublishedPosts() {
   });
 }
 
-export function useAdminPosts() {
+export function useEditablePosts() {
   return useQuery({
-    queryKey: postKeys.admin,
+    queryKey: postKeys.editable,
     queryFn: async () => {
       const response = await getApiPosts({ onlyEditable: true });
       return response.data;
@@ -45,9 +45,9 @@ export function usePublicPost(postId: string) {
   });
 }
 
-export function useAdminPost(postId: string) {
+export function useEditablePost(postId: string) {
   return useQuery({
-    queryKey: [...postKeys.detail(postId), "admin"] as const,
+    queryKey: [...postKeys.detail(postId), "editable"] as const,
     enabled: Boolean(postId),
     queryFn: async () => {
       const response = await getApiPostsId(postId);

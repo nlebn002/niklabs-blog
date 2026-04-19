@@ -5,14 +5,14 @@ import { Panel } from "../../components/ui/panel";
 import { LogoutButton } from "../../features/auth/ui/logout-button";
 import { PostForm } from "../../features/post-editor/ui/post-form";
 import { routes } from "../../router";
-import { useAdminPost, useCreatePost, useUpdatePost } from "../../services/api/posts";
+import { useEditablePost, useCreatePost, useUpdatePost } from "../../services/api/posts";
 
-export function PostsEditorPage() {
+export function PostEditorPage() {
   const navigate = useNavigate();
   const { postId } = useParams();
   const isEditMode = Boolean(postId);
 
-  const postQuery = useAdminPost(postId ?? "");
+  const postQuery = useEditablePost(postId ?? "");
   const createMutation = useCreatePost();
   const updateMutation = useUpdatePost(postId ?? "");
 
@@ -22,15 +22,19 @@ export function PostsEditorPage() {
   return (
     <SiteShell contentClassName="max-w-4xl">
       <div className="flex items-center justify-between gap-4">
-        <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to={routes.posts()}>
-          Back to admin posts
+        <Link
+          className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-foreground"
+          to={routes.home()}
+        >
+          <span aria-hidden="true">&lt;</span>
+          Back to site
         </Link>
         <LogoutButton />
       </div>
 
       <Panel className="gap-4">
         <div>
-          <p className="text-sm uppercase tracking-[0.24em] text-clay">{isEditMode ? "Edit post" : "Create post"}</p>
+          <p className="text-sm uppercase tracking-[0.24em] text-primary">{isEditMode ? "Edit post" : "Create post"}</p>
           <h1 className="mt-2 text-3xl font-black">{isEditMode ? "Update existing post" : "Draft a new post"}</h1>
         </div>
 
@@ -60,7 +64,7 @@ export function PostsEditorPage() {
                 await createMutation.mutateAsync(values);
               }
 
-              navigate(routes.posts());
+              navigate(routes.home());
             }}
           />
         ) : null}

@@ -35,7 +35,7 @@ export function LoginForm({ isSubmitting, onSubmit }: LoginFormProps) {
       })}
     >
       <div className="space-y-2">
-        <label className="text-sm font-semibold uppercase tracking-[0.2em] text-clay" htmlFor="userNameOrEmail">
+        <label className="text-sm font-semibold uppercase tracking-[0.2em] text-primary" htmlFor="userNameOrEmail">
           Username or email
         </label>
         <Input id="userNameOrEmail" {...form.register("userNameOrEmail")} />
@@ -45,7 +45,7 @@ export function LoginForm({ isSubmitting, onSubmit }: LoginFormProps) {
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-semibold uppercase tracking-[0.2em] text-clay" htmlFor="password">
+        <label className="text-sm font-semibold uppercase tracking-[0.2em] text-primary" htmlFor="password">
           Password
         </label>
         <Input id="password" type="password" {...form.register("password")} />

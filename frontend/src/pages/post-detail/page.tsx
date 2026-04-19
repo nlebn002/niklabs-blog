@@ -9,35 +9,60 @@ import { formatPostDate } from "../../utils/post-date";
 export function PostDetailPage() {
   const { postId = "" } = useParams();
   const postQuery = usePublicPost(postId);
+  const articleParagraphs = postQuery.data?.contentMarkdown
+    ?.split(/\r?\n\r?\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
 
   return (
-    <SiteShell contentClassName="max-w-4xl">
-      <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to={routes.home()}>
-        Back to posts
+    <SiteShell contentClassName="max-w-5xl">
+      <Link
+        className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-foreground"
+        to={routes.home()}
+      >
+        <span aria-hidden="true">←</span>
+        <span>Back to posts</span>
       </Link>
 
-      {postQuery.isLoading ? <Panel>Loading post...</Panel> : null}
+      {postQuery.isLoading ? <Panel className="min-h-[18rem] place-items-center text-muted-foreground">Loading post...</Panel> : null}
       {postQuery.error ? <Alert title="Could not load post" message={postQuery.error.message} /> : null}
 
       {postQuery.data ? (
-        <Panel className="gap-6">
-          <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.25em] text-pine">
-              {formatPostDate(postQuery.data.publishedAtUtc) ?? "Draft"}
-            </p>
-            <h1 className="text-4xl font-black leading-tight">{postQuery.data.title}</h1>
-            <p className="max-w-3xl text-lg text-muted-foreground">{postQuery.data.excerpt}</p>
-          </div>
+        <Panel className="overflow-hidden border-border/80 bg-card/96 p-0">
+          <section className="grid gap-8 p-6 lg:p-10">
+            <div className="space-y-4">
+              <p className="text-xs font-bold uppercase tracking-[0.38em] text-primary">
+                {formatPostDate(postQuery.data.publishedAtUtc) ?? "Draft"}
+              </p>
+              <h1 className="font-display max-w-4xl text-5xl leading-[0.95] tracking-[-0.05em] md:text-6xl lg:text-7xl">{postQuery.data.title}</h1>
+              <p className="max-w-3xl text-base leading-8 text-muted-foreground md:text-xl">{postQuery.data.excerpt}</p>
+            </div>
+          </section>
 
           {postQuery.data.coverImageUrl ? (
-            <img
-              src={postQuery.data.coverImageUrl}
-              alt={postQuery.data.title}
-              className="max-h-[28rem] w-full rounded-[1.5rem] object-cover"
-            />
+            <div className="border-y border-border/80 bg-muted/35 px-4 py-4 lg:px-6">
+              <img
+                src={postQuery.data.coverImageUrl}
+                alt={postQuery.data.title}
+                className="max-h-[34rem] w-full rounded-[1.8rem] object-cover"
+              />
+            </div>
           ) : null}
 
-          <article className="whitespace-pre-wrap text-base leading-8 text-foreground/84">{postQuery.data.contentMarkdown}</article>
+          <section className="grid gap-10 px-6 py-8 lg:grid-cols-[0.22fr_0.78fr] lg:px-10 lg:py-10">
+            <aside className="space-y-4 text-sm text-muted-foreground">
+              <p className="text-xs font-bold uppercase tracking-[0.32em] text-primary">Essay</p>
+              <p className="leading-7">The gridline motif stays outside the reading column so the writing remains the focal point.</p>
+            </aside>
+
+            <article className="article-prose max-w-none">
+              {articleParagraphs?.length ? (
+                articleParagraphs.map((paragraph, index) => <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>)
+              ) : (
+                <p>{postQuery.data.contentMarkdown}</p>
+              )}
+            </article>
+          </section>
         </Panel>
       ) : null}
     </SiteShell>

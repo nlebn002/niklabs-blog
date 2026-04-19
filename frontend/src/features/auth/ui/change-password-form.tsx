@@ -58,7 +58,7 @@ export function ChangePasswordForm({
 
       <div className="grid gap-5 md:grid-cols-2">
         <div className="space-y-2 md:col-span-2">
-          <label className="text-sm font-semibold uppercase tracking-[0.2em] text-clay" htmlFor="currentPassword">
+          <label className="text-sm font-semibold uppercase tracking-[0.2em] text-primary" htmlFor="currentPassword">
             Current password
           </label>
           <Input id="currentPassword" type="password" autoComplete="current-password" {...form.register("currentPassword")} />
@@ -68,7 +68,7 @@ export function ChangePasswordForm({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-semibold uppercase tracking-[0.2em] text-clay" htmlFor="newPassword">
+          <label className="text-sm font-semibold uppercase tracking-[0.2em] text-primary" htmlFor="newPassword">
             New password
           </label>
           <Input id="newPassword" type="password" autoComplete="new-password" {...form.register("newPassword")} />
@@ -78,7 +78,7 @@ export function ChangePasswordForm({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-semibold uppercase tracking-[0.2em] text-clay" htmlFor="confirmPassword">
+          <label className="text-sm font-semibold uppercase tracking-[0.2em] text-primary" htmlFor="confirmPassword">
             Confirm new password
           </label>
           <Input id="confirmPassword" type="password" autoComplete="new-password" {...form.register("confirmPassword")} />
@@ -87,11 +87,6 @@ export function ChangePasswordForm({
           ) : null}
         </div>
       </div>
-
-      <p className="text-sm text-muted-foreground">
-        Passwords must be at least 12 characters and include uppercase, lowercase, and numeric characters.
-      </p>
-
       <div className="flex justify-end">
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Updating password..." : "Change password"}

@@ -6,14 +6,14 @@ import type { PostDto } from "../../generated-openapi/models";
 import { routes } from "../../router";
 import { formatPostDate } from "../../utils/post-date";
 
-type AdminPostsTableProps = {
+type PostsTableProps = {
   posts: PostDto[];
   isLoading: boolean;
   deletingPostId?: string;
   onDelete: (postId: string) => void;
 };
 
-export function AdminPostsTable({ posts, isLoading, deletingPostId, onDelete }: AdminPostsTableProps) {
+export function PostsTable({ posts, isLoading, deletingPostId, onDelete }: PostsTableProps) {
   if (isLoading) {
     return <div className="rounded-3xl border border-border bg-card px-5 py-6 text-muted-foreground">Loading posts...</div>;
   }

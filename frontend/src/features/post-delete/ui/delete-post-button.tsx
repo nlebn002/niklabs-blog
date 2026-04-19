@@ -31,7 +31,7 @@ export function DeletePostButton({ disabled, label, onClick }: DeletePostButtonP
         <DialogHeader>
           <DialogTitle>Delete this post?</DialogTitle>
           <DialogDescription>
-            This action removes the post permanently from the admin list. Use this only when you do not need the content
+            This action removes the post permanently from your posts list. Use this only when you do not need the content
             anymore.
           </DialogDescription>
         </DialogHeader>

@@ -21,23 +21,25 @@ export function LoginPage() {
 
   useEffect(() => {
     if (currentUserQuery.data) {
-      navigate(routes.posts(), { replace: true });
+      navigate(routes.home(), { replace: true });
     }
   }, [currentUserQuery.data, navigate]);
 
-  const destination = (location.state as LocationState | null)?.from?.pathname ?? routes.posts();
+  const destination = (location.state as LocationState | null)?.from?.pathname ?? routes.home();
 
   return (
     <SiteShell contentClassName="max-w-xl justify-center">
-      <Link className="text-sm font-semibold uppercase tracking-[0.2em] text-pine" to={routes.home()}>
-        Back to public site
+      <Link
+        className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-foreground"
+        to={routes.home()}
+      >
+        <span aria-hidden="true">&lt;</span>
+        Home
       </Link>
 
       <Panel className="gap-5">
         <div className="space-y-3">
-          <p className="text-sm uppercase tracking-[0.24em] text-clay">Admin access</p>
-          <h1 className="text-3xl font-black">Sign in to manage posts</h1>
-          <p className="text-muted-foreground">This session uses secure server-managed cookies with CSRF protection.</p>
+          <h1 className="text-3xl font-black">Sign in</h1>
         </div>
 
         {loginMutation.error ? <Alert title="Could not sign in" message={loginMutation.error.message} /> : null}

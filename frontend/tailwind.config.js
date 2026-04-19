@@ -39,7 +39,7 @@ export default {
         },
         ink: "#0f172a",
         sand: "#f8f5ee",
-        clay: "#d97706",
+        clay: "#1f6f5f",
         pine: "#0f766e",
         fog: "#e2e8f0"
       },
@@ -49,8 +49,8 @@ export default {
         sm: "calc(var(--radius) - 4px)"
       },
       boxShadow: {
-        card: "0 24px 60px rgba(15, 23, 42, 0.12)",
-        soft: "0 18px 45px rgba(15, 23, 42, 0.1)"
+        card: "0 30px 80px hsl(var(--shadow-color) / 0.14)",
+        soft: "0 22px 56px hsl(var(--shadow-color) / 0.1)"
       }
     }
   },
