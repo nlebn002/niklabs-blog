@@ -10,5 +10,6 @@ public static class AuthEndpoints
         auth.MapLogoutEndpoint();
         auth.MapCurrentUserEndpoint();
         auth.MapCsrfEndpoint();
+        auth.MapChangePasswordEndpoint();
     }
 }

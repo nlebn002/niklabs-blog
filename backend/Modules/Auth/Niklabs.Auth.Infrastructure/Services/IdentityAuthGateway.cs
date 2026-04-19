@@ -39,6 +39,34 @@ public sealed class IdentityAuthGateway(
         return new LoginResult(true, currentUser);
     }
 
+    public async Task<ChangePasswordResult> ChangePasswordAsync(
+        ClaimsPrincipal principal,
+        string currentPassword,
+        string newPassword,
+        CancellationToken cancellationToken)
+    {
+        if (principal.Identity?.IsAuthenticated != true)
+        {
+            return new ChangePasswordResult(false, "You must be signed in to change the password.");
+        }
+
+        var user = await userManager.GetUserAsync(principal);
+        if (user is null || !user.IsActive)
+        {
+            return new ChangePasswordResult(false, "The current account is no longer available.");
+        }
+
+        var result = await userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        if (!result.Succeeded)
+        {
+            var message = string.Join(" ", result.Errors.Select(error => error.Description));
+            return new ChangePasswordResult(false, message);
+        }
+
+        await signInManager.RefreshSignInAsync(user);
+        return new ChangePasswordResult(true, null);
+    }
+
     public Task LogoutAsync(CancellationToken cancellationToken) => signInManager.SignOutAsync();
 
     public async Task<CurrentUserDto?> GetCurrentUserAsync(ClaimsPrincipal principal, CancellationToken cancellationToken)

@@ -5,6 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export * from './changePasswordRequest';
 export * from './csrfTokenResponse';
 export * from './errorResponse';
 export * from './getApiPostsParams';

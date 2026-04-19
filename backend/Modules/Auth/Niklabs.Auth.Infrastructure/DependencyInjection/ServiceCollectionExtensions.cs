@@ -48,8 +48,8 @@ public static class ServiceCollectionExtensions
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SameSite = SameSiteMode.Lax;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-                options.LoginPath = "/admin/login";
-                options.AccessDeniedPath = "/admin/login";
+                options.LoginPath = "/login";
+                options.AccessDeniedPath = "/login";
                 options.SlidingExpiration = true;
                 options.ExpireTimeSpan = TimeSpan.FromHours(8);
                 options.Events = new CookieAuthenticationEvents
@@ -69,15 +69,16 @@ public static class ServiceCollectionExtensions
 
         services.AddAuthorizationBuilder()
             .AddPolicy("AdminOnly", policy => policy.RequireRole(AuthRoles.Admin))
-            .AddPolicy("CanCreatePosts", policy => policy.RequireRole(AuthRoles.Admin, AuthRoles.User));
+            .AddPolicy("CanCreatePosts", policy => policy.RequireRole(AuthRoles.Admin));
 
-        var keysPath = configuration["Auth:DataProtection:KeysPath"]
-            ?? Path.Combine(AppContext.BaseDirectory, "data-protection-keys");
+        //TODO prepare for containers (set Auth__DataProtection__KeysPath=/keys, mount /keys to persistent storage)
+        //var keysPath = configuration["Auth:DataProtection:KeysPath"]
+        //    ?? Path.Combine(AppContext.BaseDirectory, "data-protection-keys");
 
-        Directory.CreateDirectory(keysPath);
-        services.AddDataProtection()
-            .PersistKeysToFileSystem(new DirectoryInfo(keysPath))
-            .SetApplicationName("niklabs-blog");
+        //Directory.CreateDirectory(keysPath);
+        //services.AddDataProtection()
+        //    .PersistKeysToFileSystem(new DirectoryInfo(keysPath))
+        //    .SetApplicationName("niklabs-blog");
 
         services.AddScoped<IAuthIdentityGateway, IdentityAuthGateway>();
 

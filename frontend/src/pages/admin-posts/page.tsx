@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { SiteShell } from "../../components/layout/site-shell";
 import { AdminPostsTable } from "../../components/sections/admin-posts-table";
@@ -5,13 +6,17 @@ import { SiteHeader } from "../../components/sections/site-header";
 import { Alert } from "../../components/ui/alert";
 import { buttonStyles } from "../../components/ui/button";
 import { Panel } from "../../components/ui/panel";
+import { useChangePassword } from "../../features/auth/api/hooks";
+import { ChangePasswordForm } from "../../features/auth/ui/change-password-form";
 import { LogoutButton } from "../../features/auth/ui/logout-button";
 import { routes } from "../../router";
 import { useAdminPosts, useDeletePost } from "../../services/api/posts";
 
 export function AdminPostsPage() {
+  const [passwordChangeSuccess, setPasswordChangeSuccess] = useState<string | null>(null);
   const postsQuery = useAdminPosts();
   const deleteMutation = useDeletePost();
+  const changePasswordMutation = useChangePassword();
 
   return (
     <SiteShell contentClassName="max-w-6xl">
@@ -25,6 +30,28 @@ export function AdminPostsPage() {
 
       {postsQuery.error ? <Alert title="Could not load admin posts" message={postsQuery.error.message} /> : null}
       {deleteMutation.error ? <Alert title="Delete failed" message={deleteMutation.error.message} /> : null}
+
+      <Panel className="gap-5">
+        <div className="space-y-2">
+          <p className="text-sm uppercase tracking-[0.24em] text-clay">Security</p>
+          <h2 className="text-2xl font-bold">Change account password</h2>
+          <p className="text-muted-foreground">Use your current password to rotate credentials without leaving this session.</p>
+        </div>
+
+        <ChangePasswordForm
+          isSubmitting={changePasswordMutation.isPending}
+          errorMessage={changePasswordMutation.error?.message}
+          successMessage={passwordChangeSuccess ?? undefined}
+          onSubmit={async (values) => {
+            setPasswordChangeSuccess(null);
+            await changePasswordMutation.mutateAsync({
+              currentPassword: values.currentPassword,
+              newPassword: values.newPassword
+            });
+            setPasswordChangeSuccess("The password was updated and your current session was refreshed.");
+          }}
+        />
+      </Panel>
 
       <Panel className="gap-5">
         <div className="flex items-center justify-between gap-4">

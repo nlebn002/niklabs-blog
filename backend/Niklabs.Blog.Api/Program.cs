@@ -2,6 +2,7 @@ using Niklabs.Blog.Api.Auth;
 using Niklabs.Blog.Api.Endpoints.Auth;
 using Niklabs.Blog.Api.Endpoints.Posts;
 using Niklabs.Blog.Api.Startup;
+using Niklabs.Auth.Application.Handlers.ChangePassword;
 using Niklabs.Auth.Application.Handlers.GetCurrentUser;
 using Niklabs.Auth.Application.Handlers.Login;
 using Niklabs.Auth.Application.Handlers.Logout;
@@ -22,6 +23,7 @@ builder.Services.AddAntiforgery(options =>
     options.HeaderName = "X-CSRF-TOKEN";
 });
 builder.Services.AddScoped<ICurrentUser, HttpContextCurrentUser>();
+builder.Services.AddScoped<ChangePasswordHandler>();
 builder.Services.AddScoped<LoginHandler>();
 builder.Services.AddScoped<LogoutHandler>();
 builder.Services.AddScoped<GetCurrentUserHandler>();

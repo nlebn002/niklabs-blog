@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getApiAuthMe, postApiAuthLogin, postApiAuthLogout } from "../../../generated-openapi/auth/auth";
-import { LoginRequest } from "../../../generated-openapi/models";
+import { getApiAuthMe, postApiAuthChangePassword, postApiAuthLogin, postApiAuthLogout } from "../../../generated-openapi/auth/auth";
+import { ChangePasswordRequest, LoginRequest } from "../../../generated-openapi/models";
 
 
 export const authKeys = {
@@ -53,6 +53,22 @@ export function useLogout() {
     onSettled: async () => {
       queryClient.setQueryData(authKeys.currentUser, null);
       await queryClient.invalidateQueries({ queryKey: authKeys.currentUser });
+    }
+  });
+}
+
+export function useChangePassword() {
+  return useMutation({
+    mutationFn: async (payload: ChangePasswordRequest) => {
+      const response = await postApiAuthChangePassword(payload);
+
+      if (response.status === 400) {
+        throw new Error(response.data.message);
+      }
+
+      if (response.status === 401) {
+        throw new Error("Your session expired. Sign in again and retry.");
+      }
     }
   });
 }
