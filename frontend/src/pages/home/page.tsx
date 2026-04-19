@@ -14,7 +14,7 @@ export function HomePage() {
       {postsQuery.isLoading ? <Panel className="min-h-[16rem] place-items-center text-muted-foreground">Loading published posts...</Panel> : null}
 
       <section className="grid w-full gap-6 lg:grid-cols-[18rem_minmax(0,1fr)]">
-        <Panel className="content-start gap-5 border-border bg-card/95 p-5 shadow-none">
+        <Panel className="content-start gap-5 self-start border-border bg-card/95 p-5 shadow-none lg:sticky lg:top-24">
           <div className="space-y-2">
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">Search</p>
             <div className="rounded-xl border border-border bg-background px-4 py-3 text-sm text-muted-foreground">
