@@ -1,5 +1,5 @@
 import { PostCard } from "../post/post-card";
-import type { PostDto } from "../../generated-openapi/blog/models";
+import type { PostDto } from "../../generated-openapi/models";
 
 type PostsListProps = {
   posts: PostDto[];

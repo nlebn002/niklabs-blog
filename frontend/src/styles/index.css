@@ -2,39 +2,135 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color: #0f172a;
-  background:
-    radial-gradient(circle at top, rgba(217, 119, 6, 0.16), transparent 32%),
-    linear-gradient(180deg, #f8f5ee 0%, #fffdf8 52%, #fffefb 100%);
-  font-family: "Segoe UI", sans-serif;
-}
+@layer base {
+  :root,
+  [data-theme="amber"] {
+    --background: 36 60% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 32 89% 46%;
+    --primary-foreground: 42 100% 98%;
+    --secondary: 177 77% 27%;
+    --secondary-foreground: 180 100% 98%;
+    --muted: 38 33% 95%;
+    --muted-foreground: 215 16% 39%;
+    --accent: 36 100% 94%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 34 38% 87%;
+    --input: 34 38% 87%;
+    --ring: 32 89% 46%;
+    --radius: 1.1rem;
+    color: hsl(var(--foreground));
+    background:
+      radial-gradient(circle at top, hsl(var(--primary) / 0.18), transparent 32%),
+      linear-gradient(180deg, hsl(var(--background)) 0%, hsl(40 72% 99%) 52%, hsl(42 100% 99%) 100%);
+    font-family: "Segoe UI", sans-serif;
+  }
 
-html {
-  min-height: 100%;
-}
+  [data-theme="sage"] {
+    --background: 92 27% 97%;
+    --foreground: 168 36% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 168 36% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 168 36% 12%;
+    --primary: 162 43% 33%;
+    --primary-foreground: 155 60% 98%;
+    --secondary: 35 86% 47%;
+    --secondary-foreground: 42 100% 98%;
+    --muted: 90 22% 92%;
+    --muted-foreground: 168 16% 35%;
+    --accent: 154 31% 90%;
+    --accent-foreground: 168 36% 12%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 150 20% 82%;
+    --input: 150 20% 82%;
+    --ring: 162 43% 33%;
+  }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-}
+  [data-theme="slate"] {
+    --background: 220 27% 97%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 215 19% 35%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 214 32% 91%;
+    --muted-foreground: 215 16% 39%;
+    --accent: 214 32% 94%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 86%;
+    --input: 214 32% 86%;
+    --ring: 221 83% 53%;
+  }
 
-#root {
-  min-height: 100vh;
-}
+  .dark,
+  [data-theme="dark"] {
+    --background: 222 47% 8%;
+    --foreground: 210 40% 96%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 96%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 96%;
+    --primary: 38 92% 50%;
+    --primary-foreground: 222 47% 9%;
+    --secondary: 175 54% 38%;
+    --secondary-foreground: 180 100% 96%;
+    --muted: 217 33% 18%;
+    --muted-foreground: 213 20% 74%;
+    --accent: 217 33% 18%;
+    --accent-foreground: 210 40% 96%;
+    --destructive: 0 63% 47%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 38 92% 50%;
+    color: hsl(var(--foreground));
+    background:
+      radial-gradient(circle at top, hsl(var(--primary) / 0.18), transparent 34%),
+      linear-gradient(180deg, hsl(var(--background)) 0%, hsl(223 45% 10%) 52%, hsl(224 48% 12%) 100%);
+  }
 
-* {
-  box-sizing: border-box;
-}
+  * {
+    box-sizing: border-box;
+  }
 
-button,
-input,
-textarea {
-  font: inherit;
+  html {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+  }
 }
 
 .bg-site {
   background:
-    radial-gradient(circle at top, rgba(217, 119, 6, 0.16), transparent 32%),
-    linear-gradient(180deg, #f8f5ee 0%, #fffdf8 52%, #fffefb 100%);
+    radial-gradient(circle at top, hsl(var(--primary) / 0.18), transparent 32%),
+    linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--background) / 0.96) 52%, hsl(var(--card)) 100%);
 }

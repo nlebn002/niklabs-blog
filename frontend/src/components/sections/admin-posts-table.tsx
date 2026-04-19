@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { PostStatusBadge } from "../post/post-status-badge";
 import { buttonStyles } from "../ui/button";
 import { DeletePostButton } from "../../features/post-delete/ui/delete-post-button";
-import type { PostDto } from "../../generated-openapi/blog/models";
+import type { PostDto } from "../../generated-openapi/models";
 import { formatPostDate } from "../../utils/post-date";
 
 type AdminPostsTableProps = {
@@ -14,24 +14,27 @@ type AdminPostsTableProps = {
 
 export function AdminPostsTable({ posts, isLoading, deletingPostId, onDelete }: AdminPostsTableProps) {
   if (isLoading) {
-    return <div className="rounded-2xl border border-fog bg-white px-5 py-6 text-slate-500">Loading posts...</div>;
+    return <div className="rounded-3xl border border-border bg-card px-5 py-6 text-muted-foreground">Loading posts...</div>;
   }
 
   if (posts.length === 0) {
-    return <div className="rounded-2xl border border-fog bg-white px-5 py-6 text-slate-500">No posts found.</div>;
+    return <div className="rounded-3xl border border-border bg-card px-5 py-6 text-muted-foreground">No posts found.</div>;
   }
 
   return (
     <div className="grid gap-3">
       {posts.map((post) => (
-        <div key={post.id} className="flex flex-col gap-4 rounded-[1.5rem] border border-fog bg-white p-5 md:flex-row md:items-center md:justify-between">
+        <div
+          key={post.id}
+          className="flex flex-col gap-4 rounded-[1.5rem] border border-border/80 bg-background/85 p-5 shadow-sm md:flex-row md:items-center md:justify-between"
+        >
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <p className="text-lg font-semibold">{post.title}</p>
               <PostStatusBadge isPublished={post.isPublished} />
             </div>
-            <p className="text-sm text-slate-600">{post.excerpt}</p>
-            <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+            <p className="text-sm text-muted-foreground">{post.excerpt}</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
               {formatPostDate(post.updatedAtUtc) ? `Updated ${formatPostDate(post.updatedAtUtc)}` : "No update date"}
             </p>
           </div>

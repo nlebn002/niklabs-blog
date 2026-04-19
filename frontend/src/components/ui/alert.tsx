@@ -1,4 +1,4 @@
-import { cn } from "../../utils/cn";
+import { cn } from "@/utils/cn";
 
 type AlertProps = {
   title: string;
@@ -10,12 +10,14 @@ export function Alert({ title, message, variant = "error" }: AlertProps) {
   return (
     <div
       className={cn(
-        "rounded-2xl border px-5 py-4",
-        variant === "error" ? "border-red-200 bg-red-50 text-red-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"
+        "rounded-3xl border px-5 py-4 shadow-sm",
+        variant === "error"
+          ? "border-destructive/20 bg-destructive/10 text-destructive"
+          : "border-secondary/20 bg-secondary/10 text-secondary"
       )}
     >
       <p className="font-semibold">{title}</p>
-      <p className="mt-1 text-sm">{message}</p>
+      <p className="mt-1 text-sm text-current/90">{message}</p>
     </div>
   );
 }

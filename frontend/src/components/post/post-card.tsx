@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type { PostDto } from "../../generated-openapi/blog/models";
+import type { PostDto } from "../../generated-openapi/models";
 import { formatPostDate } from "../../utils/post-date";
 
 type PostCardProps = {

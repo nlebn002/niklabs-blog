@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Textarea } from "../../../components/ui/textarea";
-import type { UpsertPostRequest } from "../../../generated-openapi/blog/models";
+import type { UpsertPostRequest } from "../../../generated-openapi/models";
 import { toUpsertPostRequest, usePostForm } from "../model/use-post-form";
 
 type PostFormProps = {
