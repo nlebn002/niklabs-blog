@@ -121,10 +121,26 @@ export function SiteShell({ children, contentClassName }: SiteShellProps) {
                 </button>
 
                 {isAccountMenuOpen ? (
-                  <div className="absolute right-0 top-[calc(100%+0.75rem)] z-30 min-w-[14rem] rounded-[1rem] border border-border bg-[hsl(var(--card))] p-2 shadow-card">
-                    <div className="flex rounded-[0.8rem] px-3 py-3 text-sm font-semibold text-foreground">
-                      {currentUserQuery.data.userName}
+                  <div className="absolute right-0 top-[calc(100%+0.75rem)] z-30 min-w-[16rem] rounded-[1rem] border border-border bg-[hsl(var(--card))] p-2 shadow-card">
+                    <div className="rounded-[0.8rem] px-3 py-3">
+                      <p className="text-sm font-semibold text-foreground">{currentUserQuery.data.userName}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{currentUserQuery.data.email ?? "No email available"}</p>
                     </div>
+                    <div className="my-1 h-px bg-border" />
+                    <Link
+                      className="flex rounded-[0.8rem] px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                      to={routes.myPosts()}
+                      onClick={() => setIsAccountMenuOpen(false)}
+                    >
+                      My posts
+                    </Link>
+                    <Link
+                      className="flex rounded-[0.8rem] px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                      to={routes.postCreate()}
+                      onClick={() => setIsAccountMenuOpen(false)}
+                    >
+                      Create post
+                    </Link>
                     <Link
                       className="flex rounded-[0.8rem] px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
                       to={routes.changePassword()}

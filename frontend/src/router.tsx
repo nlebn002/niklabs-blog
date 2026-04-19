@@ -11,6 +11,7 @@ const postIdParam = ":postId";
 export const routes = {
   home: () => "/",
   login: () => "/login",
+  myPosts: () => "/my-posts",
   changePassword: () => "/account/change-password",
   postCreate: () => "/posts/new",
   postDetail: (postId: string = postIdParam) => `/posts/${postId}`,
@@ -24,6 +25,7 @@ export function AppRouter() {
       <Route path={routes.postDetail()} element={<PostDetailPage />} />
       <Route path={routes.login()} element={<LoginPage />} />
       <Route element={<RequireAuth />}>
+        <Route path={routes.myPosts()} element={<HomePage />} />
         <Route path={routes.changePassword()} element={<ChangePasswordPage />} />
         <Route path={routes.postCreate()} element={<PostEditorPage />} />
         <Route path={routes.postEdit()} element={<PostEditorPage />} />
