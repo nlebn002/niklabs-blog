@@ -15,6 +15,7 @@ public sealed class Post : AuditableEntity<Guid>
     public string? CoverImageUrl { get; private set; }
     public bool IsPublished { get; private set; }
     public DateTimeOffset? PublishedAtUtc { get; private set; }
+    public ICollection<PostTag> PostTags { get; private set; } = [];
 
     public static Post Create(
         Guid authorUserId,

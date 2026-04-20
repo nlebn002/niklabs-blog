@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Niklabs.Blog.Application.Abstractions;
 using Niklabs.Blog.Domain.Media;
 using Niklabs.Blog.Domain.Posts;
+using Niklabs.Blog.Domain.Tags;
 
 namespace Niklabs.Blog.Infrastructure.Persistence;
 
@@ -11,6 +12,8 @@ public sealed class BlogDbContext(DbContextOptions<BlogDbContext> options) : DbC
 
     public DbSet<MediaAsset> MediaAssets => Set<MediaAsset>();
     public DbSet<Post> Posts => Set<Post>();
+    public DbSet<PostTag> PostTags => Set<PostTag>();
+    public DbSet<Tag> Tags => Set<Tag>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,6 +28,32 @@ public sealed class BlogDbContext(DbContextOptions<BlogDbContext> options) : DbC
             entity.Property(x => x.ContentMarkdown).IsRequired();
             entity.Property(x => x.CoverImageUrl).HasMaxLength(500);
             entity.HasIndex(x => x.AuthorUserId);
+        });
+
+        modelBuilder.Entity<Tag>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Name).HasMaxLength(80).IsRequired();
+            entity.Property(x => x.Slug).HasMaxLength(96).IsRequired();
+            entity.Property(x => x.CreatedAtUtc).IsRequired();
+            entity.Property(x => x.UpdatedAtUtc).IsRequired();
+            entity.HasIndex(x => x.Name).IsUnique();
+            entity.HasIndex(x => x.Slug).IsUnique();
+        });
+
+        modelBuilder.Entity<PostTag>(entity =>
+        {
+            entity.HasKey(x => new { x.PostId, x.TagId });
+            entity.Property(x => x.CreatedAtUtc).IsRequired();
+            entity.HasIndex(x => x.TagId);
+            entity.HasOne(x => x.Post)
+                .WithMany(x => x.PostTags)
+                .HasForeignKey(x => x.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Tag)
+                .WithMany(x => x.PostTags)
+                .HasForeignKey(x => x.TagId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<MediaAsset>(entity =>
