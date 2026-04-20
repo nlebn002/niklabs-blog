@@ -13,9 +13,7 @@ public sealed class GetPostByIdHandler(
     {
         var post = await dbContext.Posts
             .AsNoTracking()
-            .FirstOrDefaultAsync(
-                x => x.Id == query.Id && !x.IsDeleted,
-                cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == query.Id, cancellationToken);
 
         if (post is null || !authorizationService.CanView(currentUser, post))
         {

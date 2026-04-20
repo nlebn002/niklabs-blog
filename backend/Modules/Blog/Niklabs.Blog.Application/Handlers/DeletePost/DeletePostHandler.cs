@@ -11,7 +11,7 @@ public sealed class DeletePostHandler(
     public async Task<(bool Found, bool Deleted, string? Error)> ExecuteAsync(DeletePostCommand command, CancellationToken cancellationToken)
     {
         var post = await dbContext.Posts
-            .FirstOrDefaultAsync(x => x.Id == command.PostId && !x.IsDeleted, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == command.PostId, cancellationToken);
 
         if (post is null)
         {
@@ -23,7 +23,7 @@ public sealed class DeletePostHandler(
             return (true, false, "Forbidden");
         }
 
-        post.Delete();
+        dbContext.Posts.Remove(post);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return (true, true, null);

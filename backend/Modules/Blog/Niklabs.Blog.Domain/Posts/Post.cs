@@ -1,22 +1,20 @@
+using Niklabs.Blog.Domain.Common;
+
 namespace Niklabs.Blog.Domain.Posts;
 
-public sealed class Post
+public sealed class Post : AuditableEntity<Guid>
 {
     private Post()
     {
     }
 
-    public Guid Id { get; private set; }
     public Guid AuthorUserId { get; private set; }
     public string Title { get; private set; } = string.Empty;
     public string Excerpt { get; private set; } = string.Empty;
     public string ContentMarkdown { get; private set; } = string.Empty;
     public string? CoverImageUrl { get; private set; }
     public bool IsPublished { get; private set; }
-    public bool IsDeleted { get; private set; }
     public DateTimeOffset? PublishedAtUtc { get; private set; }
-    public DateTimeOffset CreatedAtUtc { get; private set; }
-    public DateTimeOffset UpdatedAtUtc { get; private set; }
 
     public static Post Create(
         Guid authorUserId,
@@ -30,11 +28,10 @@ public sealed class Post
         var post = new Post
         {
             Id = Guid.NewGuid(),
-            AuthorUserId = authorUserId,
-            CreatedAtUtc = nowUtc,
-            UpdatedAtUtc = nowUtc
+            AuthorUserId = authorUserId
         };
 
+        post.SetCreated(nowUtc);
         post.Update(title, excerpt, contentMarkdown, coverImageUrl, isPublished, nowUtc);
         return post;
     }
@@ -51,7 +48,7 @@ public sealed class Post
         Excerpt = excerpt.Trim();
         ContentMarkdown = contentMarkdown.Trim();
         CoverImageUrl = string.IsNullOrWhiteSpace(coverImageUrl) ? null : coverImageUrl.Trim();
-        UpdatedAtUtc = nowUtc;
+        Touch(nowUtc);
 
         if (isPublished)
         {
@@ -61,11 +58,6 @@ public sealed class Post
         {
             Unpublish();
         }
-    }
-
-    public void Delete()
-    {
-        IsDeleted = true;
     }
 
     private void Publish(DateTimeOffset nowUtc)

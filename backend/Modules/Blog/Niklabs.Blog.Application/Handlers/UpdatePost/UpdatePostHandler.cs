@@ -15,7 +15,7 @@ public sealed class UpdatePostHandler(
         CancellationToken cancellationToken)
     {
         var post = await dbContext.Posts
-            .FirstOrDefaultAsync(x => x.Id == command.PostId && !x.IsDeleted, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == command.PostId, cancellationToken);
 
         if (post is null)
         {

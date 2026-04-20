@@ -9,8 +9,7 @@ public sealed class GetPostsHandler(IBlogDbContext dbContext, ICurrentUser curre
     public async Task<IReadOnlyList<PostDto>> ExecuteAsync(GetPostsQuery query, CancellationToken cancellationToken)
     {
         var posts = dbContext.Posts
-            .AsNoTracking()
-            .Where(x => !x.IsDeleted);
+            .AsNoTracking();
 
         if (query.OnlyEditablePosts)
         {

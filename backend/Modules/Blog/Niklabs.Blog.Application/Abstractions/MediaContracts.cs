@@ -1,10 +1,6 @@
-namespace Niklabs.Blog.Application.Abstractions;
+using Niklabs.Blog.Domain.Media;
 
-public enum MediaAssetKind
-{
-    Cover = 0,
-    Inline = 1
-}
+namespace Niklabs.Blog.Application.Abstractions;
 
 public sealed record MediaAssetUploadRequest(
     Guid UploadedByUserId,
