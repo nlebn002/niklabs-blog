@@ -9,7 +9,7 @@ public sealed class PostAuthorizationService : IPostAuthorizationService
 
     public bool CanView(ICurrentUser currentUser, Post post)
     {
-        return post.IsPublished
+        return post.Status == PostStatus.Published
             || currentUser.IsAdmin
             || (currentUser.UserId.HasValue && post.AuthorUserId == currentUser.UserId.Value);
     }

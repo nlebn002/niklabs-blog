@@ -24,10 +24,21 @@ public sealed class BlogDbContext(DbContextOptions<BlogDbContext> options) : DbC
             entity.HasKey(x => x.Id);
             entity.Property(x => x.AuthorUserId).IsRequired();
             entity.Property(x => x.Title).HasMaxLength(180).IsRequired();
+            entity.Property(x => x.Slug).HasMaxLength(160).IsRequired();
             entity.Property(x => x.Excerpt).HasMaxLength(500).IsRequired();
-            entity.Property(x => x.ContentMarkdown).IsRequired();
-            entity.Property(x => x.CoverImageUrl).HasMaxLength(500);
+            entity.Property(x => x.ContentJson).IsRequired();
+            entity.Property(x => x.ContentHtml).IsRequired();
+            entity.Property(x => x.ContentText).IsRequired();
+            entity.Property(x => x.Status).HasConversion<string>().HasMaxLength(32).IsRequired();
+            entity.Property(x => x.SeoTitle).HasMaxLength(180);
+            entity.Property(x => x.SeoDescription).HasMaxLength(320);
             entity.HasIndex(x => x.AuthorUserId);
+            entity.HasIndex(x => x.Slug).IsUnique();
+            entity.HasIndex(x => x.CoverImageMediaAssetId);
+            entity.HasOne(x => x.CoverImageMediaAsset)
+                .WithMany()
+                .HasForeignKey(x => x.CoverImageMediaAssetId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Tag>(entity =>

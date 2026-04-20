@@ -21,10 +21,15 @@ public sealed class CreatePostHandler(
         var post = Post.Create(
             currentUser.UserId.Value,
             command.Title,
+            command.Slug,
             command.Excerpt,
-            command.ContentMarkdown,
-            command.CoverImageUrl,
-            command.IsPublished,
+            command.ContentJson,
+            command.ContentHtml,
+            command.ContentText,
+            command.CoverImageMediaAssetId,
+            command.Status,
+            command.SeoTitle,
+            command.SeoDescription,
             DateTimeOffset.UtcNow);
 
         await dbContext.Posts.AddAsync(post, cancellationToken);
@@ -36,7 +41,12 @@ public sealed class CreatePostHandler(
 
 public sealed record CreatePostCommand(
     string Title,
+    string Slug,
     string Excerpt,
-    string ContentMarkdown,
-    string? CoverImageUrl,
-    bool IsPublished);
+    string ContentJson,
+    string ContentHtml,
+    string ContentText,
+    Guid? CoverImageMediaAssetId,
+    PostStatus Status,
+    string? SeoTitle,
+    string? SeoDescription);

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Niklabs.Blog.Application.Abstractions;
 using Niklabs.Blog.Application.Dtos;
+using Niklabs.Blog.Domain.Posts;
 
 namespace Niklabs.Blog.Application.Handlers.UpdatePost;
 
@@ -29,10 +30,15 @@ public sealed class UpdatePostHandler(
 
         post.Update(
             command.Title,
+            command.Slug,
             command.Excerpt,
-            command.ContentMarkdown,
-            command.CoverImageUrl,
-            command.IsPublished,
+            command.ContentJson,
+            command.ContentHtml,
+            command.ContentText,
+            command.CoverImageMediaAssetId,
+            command.Status,
+            command.SeoTitle,
+            command.SeoDescription,
             timeProvider.GetUtcNow());
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -44,7 +50,12 @@ public sealed class UpdatePostHandler(
 public sealed record UpdatePostCommand(
     Guid PostId,
     string Title,
+    string Slug,
     string Excerpt,
-    string ContentMarkdown,
-    string? CoverImageUrl,
-    bool IsPublished);
+    string ContentJson,
+    string ContentHtml,
+    string ContentText,
+    Guid? CoverImageMediaAssetId,
+    PostStatus Status,
+    string? SeoTitle,
+    string? SeoDescription);

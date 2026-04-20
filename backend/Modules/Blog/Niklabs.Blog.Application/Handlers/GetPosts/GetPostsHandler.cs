@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Niklabs.Blog.Application.Abstractions;
 using Niklabs.Blog.Application.Dtos;
+using Niklabs.Blog.Domain.Posts;
 
 namespace Niklabs.Blog.Application.Handlers.GetPosts;
 
@@ -15,36 +16,36 @@ public sealed class GetPostsHandler(IBlogDbContext dbContext, ICurrentUser curre
         {
             if (currentUser.IsAdmin)
             {
-                if (query.IsPublished.HasValue)
+                if (query.Status.HasValue)
                 {
-                    posts = posts.Where(x => x.IsPublished == query.IsPublished.Value);
+                    posts = posts.Where(x => x.Status == query.Status.Value);
                 }
             }
             else if (currentUser.UserId.HasValue)
             {
                 posts = posts.Where(x => x.AuthorUserId == currentUser.UserId.Value);
 
-                if (query.IsPublished.HasValue)
+                if (query.Status.HasValue)
                 {
-                    posts = posts.Where(x => x.IsPublished == query.IsPublished.Value);
+                    posts = posts.Where(x => x.Status == query.Status.Value);
                 }
             }
             else
             {
-                posts = posts.Where(x => x.IsPublished);
+                posts = posts.Where(x => x.Status == PostStatus.Published);
             }
         }
-        else if (query.IsPublished.HasValue)
+        else if (query.Status.HasValue)
         {
-            posts = posts.Where(x => x.IsPublished == query.IsPublished.Value);
+            posts = posts.Where(x => x.Status == query.Status.Value);
         }
         else
         {
-            posts = posts.Where(x => x.IsPublished);
+            posts = posts.Where(x => x.Status == PostStatus.Published);
         }
 
         var items = await posts
-            .OrderByDescending(x => x.IsPublished)
+            .OrderByDescending(x => x.Status == PostStatus.Published)
             .ThenByDescending(x => x.PublishedAtUtc)
             .ThenByDescending(x => x.UpdatedAtUtc)
             .ThenByDescending(x => x.CreatedAtUtc)
@@ -54,4 +55,4 @@ public sealed class GetPostsHandler(IBlogDbContext dbContext, ICurrentUser curre
     }
 }
 
-public sealed record GetPostsQuery(bool OnlyEditablePosts = false, bool? IsPublished = null);
+public sealed record GetPostsQuery(bool OnlyEditablePosts = false, PostStatus? Status = null);

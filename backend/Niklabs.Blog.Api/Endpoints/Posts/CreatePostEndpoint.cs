@@ -16,10 +16,15 @@ public static class CreatePostEndpoint
             var result = await handler.ExecuteAsync(
                 new CreatePostCommand(
                     request.Title,
+                    request.Slug,
                     request.Excerpt,
-                    request.ContentMarkdown,
-                    request.CoverImageUrl,
-                    request.IsPublished),
+                    request.ContentJson,
+                    request.ContentHtml,
+                    request.ContentText,
+                    request.CoverImageMediaAssetId,
+                    request.Status,
+                    request.SeoTitle,
+                    request.SeoDescription),
                 cancellationToken);
 
             if (!result.Success)

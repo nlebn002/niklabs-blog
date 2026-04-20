@@ -1,3 +1,4 @@
+using Niklabs.Blog.Domain.Media;
 using Niklabs.Blog.Domain.Common;
 
 namespace Niklabs.Blog.Domain.Posts;
@@ -10,20 +11,31 @@ public sealed class Post : AuditableEntity<Guid>
 
     public Guid AuthorUserId { get; private set; }
     public string Title { get; private set; } = string.Empty;
+    public string Slug { get; private set; } = string.Empty;
     public string Excerpt { get; private set; } = string.Empty;
-    public string ContentMarkdown { get; private set; } = string.Empty;
-    public string? CoverImageUrl { get; private set; }
-    public bool IsPublished { get; private set; }
+    public string ContentJson { get; private set; } = string.Empty;
+    public string ContentHtml { get; private set; } = string.Empty;
+    public string ContentText { get; private set; } = string.Empty;
+    public Guid? CoverImageMediaAssetId { get; private set; }
+    public PostStatus Status { get; private set; }
+    public string? SeoTitle { get; private set; }
+    public string? SeoDescription { get; private set; }
     public DateTimeOffset? PublishedAtUtc { get; private set; }
     public ICollection<PostTag> PostTags { get; private set; } = [];
+    public MediaAsset? CoverImageMediaAsset { get; private set; }
 
     public static Post Create(
         Guid authorUserId,
         string title,
+        string slug,
         string excerpt,
-        string contentMarkdown,
-        string? coverImageUrl,
-        bool isPublished,
+        string contentJson,
+        string contentHtml,
+        string contentText,
+        Guid? coverImageMediaAssetId,
+        PostStatus status,
+        string? seoTitle,
+        string? seoDescription,
         DateTimeOffset nowUtc)
     {
         var post = new Post
@@ -33,43 +45,100 @@ public sealed class Post : AuditableEntity<Guid>
         };
 
         post.SetCreated(nowUtc);
-        post.Update(title, excerpt, contentMarkdown, coverImageUrl, isPublished, nowUtc);
+        post.Update(
+            title,
+            slug,
+            excerpt,
+            contentJson,
+            contentHtml,
+            contentText,
+            coverImageMediaAssetId,
+            status,
+            seoTitle,
+            seoDescription,
+            nowUtc);
         return post;
     }
 
     public void Update(
         string title,
+        string slug,
         string excerpt,
-        string contentMarkdown,
-        string? coverImageUrl,
-        bool isPublished,
+        string contentJson,
+        string contentHtml,
+        string contentText,
+        Guid? coverImageMediaAssetId,
+        PostStatus status,
+        string? seoTitle,
+        string? seoDescription,
         DateTimeOffset nowUtc)
     {
         Title = title.Trim();
+        Slug = NormalizeSlug(slug);
         Excerpt = excerpt.Trim();
-        ContentMarkdown = contentMarkdown.Trim();
-        CoverImageUrl = string.IsNullOrWhiteSpace(coverImageUrl) ? null : coverImageUrl.Trim();
+        ContentJson = RequireValue(contentJson, nameof(contentJson));
+        ContentHtml = RequireValue(contentHtml, nameof(contentHtml));
+        ContentText = RequireValue(contentText, nameof(contentText));
+        CoverImageMediaAssetId = coverImageMediaAssetId;
+        SeoTitle = NormalizeOptional(seoTitle);
+        SeoDescription = NormalizeOptional(seoDescription);
         Touch(nowUtc);
 
-        if (isPublished)
+        SetStatus(status, nowUtc);
+    }
+
+    private void SetStatus(PostStatus status, DateTimeOffset nowUtc)
+    {
+        Status = status;
+
+        if (status == PostStatus.Published)
         {
-            Publish(nowUtc);
+            PublishedAtUtc ??= nowUtc;
+            return;
         }
-        else
+
+        if (status == PostStatus.Draft)
         {
-            Unpublish();
+            PublishedAtUtc = null;
         }
     }
 
-    private void Publish(DateTimeOffset nowUtc)
+    private static string RequireValue(string value, string parameterName)
     {
-        IsPublished = true;
-        PublishedAtUtc ??= nowUtc;
+        var normalized = value.Trim();
+        if (string.IsNullOrWhiteSpace(normalized))
+        {
+            throw new ArgumentException($"{parameterName} is required.", parameterName);
+        }
+
+        return normalized;
     }
 
-    private void Unpublish()
+    private static string? NormalizeOptional(string? value)
     {
-        IsPublished = false;
-        PublishedAtUtc = null;
+        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
+
+    private static string NormalizeSlug(string value)
+    {
+        var normalized = value
+            .Trim()
+            .ToLowerInvariant()
+            .Select(static ch => char.IsLetterOrDigit(ch) ? ch : '-')
+            .ToArray();
+
+        var slug = new string(normalized);
+        while (slug.Contains("--", StringComparison.Ordinal))
+        {
+            slug = slug.Replace("--", "-", StringComparison.Ordinal);
+        }
+
+        slug = slug.Trim('-');
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            throw new ArgumentException("slug is required.", nameof(value));
+        }
+
+        return slug;
     }
 }

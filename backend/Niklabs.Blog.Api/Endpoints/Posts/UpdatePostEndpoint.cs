@@ -18,10 +18,15 @@ public static class UpdatePostEndpoint
                 new UpdatePostCommand(
                     id,
                     request.Title,
+                    request.Slug,
                     request.Excerpt,
-                    request.ContentMarkdown,
-                    request.CoverImageUrl,
-                    request.IsPublished),
+                    request.ContentJson,
+                    request.ContentHtml,
+                    request.ContentText,
+                    request.CoverImageMediaAssetId,
+                    request.Status,
+                    request.SeoTitle,
+                    request.SeoDescription),
                 cancellationToken);
 
             if (!result.Found)
