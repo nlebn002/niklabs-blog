@@ -9,21 +9,39 @@ type CoverImageInputProps = {
 
 export function CoverImageInput({ initialImageUrl, onChange }: CoverImageInputProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const localPreviewUrlRef = useRef<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(initialImageUrl ?? null);
   const [error, setError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
+  function clearLocalPreviewUrl() {
+    if (localPreviewUrlRef.current) {
+      URL.revokeObjectURL(localPreviewUrlRef.current);
+      localPreviewUrlRef.current = null;
+    }
+  }
+
+  function showLocalPreview(file: File) {
+    clearLocalPreviewUrl();
+    const previewUrl = URL.createObjectURL(file);
+    localPreviewUrlRef.current = previewUrl;
+    setImageUrl(previewUrl);
+  }
+
   useEffect(() => {
+    clearLocalPreviewUrl();
     setImageUrl(initialImageUrl ?? null);
+
+    return clearLocalPreviewUrl;
   }, [initialImageUrl]);
 
   async function handleFile(file: File) {
     setError(null);
     setIsUploading(true);
+    showLocalPreview(file);
 
     try {
       const uploaded = await uploadCoverImage(file);
-      setImageUrl(uploaded.publicUrl);
       onChange({ mediaAssetId: uploaded.mediaAssetId, imageUrl: uploaded.publicUrl });
     } catch (uploadError) {
       setError(uploadError instanceof Error ? uploadError.message : "Failed to upload image.");
@@ -77,6 +95,7 @@ export function CoverImageInput({ initialImageUrl, onChange }: CoverImageInputPr
             type="button"
             variant="ghost"
             onClick={() => {
+              clearLocalPreviewUrl();
               setImageUrl(null);
               onChange({ mediaAssetId: null, imageUrl: null });
             }}
