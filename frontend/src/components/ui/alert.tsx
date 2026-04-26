@@ -1,23 +1,32 @@
+import { cva, type VariantProps } from "class-variance-authority";
+import type { HTMLAttributes } from "react";
 import { cn } from "@/utils/cn";
 
-type AlertProps = {
-  title: string;
-  message: string;
-  variant?: "error" | "success";
-};
+const alertVariants = cva("relative w-full rounded-3xl border px-5 py-4 shadow-sm", {
+  variants: {
+    variant: {
+      error: "border-destructive/20 bg-destructive/10 text-destructive",
+      success: "border-primary/20 bg-primary/10 text-primary"
+    }
+  },
+  defaultVariants: {
+    variant: "error"
+  }
+});
 
-export function Alert({ title, message, variant = "error" }: AlertProps) {
+type AlertProps = HTMLAttributes<HTMLDivElement> &
+  VariantProps<typeof alertVariants> & {
+    title: string;
+    message: string;
+  };
+
+function Alert({ className, title, message, variant = "error", ...props }: AlertProps) {
   return (
-    <div
-      className={cn(
-        "rounded-3xl border px-5 py-4 shadow-sm",
-        variant === "error"
-          ? "border-destructive/20 bg-destructive/10 text-destructive"
-          : "border-secondary/20 bg-secondary/10 text-secondary"
-      )}
-    >
+    <div className={cn(alertVariants({ variant }), className)} role={variant === "error" ? "alert" : "status"} {...props}>
       <p className="font-semibold">{title}</p>
       <p className="mt-1 text-sm text-current/90">{message}</p>
     </div>
   );
 }
+
+export { Alert, alertVariants };

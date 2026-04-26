@@ -1,40 +1,13 @@
 import { useEffect, useRef, useState, type PropsWithChildren } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { useCurrentUser, useLogout } from "@/features/auth/api/hooks";
+import { ThemeToggle } from "@/features/theme/ui/theme-toggle";
 import { routes } from "@/router";
 import { cn } from "@/utils/cn";
-
-type ThemeMode = "light" | "dark";
 
 type SiteShellProps = PropsWithChildren<{
   contentClassName?: string;
 }>;
-
-const storageKey = "niklabs-theme";
-
-function applyTheme(mode: ThemeMode) {
-  const root = document.documentElement;
-  root.classList.toggle("dark", mode === "dark");
-  root.setAttribute("data-theme", mode === "dark" ? "dark" : "default");
-}
-
-function SunIcon() {
-  return (
-    <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2.75v2.5M12 18.75v2.5M21.25 12h-2.5M5.25 12h-2.5M18.54 5.46l-1.77 1.77M7.23 16.77l-1.77 1.77M18.54 18.54l-1.77-1.77M7.23 7.23 5.46 5.46" />
-    </svg>
-  );
-}
-
-function MoonIcon() {
-  return (
-    <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 9 9 0 1 0 20 15.2Z" />
-    </svg>
-  );
-}
 
 function PersonIcon() {
   return (
@@ -49,20 +22,8 @@ export function SiteShell({ children, contentClassName }: SiteShellProps) {
   const currentUserQuery = useCurrentUser();
   const logoutMutation = useLogout();
   const navigate = useNavigate();
-  const [theme, setTheme] = useState<ThemeMode>(() => {
-    if (typeof window === "undefined") {
-      return "light";
-    }
-
-    return window.localStorage.getItem(storageKey) === "dark" ? "dark" : "light";
-  });
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    applyTheme(theme);
-    window.localStorage.setItem(storageKey, theme);
-  }, [theme]);
 
   useEffect(() => {
     if (!isAccountMenuOpen) {
@@ -121,7 +82,7 @@ export function SiteShell({ children, contentClassName }: SiteShellProps) {
                 </button>
 
                 {isAccountMenuOpen ? (
-                  <div className="absolute right-0 top-[calc(100%+0.75rem)] z-30 min-w-[16rem] rounded-[1rem] border border-border bg-[hsl(var(--card))] p-2 shadow-card">
+                  <div className="absolute right-0 top-[calc(100%+0.75rem)] z-30 min-w-[16rem] rounded-[1rem] border border-border bg-card p-2 shadow-card">
                     <div className="rounded-[0.8rem] px-3 py-3">
                       <p className="text-sm font-semibold text-foreground">{currentUserQuery.data.userName}</p>
                       <p className="mt-1 text-sm text-muted-foreground">{currentUserQuery.data.email ?? "No email available"}</p>
@@ -171,16 +132,7 @@ export function SiteShell({ children, contentClassName }: SiteShellProps) {
               </Link>
             )}
 
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
-            >
-              {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-            </Button>
+            <ThemeToggle />
           </div>
         </div>
       </header>

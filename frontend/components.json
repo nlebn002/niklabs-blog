@@ -3,7 +3,7 @@
   "style": "default",
   "tsx": true,
   "tailwind": {
-    "config": "tailwind.config.js",
+    "config": "",
     "css": "src/styles/index.css",
     "baseColor": "neutral",
     "cssVariables": true
