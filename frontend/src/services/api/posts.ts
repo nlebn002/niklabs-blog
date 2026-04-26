@@ -13,16 +13,16 @@ export function usePublishedPosts() {
   return useQuery({
     queryKey: postKeys.published,
     queryFn: async () => {
-      const response = await getApiPosts({ status: 'Published' });
+      const response = await getApiPosts({ status: 1 });
       return response.data;
     }
   });
 }
 
-export const postStatusLabels: Record<PostStatus, string> = {
-  Draft: "Draft",
-  Published: "Published",
-  Archived: "Archived"
+export const postStatusLabels: Record<number, string> = {
+  0: "Draft",
+  1: "Published",
+  2: "Archived"
 };
 
 export function useEditablePosts() {

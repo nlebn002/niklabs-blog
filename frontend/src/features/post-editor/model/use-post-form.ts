@@ -1,8 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import type { UpsertPostRequest } from "../../../generated-openapi/models";
+import type { PostStatus, UpsertPostRequest } from "../../../generated-openapi/models";
 import { EMPTY_EDITOR_STATE_JSON } from "./editor-state";
+
+type PostStatusLabel = "Draft" | "Published" | "Archived";
+
+const STATUS_TO_NUMBER: Record<PostStatusLabel, PostStatus> = { Draft: 0, Published: 1, Archived: 2 };
+const NUMBER_TO_STATUS: Record<number, PostStatusLabel> = { 0: "Draft", 1: "Published", 2: "Archived" };
+
+export function toPostFormStatus(status: PostStatus | undefined): PostStatusLabel {
+  return NUMBER_TO_STATUS[status ?? 0] ?? "Draft";
+}
 
 const postStatusSchema = z.enum(["Draft", "Published", "Archived"]);
 
@@ -36,6 +45,7 @@ export function usePostForm(initialValues?: Partial<UpsertPostRequest>) {
     defaultValues: {
       ...defaultValues,
       ...initialValues,
+      status: toPostFormStatus(initialValues?.status),
       coverImageMediaAssetId: initialValues?.coverImageMediaAssetId ?? "",
       seoTitle: initialValues?.seoTitle ?? "",
       seoDescription: initialValues?.seoDescription ?? ""
@@ -50,7 +60,7 @@ export function toUpsertPostRequest(values: PostFormValues): UpsertPostRequest {
     excerpt: values.excerpt.trim(),
     contentJson: values.contentJson.trim(),
     coverImageMediaAssetId: values.coverImageMediaAssetId?.trim() ? values.coverImageMediaAssetId.trim() : null,
-    status: values.status,
+    status: STATUS_TO_NUMBER[values.status],
     seoTitle: values.seoTitle?.trim() ? values.seoTitle.trim() : null,
     seoDescription: values.seoDescription?.trim() ? values.seoDescription.trim() : null
   };

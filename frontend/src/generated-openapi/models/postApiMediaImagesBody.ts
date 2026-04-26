@@ -4,8 +4,8 @@
  * Niklabs.Api | v1
  * OpenAPI spec version: 1.0.0
  */
+import type { IFormFile } from './iFormFile';
 
-export interface ChangePasswordRequest {
-  currentPassword: string;
-  newPassword: string;
-}
+export type PostApiMediaImagesBody = {
+  file: IFormFile;
+};

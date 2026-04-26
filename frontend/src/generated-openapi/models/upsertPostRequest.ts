@@ -4,15 +4,18 @@
  * Niklabs.Api | v1
  * OpenAPI spec version: 1.0.0
  */
+import type { UpsertPostRequestCoverImageMediaAssetId } from './upsertPostRequestCoverImageMediaAssetId';
 import type { PostStatus } from './postStatus';
+import type { UpsertPostRequestSeoTitle } from './upsertPostRequestSeoTitle';
+import type { UpsertPostRequestSeoDescription } from './upsertPostRequestSeoDescription';
 
 export interface UpsertPostRequest {
   title: string;
   slug: string;
   excerpt: string;
   contentJson: string;
-  coverImageMediaAssetId: string | null;
+  coverImageMediaAssetId: UpsertPostRequestCoverImageMediaAssetId;
   status: PostStatus;
-  seoTitle: string | null;
-  seoDescription: string | null;
+  seoTitle: UpsertPostRequestSeoTitle;
+  seoDescription: UpsertPostRequestSeoDescription;
 }

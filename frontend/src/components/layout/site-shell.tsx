@@ -116,7 +116,6 @@ export function SiteShell({ children, contentClassName }: SiteShellProps) {
             </span>
             niklabs<span className="font-normal text-[var(--text-tertiary)]">.cloud</span>
           </Link>
-          <p>Built with passion for clean code and scalable systems.</p>
           <p>&copy; 2026 Niklabs</p>
         </div>
       </footer>

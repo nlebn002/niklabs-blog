@@ -5,10 +5,16 @@ type PostStatusBadgeProps = {
   status: PostStatus;
 };
 
-const statusStyles: Record<PostStatus, string> = {
-  Draft: "border-white/10 bg-white/5 text-muted-foreground",
-  Published: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
-  Archived: "border-amber-400/25 bg-amber-400/10 text-amber-300"
+const statusStyles: Record<number, string> = {
+  0: "border-white/10 bg-white/5 text-muted-foreground",
+  1: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
+  2: "border-amber-400/25 bg-amber-400/10 text-amber-300"
+};
+
+const statusLabels: Record<number, string> = {
+  0: "Draft",
+  1: "Published",
+  2: "Archived"
 };
 
 export function PostStatusBadge({ status }: PostStatusBadgeProps) {
@@ -19,7 +25,7 @@ export function PostStatusBadge({ status }: PostStatusBadgeProps) {
         statusStyles[status]
       )}
     >
-      {status}
+      {statusLabels[status]}
     </span>
   );
 }

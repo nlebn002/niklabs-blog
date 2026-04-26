@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface ChangePasswordRequest {
-  currentPassword: string;
-  newPassword: string;
-}
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type UploadImageResponseWidth = number | string;

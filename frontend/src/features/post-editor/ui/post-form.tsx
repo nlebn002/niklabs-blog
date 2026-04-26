@@ -4,7 +4,7 @@ import { Input } from "../../../components/ui/input";
 import { Textarea } from "../../../components/ui/textarea";
 import type { UpsertPostRequest } from "../../../generated-openapi/models";
 import { createSlug, EMPTY_EDITOR_STATE_JSON } from "../model/editor-state";
-import { toUpsertPostRequest, usePostForm } from "../model/use-post-form";
+import { toPostFormStatus, toUpsertPostRequest, usePostForm } from "../model/use-post-form";
 import { CoverImageInput } from "./cover-image-input";
 import { LexicalEditorField } from "./lexical-editor-field";
 
@@ -25,7 +25,7 @@ export function PostForm({ initialValues, isSubmitting, submitLabel, onSubmit }:
       excerpt: initialValues?.excerpt ?? "",
       contentJson: initialValues?.contentJson ?? EMPTY_EDITOR_STATE_JSON,
       coverImageMediaAssetId: initialValues?.coverImageMediaAssetId ?? "",
-      status: initialValues?.status ?? "Draft",
+      status: toPostFormStatus(initialValues?.status),
       seoTitle: initialValues?.seoTitle ?? "",
       seoDescription: initialValues?.seoDescription ?? ""
     });

@@ -4,7 +4,11 @@
  * Niklabs.Api | v1
  * OpenAPI spec version: 1.0.0
  */
+import type { PostDtoCoverImageMediaAssetId } from './postDtoCoverImageMediaAssetId';
+import type { PostDtoCoverImageUrl } from './postDtoCoverImageUrl';
 import type { PostStatus } from './postStatus';
+import type { PostDtoSeoTitle } from './postDtoSeoTitle';
+import type { PostDtoSeoDescription } from './postDtoSeoDescription';
 import type { PostDtoPublishedAtUtc } from './postDtoPublishedAtUtc';
 
 export interface PostDto {
@@ -16,11 +20,11 @@ export interface PostDto {
   contentJson: string;
   contentHtml: string;
   contentText: string;
-  coverImageMediaAssetId: string | null;
-  coverImageUrl: string | null;
+  coverImageMediaAssetId: PostDtoCoverImageMediaAssetId;
+  coverImageUrl: PostDtoCoverImageUrl;
   status: PostStatus;
-  seoTitle: string | null;
-  seoDescription: string | null;
+  seoTitle: PostDtoSeoTitle;
+  seoDescription: PostDtoSeoDescription;
   publishedAtUtc: PostDtoPublishedAtUtc;
   createdAtUtc: string;
   updatedAtUtc: string;

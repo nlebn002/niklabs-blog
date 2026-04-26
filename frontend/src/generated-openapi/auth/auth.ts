@@ -91,50 +91,6 @@ export const postApiAuthLogout = async ( options?: RequestInit): Promise<postApi
   }
 );}
 
-export type postApiAuthChangePasswordResponse204 = {
-  data: void
-  status: 204
-}
-
-export type postApiAuthChangePasswordResponse400 = {
-  data: ErrorResponse
-  status: 400
-}
-
-export type postApiAuthChangePasswordResponse401 = {
-  data: void
-  status: 401
-}
-    
-export type postApiAuthChangePasswordResponseSuccess = (postApiAuthChangePasswordResponse204) & {
-  headers: Headers;
-};
-export type postApiAuthChangePasswordResponseError = ((postApiAuthChangePasswordResponse400 | postApiAuthChangePasswordResponse401)) & {
-  headers: Headers;
-};
-
-export type postApiAuthChangePasswordResponse = (postApiAuthChangePasswordResponseSuccess | postApiAuthChangePasswordResponseError)
-
-export const getPostApiAuthChangePasswordUrl = () => {
-
-
-  
-
-  return `/api/auth/change-password`
-}
-
-export const postApiAuthChangePassword = async (changePasswordRequest: ChangePasswordRequest, options?: RequestInit): Promise<postApiAuthChangePasswordResponse> => {
-  
-  return customFetch<postApiAuthChangePasswordResponse>(getPostApiAuthChangePasswordUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      changePasswordRequest,)
-  }
-);}
-
 
 export type getApiAuthMeResponse200 = {
   data: void
@@ -212,4 +168,50 @@ export const getApiAuthCsrf = async ( options?: RequestInit): Promise<getApiAuth
     
   }
 );}
+
+
+export type postApiAuthChangePasswordResponse204 = {
+  data: void
+  status: 204
+}
+
+export type postApiAuthChangePasswordResponse400 = {
+  data: ErrorResponse
+  status: 400
+}
+
+export type postApiAuthChangePasswordResponse401 = {
+  data: void
+  status: 401
+}
+    
+export type postApiAuthChangePasswordResponseSuccess = (postApiAuthChangePasswordResponse204) & {
+  headers: Headers;
+};
+export type postApiAuthChangePasswordResponseError = (postApiAuthChangePasswordResponse400 | postApiAuthChangePasswordResponse401) & {
+  headers: Headers;
+};
+
+export type postApiAuthChangePasswordResponse = (postApiAuthChangePasswordResponseSuccess | postApiAuthChangePasswordResponseError)
+
+export const getPostApiAuthChangePasswordUrl = () => {
+
+
+  
+
+  return `/api/auth/change-password`
+}
+
+export const postApiAuthChangePassword = async (changePasswordRequest: ChangePasswordRequest, options?: RequestInit): Promise<postApiAuthChangePasswordResponse> => {
+  
+  return customFetch<postApiAuthChangePasswordResponse>(getPostApiAuthChangePasswordUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      changePasswordRequest,)
+  }
+);}
+
 
