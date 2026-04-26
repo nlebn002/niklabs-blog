@@ -1,11 +1,18 @@
-import { useEffect, useRef, useState, type PropsWithChildren } from "react";
-import { Cloud, User } from "lucide-react";
+import type { PropsWithChildren } from "react";
+import { Cloud, FilePlus, KeyRound, LogOut, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCurrentUser, useLogout } from "@/features/auth/api/hooks";
 import { ThemeToggle } from "@/features/theme/ui/theme-toggle";
 import { routes } from "@/router";
 import { cn } from "@/utils/cn";
 import { buttonStyles } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "../ui/dropdown-menu";
 
 type SiteShellProps = PropsWithChildren<{
   contentClassName?: string;
@@ -15,34 +22,6 @@ export function SiteShell({ children, contentClassName }: SiteShellProps) {
   const currentUserQuery = useCurrentUser();
   const logoutMutation = useLogout();
   const navigate = useNavigate();
-  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!isAccountMenuOpen) {
-      return;
-    }
-
-    function handlePointerDown(event: MouseEvent) {
-      if (!menuRef.current?.contains(event.target as Node)) {
-        setIsAccountMenuOpen(false);
-      }
-    }
-
-    function handleEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setIsAccountMenuOpen(false);
-      }
-    }
-
-    window.addEventListener("mousedown", handlePointerDown);
-    window.addEventListener("keydown", handleEscape);
-
-    return () => {
-      window.removeEventListener("mousedown", handlePointerDown);
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, [isAccountMenuOpen]);
 
   return (
     <div className="min-h-screen bg-site text-foreground">
@@ -66,64 +45,46 @@ export function SiteShell({ children, contentClassName }: SiteShellProps) {
             </Link>
 
             {currentUserQuery.data ? (
-              <div className="relative" ref={menuRef}>
-                <button
-                  type="button"
-                  aria-expanded={isAccountMenuOpen}
-                  aria-haspopup="menu"
-                  aria-label="Open account menu"
-                  className={buttonStyles("ghost", undefined, "icon")}
-                  onClick={() => setIsAccountMenuOpen((current) => !current)}
-                >
-                  <User className="h-4 w-4" />
-                </button>
-
-                {isAccountMenuOpen ? (
-                  <div className="absolute right-0 top-[calc(100%+0.75rem)] z-30 min-w-[16rem] rounded-md border border-border bg-popover p-2 text-popover-foreground shadow-card">
-                    <div className="rounded-sm px-3 py-3">
-                      <p className="truncate text-sm font-semibold text-foreground">
-                        {currentUserQuery.data.userName || "Account"}
-                      </p>
-                      <p className="mt-1 truncate text-sm text-muted-foreground">
-                        {currentUserQuery.data.email || "Signed in"}
-                      </p>
-                    </div>
-                    <div className="my-1 h-px bg-border" />
-                    <Link
-                      className="flex rounded-sm px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-                      to={routes.myPosts()}
-                      onClick={() => setIsAccountMenuOpen(false)}
-                    >
-                      My posts
-                    </Link>
-                    <Link
-                      className="flex rounded-sm px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-                      to={routes.postCreate()}
-                      onClick={() => setIsAccountMenuOpen(false)}
-                    >
-                      Create post
-                    </Link>
-                    <Link
-                      className="flex rounded-sm px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-                      to={routes.changePassword()}
-                      onClick={() => setIsAccountMenuOpen(false)}
-                    >
-                      Change password
-                    </Link>
-                    <button
-                      type="button"
-                      className="flex w-full rounded-sm px-3 py-2 text-left text-sm font-medium text-foreground transition-colors hover:bg-accent"
-                      onClick={async () => {
-                        await logoutMutation.mutateAsync();
-                        setIsAccountMenuOpen(false);
-                        navigate(routes.login());
-                      }}
-                    >
-                      {logoutMutation.isPending ? "Signing out..." : "Sign out"}
-                    </button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button type="button" aria-label="Open account menu" className={buttonStyles("ghost", undefined, "icon")}>
+                    <User className="h-4 w-4" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="min-w-[16rem]">
+                  <div className="px-2 py-2">
+                    <p className="truncate text-sm font-semibold text-popover-foreground">
+                      {currentUserQuery.data.userName || "Account"}
+                    </p>
+                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                      {currentUserQuery.data.email || "Signed in"}
+                    </p>
                   </div>
-                ) : null}
-              </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to={routes.postCreate()}>
+                      <FilePlus />
+                      <span>Create post</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to={routes.changePassword()}>
+                      <KeyRound />
+                      <span>Change password</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      await logoutMutation.mutateAsync();
+                      navigate(routes.login());
+                    }}
+                  >
+                    <LogOut />
+                    <span>{logoutMutation.isPending ? "Signing out..." : "Sign out"}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Link
                 className="inline-flex h-8 items-center justify-center rounded border border-border bg-card px-3 text-[13px] font-medium text-muted-foreground transition-all hover:border-white/20 hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 sm:px-4"

@@ -3,7 +3,6 @@ import { ArrowLeft } from "lucide-react";
 import { SiteShell } from "../../components/layout/site-shell";
 import { Alert } from "../../components/ui/alert";
 import { Panel } from "../../components/ui/panel";
-import { LogoutButton } from "../../features/auth/ui/logout-button";
 import { PostForm } from "../../features/post-editor/ui/post-form";
 import { routes } from "../../router";
 import { useEditablePost, useCreatePost, useUpdatePost } from "../../services/api/posts";
@@ -30,7 +29,6 @@ export function PostEditorPage() {
           <ArrowLeft size={13} />
           All articles
         </Link>
-        <LogoutButton />
       </div>
 
       <Panel className="gap-6">
