@@ -41,6 +41,7 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped<IObjectStorage, MinioObjectStorage>();
         services.AddScoped<IMediaService, MediaService>();
+        services.AddHostedService<CleanupTemporaryMediaService>();
 
         return services;
     }

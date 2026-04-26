@@ -56,6 +56,12 @@ public sealed class MediaAsset : AuditableEntity<Guid>
         return mediaAsset;
     }
 
+    public void UpdateObjectKey(string newObjectKey, DateTimeOffset nowUtc)
+    {
+        ObjectKey = newObjectKey.Trim();
+        Touch(nowUtc);
+    }
+
     public void AttachToPost(Guid postId, DateTimeOffset nowUtc)
     {
         PostId = postId;

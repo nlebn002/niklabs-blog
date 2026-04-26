@@ -30,7 +30,8 @@ public sealed class MediaService(IBlogDbContext dbContext, IObjectStorage object
         bufferedStream.Position = 0;
 
         var mediaAssetId = Guid.NewGuid();
-        var objectKey = BuildObjectKey(mediaAssetId, request.Kind, request.FileName, request.PostId);
+        var now = DateTimeOffset.UtcNow;
+        var objectKey = BuildObjectKey(mediaAssetId, request.Kind, SanitizeFileName(request.FileName), request.PostId, now);
 
         await objectStorage.UploadAsync(
             new ObjectStorageUploadRequest(
@@ -50,7 +51,7 @@ public sealed class MediaService(IBlogDbContext dbContext, IObjectStorage object
             imageInfo.Width,
             imageInfo.Height,
             request.Kind,
-            DateTimeOffset.UtcNow,
+            now,
             request.PostId,
             request.AltText,
             mediaAssetId);
@@ -87,7 +88,14 @@ public sealed class MediaService(IBlogDbContext dbContext, IObjectStorage object
         var mediaAsset = await dbContext.MediaAssets.FirstOrDefaultAsync(x => x.Id == mediaAssetId, cancellationToken)
             ?? throw new InvalidOperationException("Media asset not found.");
 
-        mediaAsset.AttachToPost(postId, DateTimeOffset.UtcNow);
+        var sanitizedFileName = ExtractSanitizedFileName(mediaAsset.ObjectKey, mediaAsset.Id);
+        var permanentKey = BuildObjectKey(mediaAsset.Id, mediaAsset.Kind, sanitizedFileName, postId, mediaAsset.CreatedAtUtc);
+
+        await objectStorage.MoveAsync(mediaAsset.ObjectKey, permanentKey, cancellationToken);
+
+        var now = DateTimeOffset.UtcNow;
+        mediaAsset.UpdateObjectKey(permanentKey, now);
+        mediaAsset.AttachToPost(postId, now);
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
@@ -114,12 +122,22 @@ public sealed class MediaService(IBlogDbContext dbContext, IObjectStorage object
         }
     }
 
-    private static string BuildObjectKey(Guid mediaAssetId, MediaAssetKind kind, string fileName, Guid? postId)
+    private static string BuildObjectKey(Guid mediaAssetId, MediaAssetKind kind, string sanitizedFileName, Guid? postId, DateTimeOffset createdAt)
     {
-        var now = DateTimeOffset.UtcNow;
-        var sanitizedFileName = Path.GetFileName(fileName).Replace(' ', '-');
         var scope = kind == MediaAssetKind.Cover ? "covers" : "posts";
         var owner = postId?.ToString("N") ?? "tmp";
-        return $"{scope}/{owner}/{now:yyyy/MM}/{mediaAssetId:N}-{sanitizedFileName}";
+        return $"{scope}/{owner}/{createdAt:yyyy/MM}/{mediaAssetId:N}-{sanitizedFileName}";
+    }
+
+    private static string SanitizeFileName(string fileName) =>
+        Path.GetFileName(fileName).Replace(' ', '-');
+
+    private static string ExtractSanitizedFileName(string objectKey, Guid mediaAssetId)
+    {
+        var segment = objectKey.AsSpan(objectKey.LastIndexOf('/') + 1);
+        var prefix = $"{mediaAssetId:N}-".AsSpan();
+        return segment.StartsWith(prefix)
+            ? segment[prefix.Length..].ToString()
+            : segment.ToString();
     }
 }

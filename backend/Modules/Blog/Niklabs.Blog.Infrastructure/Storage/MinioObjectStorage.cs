@@ -51,6 +51,29 @@ public sealed class MinioObjectStorage(IMinioClient minioClient, IOptions<Object
         await minioClient.RemoveObjectAsync(removeObjectArgs, cancellationToken).ConfigureAwait(false);
     }
 
+    public async Task MoveAsync(string sourceKey, string destKey, CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(sourceKey);
+        ArgumentException.ThrowIfNullOrWhiteSpace(destKey);
+
+        await EnsureBucketExistsAsync(cancellationToken);
+
+        var copyArgs = new CopyObjectArgs()
+            .WithBucket(_options.Bucket)
+            .WithObject(destKey)
+            .WithCopyObjectSource(new CopySourceObjectArgs()
+                .WithBucket(_options.Bucket)
+                .WithObject(sourceKey));
+
+        await minioClient.CopyObjectAsync(copyArgs, cancellationToken).ConfigureAwait(false);
+
+        var removeArgs = new RemoveObjectArgs()
+            .WithBucket(_options.Bucket)
+            .WithObject(sourceKey);
+
+        await minioClient.RemoveObjectAsync(removeArgs, cancellationToken).ConfigureAwait(false);
+    }
+
     public async Task<bool> ExistsAsync(string objectKey, CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(objectKey);

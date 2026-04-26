@@ -8,5 +8,7 @@ public interface IObjectStorage
 
     Task<bool> ExistsAsync(string objectKey, CancellationToken cancellationToken);
 
+    Task MoveAsync(string sourceKey, string destKey, CancellationToken cancellationToken);
+
     string GetPublicUrl(string objectKey);
 }
