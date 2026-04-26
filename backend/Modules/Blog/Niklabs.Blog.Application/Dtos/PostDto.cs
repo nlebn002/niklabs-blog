@@ -12,6 +12,7 @@ public sealed record PostDto(
     string ContentHtml,
     string ContentText,
     Guid? CoverImageMediaAssetId,
+    string? CoverImageUrl,
     PostStatus Status,
     string? SeoTitle,
     string? SeoDescription,
@@ -21,7 +22,7 @@ public sealed record PostDto(
 
 internal static class PostDtoMappings
 {
-    public static PostDto ToDto(this Post post) =>
+    public static PostDto ToDto(this Post post, string? coverImageUrl = null) =>
         new(
             post.Id,
             post.AuthorUserId,
@@ -32,6 +33,7 @@ internal static class PostDtoMappings
             post.ContentHtml,
             post.ContentText,
             post.CoverImageMediaAssetId,
+            coverImageUrl,
             post.Status,
             post.SeoTitle,
             post.SeoDescription,

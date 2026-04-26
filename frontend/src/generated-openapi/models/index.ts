@@ -11,7 +11,6 @@ export * from './errorResponse';
 export * from './getApiPostsParams';
 export * from './loginRequest';
 export * from './postDto';
-export * from './postDtoCoverImageUrl';
 export * from './postDtoPublishedAtUtc';
+export * from './postStatus';
 export * from './upsertPostRequest';
-export * from './upsertPostRequestCoverImageUrl';

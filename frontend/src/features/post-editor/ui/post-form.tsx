@@ -3,10 +3,13 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Textarea } from "../../../components/ui/textarea";
 import type { UpsertPostRequest } from "../../../generated-openapi/models";
+import { createSlug, EMPTY_EDITOR_STATE_JSON } from "../model/editor-state";
 import { toUpsertPostRequest, usePostForm } from "../model/use-post-form";
+import { CoverImageInput } from "./cover-image-input";
+import { LexicalEditorField } from "./lexical-editor-field";
 
 type PostFormProps = {
-  initialValues?: Partial<UpsertPostRequest>;
+  initialValues?: Partial<UpsertPostRequest> & { coverImageUrl?: string | null };
   isSubmitting: boolean;
   submitLabel: string;
   onSubmit: (values: UpsertPostRequest) => Promise<void>;
@@ -18,17 +21,24 @@ export function PostForm({ initialValues, isSubmitting, submitLabel, onSubmit }:
   useEffect(() => {
     form.reset({
       title: initialValues?.title ?? "",
+      slug: initialValues?.slug ?? "",
       excerpt: initialValues?.excerpt ?? "",
-      contentMarkdown: initialValues?.contentMarkdown ?? "",
-      coverImageUrl: initialValues?.coverImageUrl ?? "",
-      isPublished: initialValues?.isPublished ?? true
+      contentJson: initialValues?.contentJson ?? EMPTY_EDITOR_STATE_JSON,
+      coverImageMediaAssetId: initialValues?.coverImageMediaAssetId ?? "",
+      status: initialValues?.status ?? "Draft",
+      seoTitle: initialValues?.seoTitle ?? "",
+      seoDescription: initialValues?.seoDescription ?? ""
     });
   }, [form, initialValues]);
 
   const {
     formState: { errors },
-    register
+    register,
+    setValue,
+    watch
   } = form;
+  const title = watch("title");
+  const slug = watch("slug");
 
   return (
     <form
@@ -43,6 +53,15 @@ export function PostForm({ initialValues, isSubmitting, submitLabel, onSubmit }:
         </label>
         <Input id="title" {...register("title")} />
         {errors.title ? <p className="text-sm text-red-600">{errors.title.message}</p> : null}
+        <div className="flex justify-end">
+          <button
+            type="button"
+            className="text-xs font-medium text-muted-foreground hover:text-foreground"
+            onClick={() => setValue("slug", createSlug(title), { shouldDirty: true, shouldValidate: true })}
+          >
+            Generate slug from title
+          </button>
+        </div>
       </div>
 
       <div className="grid gap-2">
@@ -54,25 +73,70 @@ export function PostForm({ initialValues, isSubmitting, submitLabel, onSubmit }:
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-semibold text-slate-700" htmlFor="contentMarkdown">
-          Content
+        <label className="text-sm font-semibold text-slate-700" htmlFor="slug">
+          Slug
         </label>
-        <Textarea id="contentMarkdown" rows={12} {...register("contentMarkdown")} />
-        {errors.contentMarkdown ? <p className="text-sm text-red-600">{errors.contentMarkdown.message}</p> : null}
+        <Input id="slug" {...register("slug")} />
+        {errors.slug ? <p className="text-sm text-red-600">{errors.slug.message}</p> : null}
+        {slug ? <p className="text-xs text-muted-foreground">URL slug: /posts/{slug}</p> : null}
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-semibold text-slate-700" htmlFor="coverImageUrl">
-          Cover image URL
+        <label className="text-sm font-semibold text-slate-700">
+          Content
         </label>
-        <Input id="coverImageUrl" {...register("coverImageUrl")} />
-        {errors.coverImageUrl ? <p className="text-sm text-red-600">{String(errors.coverImageUrl.message)}</p> : null}
+        <LexicalEditorField
+          value={watch("contentJson")}
+          onChange={(value) => setValue("contentJson", value, { shouldDirty: true, shouldValidate: true })}
+        />
+        {errors.contentJson ? <p className="text-sm text-red-600">{errors.contentJson.message}</p> : null}
       </div>
 
-      <label className="flex items-center gap-3 text-sm font-medium text-slate-700">
-        <input type="checkbox" {...register("isPublished")} />
-        Publish immediately
-      </label>
+      <div className="grid gap-2">
+        <label className="text-sm font-semibold text-slate-700">
+          Cover Image
+        </label>
+        <CoverImageInput
+          initialImageUrl={initialValues?.coverImageUrl ?? null}
+          onChange={({ mediaAssetId }) =>
+            setValue("coverImageMediaAssetId", mediaAssetId ?? "", { shouldDirty: true, shouldValidate: true })
+          }
+        />
+        <input type="hidden" {...register("coverImageMediaAssetId")} />
+        {errors.coverImageMediaAssetId ? <p className="text-sm text-red-600">{String(errors.coverImageMediaAssetId.message)}</p> : null}
+      </div>
+
+      <div className="grid gap-2">
+        <label className="text-sm font-semibold text-slate-700" htmlFor="status">
+          Status
+        </label>
+        <select
+          id="status"
+          className="h-11 rounded-md border border-input bg-background px-3 text-sm"
+          {...register("status")}
+        >
+          <option value="Draft">Draft</option>
+          <option value="Published">Published</option>
+          <option value="Archived">Archived</option>
+        </select>
+        {errors.status ? <p className="text-sm text-red-600">{errors.status.message}</p> : null}
+      </div>
+
+      <div className="grid gap-2">
+        <label className="text-sm font-semibold text-slate-700" htmlFor="seoTitle">
+          SEO Title
+        </label>
+        <Input id="seoTitle" {...register("seoTitle")} />
+        {errors.seoTitle ? <p className="text-sm text-red-600">{String(errors.seoTitle.message)}</p> : null}
+      </div>
+
+      <div className="grid gap-2">
+        <label className="text-sm font-semibold text-slate-700" htmlFor="seoDescription">
+          SEO Description
+        </label>
+        <Textarea id="seoDescription" rows={4} {...register("seoDescription")} />
+        {errors.seoDescription ? <p className="text-sm text-red-600">{String(errors.seoDescription.message)}</p> : null}
+      </div>
 
       <div className="flex justify-end">
         <Button disabled={isSubmitting} type="submit">

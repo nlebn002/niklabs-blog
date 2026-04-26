@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteApiPostsId, getApiPosts, getApiPostsId, postApiPosts, putApiPostsId } from "../../generated-openapi/blog/blog.js";
-import { UpsertPostRequest } from "../../generated-openapi/models/index.js";
+import { PostStatus, UpsertPostRequest } from "../../generated-openapi/models/index.js";
 
 const postKeys = {
   all: ["posts"] as const,
@@ -13,11 +13,17 @@ export function usePublishedPosts() {
   return useQuery({
     queryKey: postKeys.published,
     queryFn: async () => {
-      const response = await getApiPosts({ isPublished: true });
+      const response = await getApiPosts({ status: 'Published' });
       return response.data;
     }
   });
 }
+
+export const postStatusLabels: Record<PostStatus, string> = {
+  Draft: "Draft",
+  Published: "Published",
+  Archived: "Archived"
+};
 
 export function useEditablePosts() {
   return useQuery({

@@ -10,6 +10,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<IPostAuthorizationService, PostAuthorizationService>();
+        services.AddScoped<IPostContentProjectionService, LexicalContentProjectionService>();
         services.AddScoped<Handlers.GetPosts.GetPostsHandler>();
         services.AddScoped<Handlers.GetPostById.GetPostByIdHandler>();
         services.AddScoped<Handlers.CreatePost.CreatePostHandler>();

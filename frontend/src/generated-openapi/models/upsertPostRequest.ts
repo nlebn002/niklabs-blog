@@ -4,12 +4,15 @@
  * Niklabs.Api | v1
  * OpenAPI spec version: 1.0.0
  */
-import type { UpsertPostRequestCoverImageUrl } from './upsertPostRequestCoverImageUrl';
+import type { PostStatus } from './postStatus';
 
 export interface UpsertPostRequest {
   title: string;
+  slug: string;
   excerpt: string;
-  contentMarkdown: string;
-  coverImageUrl: UpsertPostRequestCoverImageUrl;
-  isPublished: boolean;
+  contentJson: string;
+  coverImageMediaAssetId: string | null;
+  status: PostStatus;
+  seoTitle: string | null;
+  seoDescription: string | null;
 }

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { PostDto } from "../../generated-openapi/models";
 import { routes } from "../../router";
+import { postStatusLabels } from "../../services/api/posts";
 import { formatPostDate } from "../../utils/post-date";
 
 type PostCardProps = {
@@ -22,8 +23,8 @@ export function PostCard({ post }: PostCardProps) {
 
       <div className="flex flex-1 flex-col gap-4 p-5">
         <div className="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-          <span>{formatPostDate(post.publishedAtUtc) ?? "Draft"}</span>
-          <span>{post.isPublished ? "Article" : "Draft"}</span>
+          <span>{formatPostDate(post.publishedAtUtc) ?? postStatusLabels[post.status]}</span>
+          <span>{postStatusLabels[post.status]}</span>
         </div>
 
         <div className="space-y-3">
@@ -31,7 +32,7 @@ export function PostCard({ post }: PostCardProps) {
           <p className="line-clamp-3 text-sm leading-7 text-muted-foreground">{post.excerpt}</p>
         </div>
 
-        <div className="line-clamp-3 text-sm leading-7 text-foreground/72">{post.contentMarkdown}</div>
+        <div className="line-clamp-3 text-sm leading-7 text-foreground/72">{post.contentText}</div>
 
         <div className="mt-auto pt-2">
           <Link

@@ -7,12 +7,14 @@ namespace Niklabs.Blog.Application.Handlers.GetPostById;
 public sealed class GetPostByIdHandler(
     IBlogDbContext dbContext,
     ICurrentUser currentUser,
-    IPostAuthorizationService authorizationService)
+    IPostAuthorizationService authorizationService,
+    IObjectStorage objectStorage)
 {
     public async Task<PostDto?> ExecuteAsync(GetPostByIdQuery query, CancellationToken cancellationToken)
     {
         var post = await dbContext.Posts
             .AsNoTracking()
+            .Include(x => x.CoverImageMediaAsset)
             .FirstOrDefaultAsync(x => x.Id == query.Id, cancellationToken);
 
         if (post is null || !authorizationService.CanView(currentUser, post))
@@ -20,7 +22,7 @@ public sealed class GetPostByIdHandler(
             return null;
         }
 
-        return post.ToDto();
+        return post.ToDto(post.CoverImageMediaAsset is null ? null : objectStorage.GetPublicUrl(post.CoverImageMediaAsset.ObjectKey));
     }
 }
 

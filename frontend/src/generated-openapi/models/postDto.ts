@@ -4,17 +4,23 @@
  * Niklabs.Api | v1
  * OpenAPI spec version: 1.0.0
  */
-import type { PostDtoCoverImageUrl } from './postDtoCoverImageUrl';
+import type { PostStatus } from './postStatus';
 import type { PostDtoPublishedAtUtc } from './postDtoPublishedAtUtc';
 
 export interface PostDto {
   id: string;
   authorUserId: string;
   title: string;
+  slug: string;
   excerpt: string;
-  contentMarkdown: string;
-  coverImageUrl: PostDtoCoverImageUrl;
-  isPublished: boolean;
+  contentJson: string;
+  contentHtml: string;
+  contentText: string;
+  coverImageMediaAssetId: string | null;
+  coverImageUrl: string | null;
+  status: PostStatus;
+  seoTitle: string | null;
+  seoDescription: string | null;
   publishedAtUtc: PostDtoPublishedAtUtc;
   createdAtUtc: string;
   updatedAtUtc: string;

@@ -19,8 +19,6 @@ public static class CreatePostEndpoint
                     request.Slug,
                     request.Excerpt,
                     request.ContentJson,
-                    request.ContentHtml,
-                    request.ContentText,
                     request.CoverImageMediaAssetId,
                     request.Status,
                     request.SeoTitle,

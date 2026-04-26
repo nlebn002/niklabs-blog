@@ -1,18 +1,25 @@
+import type { PostStatus } from "../../generated-openapi/models";
 import { cn } from "../../utils/cn";
 
 type PostStatusBadgeProps = {
-  isPublished: boolean;
+  status: PostStatus;
 };
 
-export function PostStatusBadge({ isPublished }: PostStatusBadgeProps) {
+const statusStyles: Record<PostStatus, string> = {
+  Draft: "bg-slate-100 text-slate-700",
+  Published: "bg-emerald-100 text-emerald-700",
+  Archived: "bg-amber-100 text-amber-700"
+};
+
+export function PostStatusBadge({ status }: PostStatusBadgeProps) {
   return (
     <span
       className={cn(
         "inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em]",
-        isPublished ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-700"
+        statusStyles[status]
       )}
     >
-      {isPublished ? "Published" : "Draft"}
+      {status}
     </span>
   );
 }

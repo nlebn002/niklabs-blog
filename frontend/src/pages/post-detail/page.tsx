@@ -9,10 +9,6 @@ import { formatPostDate } from "../../utils/post-date";
 export function PostDetailPage() {
   const { postId = "" } = useParams();
   const postQuery = usePublicPost(postId);
-  const articleParagraphs = postQuery.data?.contentMarkdown
-    ?.split(/\r?\n\r?\n/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
 
   return (
     <SiteShell contentClassName="max-w-5xl">
@@ -32,7 +28,7 @@ export function PostDetailPage() {
           <section className="grid gap-8 p-6 lg:p-10">
             <div className="space-y-4">
               <p className="text-xs font-bold uppercase tracking-[0.38em] text-primary">
-                {formatPostDate(postQuery.data.publishedAtUtc) ?? "Draft"}
+                {formatPostDate(postQuery.data.publishedAtUtc) ?? postQuery.data.status}
               </p>
               <h1 className="font-display max-w-4xl text-5xl leading-[0.95] tracking-[-0.05em] md:text-6xl lg:text-7xl">{postQuery.data.title}</h1>
               <p className="max-w-3xl text-base leading-8 text-muted-foreground md:text-xl">{postQuery.data.excerpt}</p>
@@ -41,11 +37,7 @@ export function PostDetailPage() {
 
           {postQuery.data.coverImageUrl ? (
             <div className="border-y border-border/80 bg-muted/35 px-4 py-4 lg:px-6">
-              <img
-                src={postQuery.data.coverImageUrl}
-                alt={postQuery.data.title}
-                className="max-h-[34rem] w-full rounded-[1.8rem] object-cover"
-              />
+              <img src={postQuery.data.coverImageUrl} alt={postQuery.data.title} className="max-h-[34rem] w-full rounded-[1.8rem] object-cover" />
             </div>
           ) : null}
 
@@ -55,13 +47,7 @@ export function PostDetailPage() {
               <p className="leading-7">The gridline motif stays outside the reading column so the writing remains the focal point.</p>
             </aside>
 
-            <article className="article-prose max-w-none">
-              {articleParagraphs?.length ? (
-                articleParagraphs.map((paragraph, index) => <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>)
-              ) : (
-                <p>{postQuery.data.contentMarkdown}</p>
-              )}
-            </article>
+            <article className="article-prose max-w-none" dangerouslySetInnerHTML={{ __html: postQuery.data.contentHtml }} />
           </section>
         </Panel>
       ) : null}

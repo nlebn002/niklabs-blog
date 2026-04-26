@@ -48,10 +48,14 @@ export function PostEditorPage() {
               currentPost
                 ? {
                     title: currentPost.title,
+                    slug: currentPost.slug,
                     excerpt: currentPost.excerpt,
-                    contentMarkdown: currentPost.contentMarkdown,
+                    contentJson: currentPost.contentJson,
+                    coverImageMediaAssetId: currentPost.coverImageMediaAssetId,
                     coverImageUrl: currentPost.coverImageUrl,
-                    isPublished: currentPost.isPublished
+                    status: currentPost.status,
+                    seoTitle: currentPost.seoTitle,
+                    seoDescription: currentPost.seoDescription
                   }
                 : undefined
             }

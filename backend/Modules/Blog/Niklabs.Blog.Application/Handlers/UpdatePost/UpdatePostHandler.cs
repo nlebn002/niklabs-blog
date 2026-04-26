@@ -9,7 +9,10 @@ public sealed class UpdatePostHandler(
     IBlogDbContext dbContext,
     TimeProvider timeProvider,
     ICurrentUser currentUser,
-    IPostAuthorizationService authorizationService)
+    IPostAuthorizationService authorizationService,
+    IPostContentProjectionService contentProjectionService,
+    IMediaService mediaService,
+    IObjectStorage objectStorage)
 {
     public async Task<(bool Found, bool Success, string? Error, PostDto? Post)> ExecuteAsync(
         UpdatePostCommand command,
@@ -28,13 +31,15 @@ public sealed class UpdatePostHandler(
             return (true, false, "Forbidden", null);
         }
 
+        var content = contentProjectionService.Project(command.ContentJson);
+
         post.Update(
             command.Title,
             command.Slug,
             command.Excerpt,
-            command.ContentJson,
-            command.ContentHtml,
-            command.ContentText,
+            content.ContentJson,
+            content.ContentHtml,
+            content.ContentText,
             command.CoverImageMediaAssetId,
             command.Status,
             command.SeoTitle,
@@ -43,7 +48,27 @@ public sealed class UpdatePostHandler(
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return (true, true, null, post.ToDto());
+        if (command.CoverImageMediaAssetId.HasValue)
+        {
+            await mediaService.AttachToPostAsync(command.CoverImageMediaAssetId.Value, post.Id, cancellationToken);
+        }
+
+        var coverImageUrl = await ResolveCoverImageUrlAsync(post.CoverImageMediaAssetId, cancellationToken);
+        return (true, true, null, post.ToDto(coverImageUrl));
+    }
+
+    private async Task<string?> ResolveCoverImageUrlAsync(Guid? mediaAssetId, CancellationToken cancellationToken)
+    {
+        if (!mediaAssetId.HasValue)
+        {
+            return null;
+        }
+
+        var mediaAsset = await dbContext.MediaAssets
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == mediaAssetId.Value, cancellationToken);
+
+        return mediaAsset is null ? null : objectStorage.GetPublicUrl(mediaAsset.ObjectKey);
     }
 }
 
@@ -53,8 +78,6 @@ public sealed record UpdatePostCommand(
     string Slug,
     string Excerpt,
     string ContentJson,
-    string ContentHtml,
-    string ContentText,
     Guid? CoverImageMediaAssetId,
     PostStatus Status,
     string? SeoTitle,

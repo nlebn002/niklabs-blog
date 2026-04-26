@@ -5,7 +5,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
+import type { PostStatus } from './postStatus';
+
 export type GetApiPostsParams = {
-isPublished?: boolean;
+status?: PostStatus;
 onlyEditable?: boolean;
 };

@@ -1,5 +1,6 @@
 using Niklabs.Blog.Api.Auth;
 using Niklabs.Blog.Api.Endpoints.Auth;
+using Niklabs.Blog.Api.Endpoints.Media;
 using Niklabs.Blog.Api.Endpoints.Posts;
 using Niklabs.Blog.Api.Startup;
 using Niklabs.Auth.Application.Handlers.ChangePassword;
@@ -47,6 +48,7 @@ if (app.Environment.IsDevelopment())
 }
 
 AuthEndpoints.Map(app);
+MediaEndpoints.Map(app);
 PostEndpoints.Map(app);
 
 app.Run();

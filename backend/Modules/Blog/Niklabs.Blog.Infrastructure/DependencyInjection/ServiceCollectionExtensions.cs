@@ -40,6 +40,7 @@ public static class ServiceCollectionExtensions
                 .Build();
         });
         services.AddScoped<IObjectStorage, MinioObjectStorage>();
+        services.AddScoped<IMediaService, MediaService>();
 
         return services;
     }

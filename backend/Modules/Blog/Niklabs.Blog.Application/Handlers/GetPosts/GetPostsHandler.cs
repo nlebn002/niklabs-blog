@@ -5,12 +5,13 @@ using Niklabs.Blog.Domain.Posts;
 
 namespace Niklabs.Blog.Application.Handlers.GetPosts;
 
-public sealed class GetPostsHandler(IBlogDbContext dbContext, ICurrentUser currentUser)
+public sealed class GetPostsHandler(IBlogDbContext dbContext, ICurrentUser currentUser, IObjectStorage objectStorage)
 {
     public async Task<IReadOnlyList<PostDto>> ExecuteAsync(GetPostsQuery query, CancellationToken cancellationToken)
     {
-        var posts = dbContext.Posts
-            .AsNoTracking();
+        IQueryable<Post> posts = dbContext.Posts
+            .AsNoTracking()
+            .Include(x => x.CoverImageMediaAsset);
 
         if (query.OnlyEditablePosts)
         {
@@ -51,7 +52,9 @@ public sealed class GetPostsHandler(IBlogDbContext dbContext, ICurrentUser curre
             .ThenByDescending(x => x.CreatedAtUtc)
             .ToListAsync(cancellationToken);
 
-        return items.Select(x => x.ToDto()).ToList();
+        return items
+            .Select(x => x.ToDto(x.CoverImageMediaAsset is null ? null : objectStorage.GetPublicUrl(x.CoverImageMediaAsset.ObjectKey)))
+            .ToList();
     }
 }
 

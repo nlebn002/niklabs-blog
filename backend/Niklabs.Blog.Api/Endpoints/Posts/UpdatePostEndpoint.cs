@@ -21,8 +21,6 @@ public static class UpdatePostEndpoint
                     request.Slug,
                     request.Excerpt,
                     request.ContentJson,
-                    request.ContentHtml,
-                    request.ContentText,
                     request.CoverImageMediaAssetId,
                     request.Status,
                     request.SeoTitle,

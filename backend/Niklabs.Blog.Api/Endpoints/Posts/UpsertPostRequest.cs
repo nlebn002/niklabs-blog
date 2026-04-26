@@ -7,8 +7,6 @@ public sealed record UpsertPostRequest(
     string Slug,
     string Excerpt,
     string ContentJson,
-    string ContentHtml,
-    string ContentText,
     Guid? CoverImageMediaAssetId,
     PostStatus Status,
     string? SeoTitle,

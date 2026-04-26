@@ -33,11 +33,12 @@ public sealed class MediaAsset : AuditableEntity<Guid>
         MediaAssetKind kind,
         DateTimeOffset nowUtc,
         Guid? postId = null,
-        string? altText = null)
+        string? altText = null,
+        Guid? id = null)
     {
         var mediaAsset = new MediaAsset
         {
-            Id = Guid.NewGuid(),
+            Id = id ?? Guid.NewGuid(),
             UploadedByUserId = uploadedByUserId,
             PostId = postId,
             ObjectKey = objectKey.Trim(),

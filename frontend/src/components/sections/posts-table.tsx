@@ -32,7 +32,7 @@ export function PostsTable({ posts, isLoading, deletingPostId, onDelete }: Posts
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <p className="text-lg font-semibold">{post.title}</p>
-              <PostStatusBadge isPublished={post.isPublished} />
+              <PostStatusBadge status={post.status} />
             </div>
             <p className="text-sm text-muted-foreground">{post.excerpt}</p>
             <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
