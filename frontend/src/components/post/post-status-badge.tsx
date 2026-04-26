@@ -6,16 +6,16 @@ type PostStatusBadgeProps = {
 };
 
 const statusStyles: Record<PostStatus, string> = {
-  Draft: "bg-slate-100 text-slate-700",
-  Published: "bg-emerald-100 text-emerald-700",
-  Archived: "bg-amber-100 text-amber-700"
+  Draft: "border-white/10 bg-white/5 text-muted-foreground",
+  Published: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
+  Archived: "border-amber-400/25 bg-amber-400/10 text-amber-300"
 };
 
 export function PostStatusBadge({ status }: PostStatusBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em]",
+        "inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.12em]",
         statusStyles[status]
       )}
     >

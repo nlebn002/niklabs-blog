@@ -7,7 +7,7 @@ import { queryClient } from "./services/query-client";
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="system" storageKey="niklabs-theme">
+      <ThemeProvider defaultTheme="dark" storageKey="niklabs-theme">
         <BrowserRouter>
           <AppRouter />
         </BrowserRouter>

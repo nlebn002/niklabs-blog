@@ -6,41 +6,38 @@ import { usePublishedPosts } from "../../services/api/posts";
 
 export function HomePage() {
   const postsQuery = usePublishedPosts();
+  const chipBaseClass =
+    "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[13px] transition-all duration-150 ease-[var(--ease-expo)]";
 
   return (
-    <SiteShell contentClassName="max-w-none">
+    <SiteShell contentClassName="max-w-[1200px] gap-0 px-[clamp(1rem,4vw,2rem)] py-0">
       {postsQuery.error ? <Alert title="Could not load published posts" message={postsQuery.error.message} /> : null}
 
       {postsQuery.isLoading ? <Panel className="min-h-[16rem] place-items-center text-muted-foreground">Loading published posts...</Panel> : null}
 
-      <section className="grid w-full gap-6 lg:grid-cols-[18rem_minmax(0,1fr)]">
-        <Panel className="content-start gap-5 self-start border-border bg-card/95 p-5 shadow-none lg:sticky lg:top-24">
+      <section className="grid w-full gap-7 pb-24">
+        <Panel className="content-start gap-5 border-border bg-card p-4 shadow-none">
           <div className="space-y-2">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">Search</p>
-            <div className="rounded-xl border border-border bg-background px-4 py-3 text-sm text-muted-foreground">
+            <div className="text-[12px] tracking-[0.04em] text-[var(--text-tertiary)]">Search</div>
+            <div className="rounded-lg border border-white/15 bg-card px-4 py-3 text-sm text-[var(--text-tertiary)]">
               Search articles
             </div>
           </div>
 
           <div className="space-y-3">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">Filters</p>
+            <p className="text-[12px] tracking-[0.04em] text-[var(--text-tertiary)]">Browse by tag</p>
             <div className="flex flex-wrap gap-2">
-              <span className="rounded-full border border-border bg-background px-3 py-2 text-sm text-muted-foreground">All topics</span>
-              <span className="rounded-full border border-border bg-background px-3 py-2 text-sm text-muted-foreground">Backend</span>
-              <span className="rounded-full border border-border bg-background px-3 py-2 text-sm text-muted-foreground">Architecture</span>
-              <span className="rounded-full border border-border bg-background px-3 py-2 text-sm text-muted-foreground">Career</span>
+              <span className={`${chipBaseClass} border-primary bg-primary text-white`}>All topics</span>
+              <span className={`${chipBaseClass} border-border bg-card text-muted-foreground`}>Backend</span>
+              <span className={`${chipBaseClass} border-border bg-card text-muted-foreground`}>Architecture</span>
+              <span className={`${chipBaseClass} border-border bg-card text-muted-foreground`}>Career</span>
             </div>
           </div>
 
-          <div className="space-y-3">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">Sort</p>
-            <div className="rounded-xl border border-border bg-background px-4 py-3 text-sm text-muted-foreground">
-              Newest first
-            </div>
-          </div>
         </Panel>
 
         <section className="space-y-5">
+          <div className="text-[13px] text-[var(--text-tertiary)]">{postsQuery.data?.length ?? 0} articles</div>
           <PostsList posts={postsQuery.data ?? []} emptyMessage="No published posts yet." />
         </section>
       </section>

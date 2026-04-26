@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { SiteShell } from "../../components/layout/site-shell";
 import { useCurrentUser, useLogin } from "../../features/auth/api/hooks";
 import { LoginForm } from "../../features/auth/ui/login-form";
@@ -30,16 +31,16 @@ export function LoginPage() {
   return (
     <SiteShell contentClassName="max-w-xl justify-center">
       <Link
-        className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-[13px] text-[var(--text-tertiary)] transition-colors hover:text-muted-foreground"
         to={routes.home()}
       >
-        <span aria-hidden="true">&lt;</span>
-        Home
+        <ArrowLeft size={13} />
+        Articles
       </Link>
 
       <Panel className="gap-5">
         <div className="space-y-3">
-          <h1 className="text-3xl font-black">Sign in</h1>
+          <h1 className="text-[28px] font-bold leading-[1.2] tracking-[-0.025em]">Sign in</h1>
         </div>
 
         {loginMutation.error ? <Alert title="Could not sign in" message={loginMutation.error.message} /> : null}

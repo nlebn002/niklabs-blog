@@ -9,7 +9,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLText
     <textarea
       ref={ref}
       className={cn(
-        "flex min-h-[120px] w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm text-foreground shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+        "flex min-h-[80px] w-full resize-y rounded-md border border-input bg-card px-3.5 py-2.5 text-[14px] text-foreground placeholder:text-[var(--text-tertiary)] transition-[border-color,box-shadow] duration-200 ease-[var(--ease-expo)] focus:outline-none focus:border-[var(--accent-border)] focus:ring-[3px] focus:ring-primary/10 disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}

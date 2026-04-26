@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { buttonStyles } from "../ui/button";
-import { Panel } from "../ui/panel";
 
 type SiteHeaderProps = {
   eyebrow: string;
@@ -12,13 +11,20 @@ type SiteHeaderProps = {
 
 export function SiteHeader({ eyebrow, title, description, ctaLabel, ctaTo }: SiteHeaderProps) {
   return (
-    <Panel className="relative overflow-hidden border-border/80 bg-card/95 p-0">
+    <section className="relative overflow-hidden py-[72px]">
       <div className="grid gap-10 p-6 lg:grid-cols-[1.45fr_0.8fr] lg:p-10">
         <div className="space-y-6">
-          <p className="text-xs font-bold uppercase tracking-[0.4em] text-primary">{eyebrow}</p>
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 animate-[fadeUp_0.6s_cubic-bezier(0.16,1,0.3,1)_both]">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-[blink_2.5s_ease-in-out_infinite]" />
+            <span className="text-[12px] tracking-[0.02em] text-primary">{eyebrow}</span>
+          </div>
           <div className="space-y-4">
-            <h1 className="font-display max-w-4xl text-5xl leading-[0.95] tracking-[-0.04em] md:text-6xl lg:text-7xl">{title}</h1>
-            <p className="max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">{description}</p>
+            <h1 className="text-[clamp(36px,5vw,56px)] font-bold leading-[1.1] tracking-[-0.03em] animate-[fadeUp_0.6s_60ms_cubic-bezier(0.16,1,0.3,1)_both]">
+              {title}
+            </h1>
+            <p className="max-w-[460px] text-[16px] leading-[1.65] text-muted-foreground animate-[fadeUp_0.6s_120ms_cubic-bezier(0.16,1,0.3,1)_both]">
+              {description}
+            </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
@@ -31,10 +37,10 @@ export function SiteHeader({ eyebrow, title, description, ctaLabel, ctaTo }: Sit
           </div>
         </div>
 
-        <div className="flex flex-col justify-between rounded-[1.75rem] border border-border/80 bg-secondary px-6 py-6 text-secondary-foreground shadow-soft">
+        <div className="flex flex-col justify-between rounded-xl border border-border/80 bg-secondary px-6 py-6 text-secondary-foreground shadow-soft">
           <div className="space-y-4">
             <p className="text-xs font-bold uppercase tracking-[0.34em] text-secondary-foreground/72">Editorial focus</p>
-            <h2 className="font-display text-3xl leading-tight tracking-[-0.03em]">Precise thinking for modern engineering work.</h2>
+            <h2 className="text-3xl font-semibold leading-tight tracking-[-0.03em]">Precise thinking for modern engineering work.</h2>
             <p className="text-sm leading-7 text-secondary-foreground/78">
               Essays, patterns, and interview-ready explanations shaped with product taste and founder-level clarity.
             </p>
@@ -52,12 +58,6 @@ export function SiteHeader({ eyebrow, title, description, ctaLabel, ctaTo }: Sit
           </div>
         </div>
       </div>
-      <div className="editorial-rule" />
-      <div className="grid gap-4 px-6 py-5 text-sm text-muted-foreground lg:grid-cols-3 lg:px-10">
-        <p>Readable on mobile, deliberate on desktop, and built to make long-form technical writing feel premium.</p>
-        <p>One visual motif: precise editorial gridlines that frame the content without turning it into a dashboard.</p>
-        <p className="font-semibold text-foreground">Built for article discovery and serious reading, not generic homepage theatrics.</p>
-      </div>
-    </Panel>
+    </section>
   );
 }

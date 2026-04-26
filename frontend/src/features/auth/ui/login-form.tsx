@@ -35,26 +35,26 @@ export function LoginForm({ isSubmitting, onSubmit }: LoginFormProps) {
       })}
     >
       <div className="space-y-2">
-        <label className="text-sm font-semibold uppercase tracking-[0.2em] text-primary" htmlFor="userNameOrEmail">
+        <label className="text-sm font-semibold text-foreground" htmlFor="userNameOrEmail">
           Username or email
         </label>
         <Input id="userNameOrEmail" {...form.register("userNameOrEmail")} />
         {form.formState.errors.userNameOrEmail ? (
-          <p className="text-sm text-rose-700">{form.formState.errors.userNameOrEmail.message}</p>
+          <p className="text-sm text-destructive">{form.formState.errors.userNameOrEmail.message}</p>
         ) : null}
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-semibold uppercase tracking-[0.2em] text-primary" htmlFor="password">
+        <label className="text-sm font-semibold text-foreground" htmlFor="password">
           Password
         </label>
         <Input id="password" type="password" {...form.register("password")} />
         {form.formState.errors.password ? (
-          <p className="text-sm text-rose-700">{form.formState.errors.password.message}</p>
+          <p className="text-sm text-destructive">{form.formState.errors.password.message}</p>
         ) : null}
       </div>
 
-      <label className="flex items-center gap-3 text-sm text-slate-700">
+      <label className="flex items-center gap-3 text-sm text-muted-foreground">
         <input type="checkbox" {...form.register("rememberMe")} />
         Remember this browser
       </label>

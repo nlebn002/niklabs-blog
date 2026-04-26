@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "react";
 import { cn } from "@/utils/cn";
 
-const alertVariants = cva("relative w-full rounded-3xl border px-5 py-4 shadow-sm", {
+const alertVariants = cva("relative w-full rounded-lg border px-5 py-4 shadow-sm", {
   variants: {
     variant: {
       error: "border-destructive/20 bg-destructive/10 text-destructive",

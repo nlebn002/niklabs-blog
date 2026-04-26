@@ -1,4 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { SiteShell } from "../../components/layout/site-shell";
 import { Alert } from "../../components/ui/alert";
 import { Panel } from "../../components/ui/panel";
@@ -20,22 +21,22 @@ export function PostEditorPage() {
   const activeError = postQuery.error ?? createMutation.error ?? updateMutation.error;
 
   return (
-    <SiteShell contentClassName="max-w-4xl">
+    <SiteShell contentClassName="max-w-[900px]">
       <div className="flex items-center justify-between gap-4">
         <Link
-          className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-foreground"
+          className="inline-flex items-center gap-1.5 text-[13px] text-[var(--text-tertiary)] transition-colors hover:text-muted-foreground"
           to={routes.home()}
         >
-          <span aria-hidden="true">&lt;</span>
-          Back to site
+          <ArrowLeft size={13} />
+          All articles
         </Link>
         <LogoutButton />
       </div>
 
-      <Panel className="gap-4">
+      <Panel className="gap-6">
         <div>
-          <p className="text-sm uppercase tracking-[0.24em] text-primary">{isEditMode ? "Edit post" : "Create post"}</p>
-          <h1 className="mt-2 text-3xl font-black">{isEditMode ? "Update existing post" : "Draft a new post"}</h1>
+          <p className="text-[12px] tracking-[0.04em] text-[var(--text-tertiary)]">{isEditMode ? "Edit post" : "Create post"}</p>
+          <h1 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.025em]">{isEditMode ? "Update existing article" : "Draft a new article"}</h1>
         </div>
 
         {activeError ? <Alert title="Action failed" message={activeError.message} /> : null}

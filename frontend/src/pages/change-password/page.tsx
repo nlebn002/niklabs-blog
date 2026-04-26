@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { SiteShell } from "../../components/layout/site-shell";
 import { Alert } from "../../components/ui/alert";
 import { Panel } from "../../components/ui/panel";
@@ -14,17 +15,17 @@ export function ChangePasswordPage() {
   return (
     <SiteShell contentClassName="max-w-3xl">
       <Link
-        className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-[13px] text-[var(--text-tertiary)] transition-colors hover:text-muted-foreground"
         to={routes.home()}
       >
-        <span aria-hidden="true">&lt;</span>
-        <span>Back to site</span>
+        <ArrowLeft size={13} />
+        <span>All articles</span>
       </Link>
 
       <Panel className="gap-6">
         <div className="space-y-3">
-          <p className="text-sm uppercase tracking-[0.24em] text-primary">Account</p>
-          <h1 className="font-display text-4xl leading-tight tracking-[-0.04em]">Change password</h1>
+          <p className="text-[12px] tracking-[0.04em] text-[var(--text-tertiary)]">Account</p>
+          <h1 className="font-display text-[28px] font-bold leading-[1.2] tracking-[-0.025em]">Change password</h1>
         </div>
 
         {changePasswordMutation.error ? (

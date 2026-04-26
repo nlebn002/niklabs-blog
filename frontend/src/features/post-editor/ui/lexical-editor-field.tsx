@@ -44,12 +44,12 @@ export function LexicalEditorField({ value, onChange }: LexicalEditorFieldProps)
   );
 
   return (
-    <div className="overflow-hidden rounded-xl border border-input bg-background">
+    <div className="overflow-hidden rounded-lg border border-input bg-card">
       <LexicalComposer initialConfig={initialConfig}>
         <ToolbarPlugin />
         <RichTextPlugin
           contentEditable={<ContentEditable className="min-h-[18rem] px-4 py-4 text-sm outline-none" />}
-          placeholder={<div className="pointer-events-none px-4 py-4 text-sm text-muted-foreground">Write your post...</div>}
+          placeholder={<div className="pointer-events-none px-4 py-4 text-sm text-[var(--text-tertiary)]">Write your post...</div>}
           ErrorBoundary={LexicalErrorBoundary}
         />
         <HistoryPlugin />
@@ -100,7 +100,7 @@ function ToolbarButton({ label, onClick }: { label: string; onClick: () => void 
   return (
     <button
       type="button"
-      className="rounded-md border border-border bg-background px-3 py-2 text-sm font-medium transition-colors hover:border-primary/40 hover:text-primary"
+      className="rounded border border-border bg-card px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-[var(--accent-border)] hover:text-[var(--accent-hover)]"
       onClick={onClick}
     >
       {label}

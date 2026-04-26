@@ -58,32 +58,32 @@ export function ChangePasswordForm({
 
       <div className="grid gap-5 md:grid-cols-2">
         <div className="space-y-2 md:col-span-2">
-          <label className="text-sm font-semibold uppercase tracking-[0.2em] text-primary" htmlFor="currentPassword">
+          <label className="text-sm font-semibold text-foreground" htmlFor="currentPassword">
             Current password
           </label>
           <Input id="currentPassword" type="password" autoComplete="current-password" {...form.register("currentPassword")} />
           {form.formState.errors.currentPassword ? (
-            <p className="text-sm text-rose-700">{form.formState.errors.currentPassword.message}</p>
+            <p className="text-sm text-destructive">{form.formState.errors.currentPassword.message}</p>
           ) : null}
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-semibold uppercase tracking-[0.2em] text-primary" htmlFor="newPassword">
+          <label className="text-sm font-semibold text-foreground" htmlFor="newPassword">
             New password
           </label>
           <Input id="newPassword" type="password" autoComplete="new-password" {...form.register("newPassword")} />
           {form.formState.errors.newPassword ? (
-            <p className="text-sm text-rose-700">{form.formState.errors.newPassword.message}</p>
+            <p className="text-sm text-destructive">{form.formState.errors.newPassword.message}</p>
           ) : null}
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-semibold uppercase tracking-[0.2em] text-primary" htmlFor="confirmPassword">
+          <label className="text-sm font-semibold text-foreground" htmlFor="confirmPassword">
             Confirm new password
           </label>
           <Input id="confirmPassword" type="password" autoComplete="new-password" {...form.register("confirmPassword")} />
           {form.formState.errors.confirmPassword ? (
-            <p className="text-sm text-rose-700">{form.formState.errors.confirmPassword.message}</p>
+            <p className="text-sm text-destructive">{form.formState.errors.confirmPassword.message}</p>
           ) : null}
         </div>
       </div>

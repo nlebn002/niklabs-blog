@@ -48,11 +48,11 @@ export function PostForm({ initialValues, isSubmitting, submitLabel, onSubmit }:
       })}
     >
       <div className="grid gap-2">
-        <label className="text-sm font-semibold text-slate-700" htmlFor="title">
+        <label className="text-sm font-semibold text-foreground" htmlFor="title">
           Title
         </label>
         <Input id="title" {...register("title")} />
-        {errors.title ? <p className="text-sm text-red-600">{errors.title.message}</p> : null}
+        {errors.title ? <p className="text-sm text-destructive">{errors.title.message}</p> : null}
         <div className="flex justify-end">
           <button
             type="button"
@@ -65,35 +65,35 @@ export function PostForm({ initialValues, isSubmitting, submitLabel, onSubmit }:
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-semibold text-slate-700" htmlFor="excerpt">
+        <label className="text-sm font-semibold text-foreground" htmlFor="excerpt">
           Excerpt
         </label>
         <Textarea id="excerpt" rows={4} {...register("excerpt")} />
-        {errors.excerpt ? <p className="text-sm text-red-600">{errors.excerpt.message}</p> : null}
+        {errors.excerpt ? <p className="text-sm text-destructive">{errors.excerpt.message}</p> : null}
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-semibold text-slate-700" htmlFor="slug">
+        <label className="text-sm font-semibold text-foreground" htmlFor="slug">
           Slug
         </label>
         <Input id="slug" {...register("slug")} />
-        {errors.slug ? <p className="text-sm text-red-600">{errors.slug.message}</p> : null}
+        {errors.slug ? <p className="text-sm text-destructive">{errors.slug.message}</p> : null}
         {slug ? <p className="text-xs text-muted-foreground">URL slug: /posts/{slug}</p> : null}
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-semibold text-slate-700">
+        <label className="text-sm font-semibold text-foreground">
           Content
         </label>
         <LexicalEditorField
           value={watch("contentJson")}
           onChange={(value) => setValue("contentJson", value, { shouldDirty: true, shouldValidate: true })}
         />
-        {errors.contentJson ? <p className="text-sm text-red-600">{errors.contentJson.message}</p> : null}
+        {errors.contentJson ? <p className="text-sm text-destructive">{errors.contentJson.message}</p> : null}
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-semibold text-slate-700">
+        <label className="text-sm font-semibold text-foreground">
           Cover Image
         </label>
         <CoverImageInput
@@ -103,39 +103,39 @@ export function PostForm({ initialValues, isSubmitting, submitLabel, onSubmit }:
           }
         />
         <input type="hidden" {...register("coverImageMediaAssetId")} />
-        {errors.coverImageMediaAssetId ? <p className="text-sm text-red-600">{String(errors.coverImageMediaAssetId.message)}</p> : null}
+        {errors.coverImageMediaAssetId ? <p className="text-sm text-destructive">{String(errors.coverImageMediaAssetId.message)}</p> : null}
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-semibold text-slate-700" htmlFor="status">
+        <label className="text-sm font-semibold text-foreground" htmlFor="status">
           Status
         </label>
         <select
           id="status"
-          className="h-11 rounded-md border border-input bg-background px-3 text-sm"
+          className="h-11 rounded-md border border-input bg-card px-3 text-sm text-foreground focus:outline-none focus:border-[var(--accent-border)] focus:ring-[3px] focus:ring-primary/10"
           {...register("status")}
         >
           <option value="Draft">Draft</option>
           <option value="Published">Published</option>
           <option value="Archived">Archived</option>
         </select>
-        {errors.status ? <p className="text-sm text-red-600">{errors.status.message}</p> : null}
+        {errors.status ? <p className="text-sm text-destructive">{errors.status.message}</p> : null}
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-semibold text-slate-700" htmlFor="seoTitle">
+        <label className="text-sm font-semibold text-foreground" htmlFor="seoTitle">
           SEO Title
         </label>
         <Input id="seoTitle" {...register("seoTitle")} />
-        {errors.seoTitle ? <p className="text-sm text-red-600">{String(errors.seoTitle.message)}</p> : null}
+        {errors.seoTitle ? <p className="text-sm text-destructive">{String(errors.seoTitle.message)}</p> : null}
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-semibold text-slate-700" htmlFor="seoDescription">
+        <label className="text-sm font-semibold text-foreground" htmlFor="seoDescription">
           SEO Description
         </label>
         <Textarea id="seoDescription" rows={4} {...register("seoDescription")} />
-        {errors.seoDescription ? <p className="text-sm text-red-600">{String(errors.seoDescription.message)}</p> : null}
+        {errors.seoDescription ? <p className="text-sm text-destructive">{String(errors.seoDescription.message)}</p> : null}
       </div>
 
       <div className="flex justify-end">

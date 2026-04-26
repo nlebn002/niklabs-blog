@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom";
+import { ArrowLeft, Calendar } from "lucide-react";
 import { SiteShell } from "../../components/layout/site-shell";
 import { Alert } from "../../components/ui/alert";
 import { Panel } from "../../components/ui/panel";
@@ -11,45 +12,62 @@ export function PostDetailPage() {
   const postQuery = usePublicPost(postId);
 
   return (
-    <SiteShell contentClassName="max-w-5xl">
+    <SiteShell contentClassName="max-w-[1200px] gap-0 px-[clamp(1rem,4vw,2rem)] pb-24 pt-16">
       <Link
-        className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-foreground"
+        className="mb-8 inline-flex items-center gap-1.5 text-[13px] text-[var(--text-tertiary)] transition-colors hover:text-muted-foreground"
         to={routes.home()}
       >
-        <span aria-hidden="true">←</span>
-        <span>Back to posts</span>
+        <ArrowLeft size={13} />
+        <span>All articles</span>
       </Link>
 
       {postQuery.isLoading ? <Panel className="min-h-[18rem] place-items-center text-muted-foreground">Loading post...</Panel> : null}
       {postQuery.error ? <Alert title="Could not load post" message={postQuery.error.message} /> : null}
 
       {postQuery.data ? (
-        <Panel className="overflow-hidden border-border/80 bg-card/96 p-0">
-          <section className="grid gap-8 p-6 lg:p-10">
-            <div className="space-y-4">
-              <p className="text-xs font-bold uppercase tracking-[0.38em] text-primary">
-                {formatPostDate(postQuery.data.publishedAtUtc) ?? postQuery.data.status}
-              </p>
-              <h1 className="font-display max-w-4xl text-5xl leading-[0.95] tracking-[-0.05em] md:text-6xl lg:text-7xl">{postQuery.data.title}</h1>
-              <p className="max-w-3xl text-base leading-8 text-muted-foreground md:text-xl">{postQuery.data.excerpt}</p>
+        <article className="mx-auto w-full max-w-[68ch]">
+          <header className="mb-12">
+            <div className="mb-4 flex flex-wrap gap-1.5">
+              <span className="rounded-full border border-[var(--accent-border)] bg-accent px-2.5 py-0.5 text-[12px] text-[var(--accent-hover)]">
+                {postQuery.data.status}
+              </span>
             </div>
-          </section>
+            <h1 className="mb-5 text-[clamp(36px,5vw,56px)] font-bold leading-[1.1] tracking-[-0.03em] text-foreground">
+              {postQuery.data.title}
+            </h1>
+            <p className="mb-6 font-serif text-[17px] leading-[1.6] text-muted-foreground">{postQuery.data.excerpt}</p>
+            <div className="flex items-center gap-5 text-[13px] text-[var(--text-tertiary)]">
+              <span className="flex items-center gap-1.5">
+                <Calendar size={13} />
+                {formatPostDate(postQuery.data.publishedAtUtc) ?? postQuery.data.status}
+              </span>
+              <span className="text-muted-foreground">Nikita</span>
+            </div>
+          </header>
 
           {postQuery.data.coverImageUrl ? (
-            <div className="border-y border-border/80 bg-muted/35 px-4 py-4 lg:px-6">
-              <img src={postQuery.data.coverImageUrl} alt={postQuery.data.title} className="max-h-[34rem] w-full rounded-[1.8rem] object-cover" />
+            <div className="mb-10 border-y border-border py-4">
+              <img
+                src={postQuery.data.coverImageUrl}
+                alt={postQuery.data.title}
+                className="max-h-[34rem] w-full rounded-[11px] border border-border object-cover"
+              />
             </div>
           ) : null}
 
-          <section className="grid gap-10 px-6 py-8 lg:grid-cols-[0.22fr_0.78fr] lg:px-10 lg:py-10">
-            <aside className="space-y-4 text-sm text-muted-foreground">
-              <p className="text-xs font-bold uppercase tracking-[0.32em] text-primary">Essay</p>
-              <p className="leading-7">The gridline motif stays outside the reading column so the writing remains the focal point.</p>
-            </aside>
+          <div className="mb-10 border-t border-border pt-10" />
 
-            <article className="article-prose max-w-none" dangerouslySetInnerHTML={{ __html: postQuery.data.contentHtml }} />
-          </section>
-        </Panel>
+          <div className="article-prose max-w-none" dangerouslySetInnerHTML={{ __html: postQuery.data.contentHtml }} />
+
+          <div className="mt-16 border-t border-border pt-8">
+            <div className="mb-3 text-[11px] uppercase tracking-[0.06em] text-[var(--text-tertiary)]">Tagged</div>
+            <div className="flex flex-wrap gap-1.5">
+              <span className="rounded-full border border-border bg-card px-2.5 py-0.5 text-[12px] text-muted-foreground">
+                {postQuery.data.status}
+              </span>
+            </div>
+          </div>
+        </article>
       ) : null}
     </SiteShell>
   );

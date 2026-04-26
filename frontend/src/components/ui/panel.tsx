@@ -7,7 +7,7 @@ export function Panel({ children, className, ...props }: PanelProps) {
   return (
     <section
       className={cn(
-        "grid rounded-[2rem] border border-border/70 bg-card/90 p-6 text-card-foreground shadow-card backdrop-blur lg:p-8",
+        "grid rounded-lg border border-border bg-card p-6 text-card-foreground shadow-card backdrop-blur lg:p-8",
         className
       )}
       {...props}

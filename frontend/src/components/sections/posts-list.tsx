@@ -8,11 +8,11 @@ type PostsListProps = {
 
 export function PostsList({ posts, emptyMessage }: PostsListProps) {
   if (posts.length === 0) {
-    return <div className="rounded-[1.6rem] border border-border/80 bg-card/90 px-5 py-6 text-muted-foreground shadow-soft">{emptyMessage}</div>;
+    return <div className="rounded-lg border border-border bg-card px-5 py-12 text-center text-[13px] text-[var(--text-tertiary)]">{emptyMessage}</div>;
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}

@@ -35,7 +35,7 @@ export function CoverImageInput({ initialImageUrl, onChange }: CoverImageInputPr
   return (
     <div className="grid gap-3">
       <div
-        className="grid min-h-[14rem] place-items-center rounded-xl border border-dashed border-border bg-muted/20 p-4 text-center"
+        className="grid min-h-[14rem] place-items-center rounded-lg border border-dashed border-border bg-muted/20 p-4 text-center"
         onDragOver={(event) => {
           event.preventDefault();
         }}
@@ -59,7 +59,7 @@ export function CoverImageInput({ initialImageUrl, onChange }: CoverImageInputPr
         }}
       >
         {imageUrl ? (
-          <img src={imageUrl} alt="Cover preview" className="max-h-[18rem] w-full rounded-lg object-cover" />
+          <img src={imageUrl} alt="Cover preview" className="max-h-[18rem] w-full rounded-[11px] border border-border object-cover" />
         ) : (
           <div className="space-y-2 text-sm text-muted-foreground">
             <p>Paste, drop, or choose an image.</p>
@@ -100,7 +100,7 @@ export function CoverImageInput({ initialImageUrl, onChange }: CoverImageInputPr
           event.target.value = "";
         }}
       />
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
+      {error ? <p className="text-sm text-destructive">{error}</p> : null}
     </div>
   );
 }
